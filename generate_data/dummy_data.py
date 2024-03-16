@@ -1,0 +1,507 @@
+import pandas as pd
+import mysql.connector 
+
+db_connection = mysql.connector.connect (
+    host = "localhost",
+    user = "root",
+    password = "",
+    database = "mydb"
+)
+
+# Load data from 'cuisine.csv' into table 'cuisine'
+query = """
+LOAD DATA INFILE 'cuisine.csv'
+INTO TABLE cuisine
+FIELDS TERMINATED BY ','
+ENCLOSED BY '"'
+LINES TERMINATED BY '\n'
+IGNORE 1 LINES
+(cuisine_id, cuisine_name)
+"""
+
+cursor = db_connection.cursor()
+
+cursor.execute(query)
+
+db_connection.commit()
+
+# Load data from 'ingredients.csv' into table 'ingredients'
+query = """
+LOAD DATA INFILE 'ingredients.csv'
+INTO TABLE ingredients
+FIELDS TERMINATED BY ','
+ENCLOSED BY '"'
+LINES TERMINATED BY '\n'
+IGNORE 1 LINES
+(ingredient_id, ingredient_name, ingredient_grams_of_fat, ingredient_grams_of_protein, ingredient_grams_of_carbs, ingredient_calories_per_gram, ingredient_img)
+"""
+
+cursor = db_connection.cursor()
+
+cursor.execute(query)
+
+db_connection.commit()
+
+# Load data from 'recipe.csv' into table 'recipe'
+query = """
+LOAD DATA INFILE 'recipe.csv'
+INTO TABLE recipe
+FIELDS TERMINATED BY ','
+ENCLOSED BY '"'
+LINES TERMINATED BY '\n'
+IGNORE 1 LINES
+(recipe_id, recipe_name, recipe_type, cuisine_of_recipe, level, recipe_desc, no_of_portions, primary_ingredient_id, recipe_img)
+"""
+
+cursor = db_connection.cursor()
+
+cursor.execute(query)
+
+db_connection.commit()
+
+query="""
+INSERT INTO `mydb`.`recipe` (recipe_id, recipe_name, recipe_type, cuisine_of_recipe, level, recipe_desc, no_of_portions, primary_ingredient_id, recipe_img)
+VALUES (136, 'Sardine Mediterranean Pasta', 'cooking', 9, 2, 'Mediterranean-inspired pasta dish featuring savory sardines, olives, tomatoes, and capers in a flavorful herb-infused sauce.', 5, 77, 'IMG_20180814_172611816_HDR.jpg (https://v5.airtableusercontent.com/v3/u/26/26/1710374400000/-lh5WIZeJEWw0UKrHyAQCg/g5DKUzcyyaOUGOC3EHIcK7rZ3agO9jIabL7JuRhI1Op6yKm-sp3VI3WFN6gXXqGBd0tosDpIv7YRph50M-8ZR9zZj9FJ33lUd0DbHZwSMZBXIYNnlz49alKPIlVWtfki/X5pkScPT3_JZzaFkyFXnPhOJ4huP4mGgQRReMfi0UyU)');
+"""
+
+cursor = db_connection.cursor()
+
+cursor.execute(query)
+
+db_connection.commit()
+
+
+# Load data from 'recipe_ingredients.csv' into table 'recipe_uses_ingredients'
+query = """
+LOAD DATA INFILE 'recipe_ingredients.csv'
+INTO TABLE recipe_uses_ingredients
+FIELDS TERMINATED BY ','
+ENCLOSED BY '"'
+LINES TERMINATED BY '\n'
+IGNORE 1 LINES
+(recipe_recipe_id, ingredients_ingredient_id, quantity_in_grams)
+"""
+
+cursor = db_connection.cursor()
+
+cursor.execute(query)
+
+db_connection.commit()
+
+# Load data from 'tips.csv' into table 'tips'
+query = """
+LOAD DATA INFILE 'tips.csv'
+INTO TABLE tips
+FIELDS TERMINATED BY ','
+ENCLOSED BY '"'
+LINES TERMINATED BY '\n'
+IGNORE 1 LINES
+(tips_id, tip_desc)
+"""
+
+cursor = db_connection.cursor()
+
+cursor.execute(query)
+
+db_connection.commit()
+
+# Load data from 'recipe_tips.csv' into table 'recipe_offers_tips'
+query = """
+LOAD DATA INFILE 'recipe_tips.csv'
+INTO TABLE recipe_offers_tips
+FIELDS TERMINATED BY ','
+ENCLOSED BY '"'
+LINES TERMINATED BY '\n'
+IGNORE 1 LINES
+(recipe_recipe_id, tips_tips_id)
+"""
+
+cursor = db_connection.cursor()
+
+cursor.execute(query)
+
+db_connection.commit()
+
+# Load data from 'types_of_meal.csv' into table 'types_of_meal'
+query = """
+LOAD DATA INFILE 'types_of_meal.csv'
+INTO TABLE types_of_meal
+FIELDS TERMINATED BY ','
+ENCLOSED BY '"'
+LINES TERMINATED BY '\n'
+IGNORE 1 LINES
+(meal_type_id, meal_type_name)
+"""
+
+cursor = db_connection.cursor()
+
+cursor.execute(query)
+
+db_connection.commit()
+
+# Load data from 'recipe_meal.csv' into table 'recipe_belongs_to_types_of_meal'
+query = """
+LOAD DATA INFILE 'recipe_meal.csv'
+INTO TABLE recipe_belongs_to_types_of_meal
+FIELDS TERMINATED BY ','
+ENCLOSED BY '"'
+LINES TERMINATED BY '\n'
+IGNORE 1 LINES
+(recipe_recipe_id, types_of_meal_meal_type_id)
+"""
+
+cursor = db_connection.cursor()
+
+cursor.execute(query)
+
+db_connection.commit()
+
+# Load data from 'steps.csv' into table 'steps'
+query = """
+LOAD DATA INFILE 'steps.csv'
+INTO TABLE steps
+FIELDS TERMINATED BY ','
+ENCLOSED BY '"'
+LINES TERMINATED BY '\n'
+IGNORE 1 LINES
+(step_id, step_desc)
+"""
+
+cursor = db_connection.cursor()
+
+cursor.execute(query)
+
+db_connection.commit()
+
+# Load data from 'recipe_steps.csv' into table 'recipe_has_steps'
+query = """
+LOAD DATA INFILE 'recipe_steps.csv'
+INTO TABLE recipe_has_steps
+FIELDS TERMINATED BY ','
+ENCLOSED BY '"'
+LINES TERMINATED BY '\n'
+IGNORE 1 LINES
+(recipe_recipe_id, steps_step_id)
+"""
+
+cursor = db_connection.cursor()
+
+cursor.execute(query)
+
+db_connection.commit()
+
+# Load data from 'food_groups.csv' into table 'food_group'
+query = """
+LOAD DATA INFILE 'food_groups.csv'
+INTO TABLE food_group
+FIELDS TERMINATED BY ','
+ENCLOSED BY '"'
+LINES TERMINATED BY '\n'
+IGNORE 1 LINES
+(food_group_id, food_group_name, food_group_desc, food_group_categorization, food_group_img)
+"""
+
+cursor = db_connection.cursor()
+
+cursor.execute(query)
+
+db_connection.commit()
+
+# Load data from 'ingredients_food_group.csv' into table 'ingredients_belongs_to_food_group'
+query = """
+LOAD DATA INFILE 'ingredients_food_group.csv'
+INTO TABLE ingredients_belongs_to_food_group
+FIELDS TERMINATED BY ','
+ENCLOSED BY '"'
+LINES TERMINATED BY '\n'
+IGNORE 1 LINES
+(ingredients_ingredient_id, food_group_food_group_id)
+"""
+
+cursor = db_connection.cursor()
+
+cursor.execute(query)
+
+db_connection.commit()
+
+# Load data from 'equipment.csv' into table 'equipment'
+query = """
+LOAD DATA INFILE 'equipment.csv'
+INTO TABLE equipment
+FIELDS TERMINATED BY ','
+ENCLOSED BY '"'
+LINES TERMINATED BY '\n'
+IGNORE 1 LINES
+(equipment_id, equipment_name, instructions, equipment_img)
+"""
+
+cursor = db_connection.cursor()
+
+cursor.execute(query)
+
+db_connection.commit()
+
+# Load data from 'recipe_equipment.csv' into table 'recipe_requires_equipment'
+query = """
+LOAD DATA INFILE 'recipe_equipment.csv'
+INTO TABLE recipe_requires_equipment
+FIELDS TERMINATED BY ','
+ENCLOSED BY '"'
+LINES TERMINATED BY '\n'
+IGNORE 1 LINES
+(recipe_recipe_id, equipment_equipment_id)
+"""
+
+cursor = db_connection.cursor()
+
+cursor.execute(query)
+
+db_connection.commit()
+
+# Load data from 'rounds.csv' into table 'round'
+query = """
+LOAD DATA INFILE 'rounds.csv'
+INTO TABLE round
+FIELDS TERMINATED BY ','
+ENCLOSED BY '"'
+LINES TERMINATED BY '\n'
+IGNORE 1 LINES
+(round_id, round_year, round_number, round_img)
+"""
+
+cursor = db_connection.cursor()
+
+cursor.execute(query)
+
+db_connection.commit()
+
+# Load data from 'administrator.csv' into table 'administrator'
+query = """
+LOAD DATA INFILE 'administrator.csv'
+INTO TABLE administrator
+FIELDS TERMINATED BY ','
+ENCLOSED BY '"'
+LINES TERMINATED BY '\n'
+IGNORE 1 LINES
+(admin_id, admin_username, admin_password)
+"""
+
+cursor = db_connection.cursor()
+
+cursor.execute(query)
+
+db_connection.commit()
+
+# Load data from 'tags.csv' into table 'tags'
+query = """
+LOAD DATA INFILE 'tags.csv'
+INTO TABLE tags
+FIELDS TERMINATED BY ','
+ENCLOSED BY '"'
+LINES TERMINATED BY '\n'
+IGNORE 1 LINES
+(tag_id, tag_desc)
+"""
+
+cursor = db_connection.cursor()
+
+cursor.execute(query)
+
+db_connection.commit()
+
+# Load data from 'recipe_tag.csv' into table 'recipe_has_tags'
+query = """
+LOAD DATA INFILE 'recipe_tag.csv'
+INTO TABLE recipe_has_tags
+FIELDS TERMINATED BY ','
+ENCLOSED BY '"'
+LINES TERMINATED BY '\n'
+IGNORE 1 LINES
+(recipe_recipe_id, tags_tag_id)
+"""
+
+cursor = db_connection.cursor()
+
+cursor.execute(query)
+
+db_connection.commit()
+
+# Load data from 'time.csv' into table 'recipe_time'
+query = """
+LOAD DATA INFILE 'time.csv'
+INTO TABLE recipe_time
+FIELDS TERMINATED BY ','
+ENCLOSED BY '"'
+LINES TERMINATED BY '\n'
+IGNORE 1 LINES
+(total_time, preparation_time, execution_time)
+"""
+
+cursor = db_connection.cursor()
+
+cursor.execute(query)
+
+db_connection.commit()
+
+# Load data from 'recipe_takes_time.csv' into table 'recipe_takes_time'
+query = """
+LOAD DATA INFILE 'recipe_takes_time.csv'
+INTO TABLE recipe_takes_time
+FIELDS TERMINATED BY ','
+ENCLOSED BY '"'
+LINES TERMINATED BY '\n'
+IGNORE 1 LINES
+(recipe_recipe_id, recipe_time_total_time)
+"""
+
+cursor = db_connection.cursor()
+
+cursor.execute(query)
+
+db_connection.commit()
+
+# Load data into tables 'dietary_info' and 'recipe_has_dietary_info' using a procedure
+batch_size = 100
+total_recipes = 143
+
+for offset in range(0, total_recipes, batch_size):
+    batch_query = """
+    INSERT INTO dietary_info (dietary_info_id, fat_grams_per_portion, portein_grams_per_portion, carbs_grams_per_portion, calories_per_portion)
+    SELECT 
+        ri.recipe_recipe_id AS dietary_info_id,
+        SUM(i.ingredient_grams_of_fat * ri.quantity_in_grams) / r.no_of_portions AS total_fat,
+        SUM(i.ingredient_grams_of_protein * ri.quantity_in_grams) / r.no_of_portions AS total_protein,
+        SUM(i.ingredient_grams_of_carbs * ri.quantity_in_grams) / r.no_of_portions AS total_carbs,
+        SUM(i.ingredient_calories_per_gram * ri.quantity_in_grams) / r.no_of_portions AS total_calories
+    FROM 
+        recipe_uses_ingredients ri
+    JOIN 
+        ingredients i ON ri.ingredients_ingredient_id = i.ingredient_id
+    JOIN 
+        recipe r ON ri.recipe_recipe_id = r.recipe_id
+    GROUP BY 
+        ri.recipe_recipe_id, r.no_of_portions
+    HAVING 
+        NOT EXISTS (
+            SELECT 1 
+            FROM dietary_info di 
+            WHERE di.dietary_info_id = ri.recipe_recipe_id
+        )
+    LIMIT {}, {}
+    """.format(offset, batch_size)
+
+    cursor = db_connection.cursor()
+    cursor.execute(batch_query)
+    db_connection.commit()
+
+insert_query = """
+INSERT INTO recipe_has_dietary_info (recipe_recipe_id, dietary_info_dietary_info_id)
+SELECT 
+    r.recipe_id,
+    di.dietary_info_id
+FROM 
+    recipe r
+JOIN 
+    dietary_info di ON r.recipe_id = di.dietary_info_id
+WHERE 
+    NOT EXISTS (
+        SELECT 1 
+        FROM recipe_has_dietary_info rdi 
+        WHERE rdi.recipe_recipe_id = r.recipe_id
+    )
+ORDER BY 
+    r.recipe_id;
+"""
+
+cursor = db_connection.cursor()
+cursor.execute(insert_query)
+db_connection.commit()
+
+# Load data from 'subject.csv' into table 'recipe_subject'
+query = """
+LOAD DATA INFILE 'subject.csv'
+INTO TABLE recipe_subject
+FIELDS TERMINATED BY ','
+ENCLOSED BY '"'
+LINES TERMINATED BY '\n'
+IGNORE 1 LINES
+(subject_id, subject_name, subject_desc, subject_img)
+"""
+
+cursor = db_connection.cursor()
+
+cursor.execute(query)
+
+db_connection.commit()
+
+# Load data from 'recipe_subject.csv' into table 'recipe_belongs_to_subject'
+query = """
+LOAD DATA INFILE 'recipe_subject.csv'
+INTO TABLE recipe_belongs_to_subject
+FIELDS TERMINATED BY ','
+ENCLOSED BY '"'
+LINES TERMINATED BY '\n'
+IGNORE 1 LINES
+(recipe_recipe_id, recipe_subject_subject_id)
+"""
+
+cursor = db_connection.cursor()
+
+cursor.execute(query)
+
+db_connection.commit()
+
+# Load data from 'cook.csv' into table 'cook'
+query = """
+LOAD DATA INFILE 'cook.csv'
+INTO TABLE cook
+FIELDS TERMINATED BY ','
+ENCLOSED BY '"'
+LINES TERMINATED BY '\n'
+IGNORE 1 LINES
+(cook_id, first_name, last_name, phone_number, birth_date, age, years_of_experience, position, cook_img, username, password)
+"""
+
+cursor = db_connection.cursor()
+
+cursor.execute(query)
+
+db_connection.commit()
+
+# Load data from 'cook_executes_recipe.csv' into table 'cook_executes_recipe'
+query = """
+LOAD DATA INFILE 'cook_executes_recipe.csv'
+INTO TABLE cook_executes_recipe
+FIELDS TERMINATED BY ','
+ENCLOSED BY '"'
+LINES TERMINATED BY '\n'
+IGNORE 1 LINES
+(cook_cook_id, recipe_recipe_id)
+"""
+
+cursor = db_connection.cursor()
+
+cursor.execute(query)
+
+db_connection.commit()
+
+# Load data from 'cook_knows_cuisine.csv' into table 'cook_knows_cuisine'
+query = """
+LOAD DATA INFILE 'cook_knows_cuisine.csv'
+INTO TABLE cook_knows_cuisine
+FIELDS TERMINATED BY ','
+ENCLOSED BY '"'
+LINES TERMINATED BY '\n'
+IGNORE 1 LINES
+(cuisine_cuisine_id, cook_cook_id, years_of_expertise)
+"""
+
+cursor = db_connection.cursor()
+
+cursor.execute(query)
+
+db_connection.commit()
+
+
+cursor.close()
+db_connection.close()

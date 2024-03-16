@@ -1,0 +1,30 @@
+select * from `mydb`.`cuisine` order by `cuisine_id`;
+select * from `mydb`.`ingredients` order by `ingredient_id`;
+select * from `mydb`.`recipe` order by `recipe_id`;
+select * from `mydb`.`recipe` where `recipe_name` = 'Chickpea Broccoli Pesto';
+select * from `mydb`.`recipe_uses_ingredients` order by `recipe_recipe_id`;
+select * from `mydb`.`tips` order by `tips_id`;
+select * from `mydb`.`recipe_offers_tips` order by `recipe_recipe_id`;
+select * from `mydb`.`types_of_meal` order by `meal_type_id`;
+select * from `mydb`.`recipe_belongs_to_types_of_meal` order by `recipe_recipe_id`;
+select * from `mydb`.`steps` order by `step_id`;
+select * from `mydb`.`recipe_has_steps` order by `recipe_recipe_id`;
+select * from `mydb`.`food_group` order by `food_group_id`;
+select * from `mydb`.`ingredients_belongs_to_food_group` order by `ingredients_ingredient_id`;
+select * from `mydb`.`equipment` order by `equipment_id`;
+select * from `mydb`.`recipe_requires_equipment` order by `recipe_recipe_id`;
+select * from `mydb`.`round` order by `round_id`;
+select * from `mydb`.`administrator` order by `admin_id`;
+select * from `mydb`.`tags` order by `tag_id`;
+select * from `mydb`.`recipe_has_tags` order by `recipe_recipe_id`;
+select * from `mydb`.`recipe_time` order by `total_time`;
+select * from `mydb`.`recipe_takes_time` order by `recipe_recipe_id`;
+select * from `mydb`.`dietary_info` order by `dietary_info_id`;
+select * from `mydb`.`recipe_has_dietary_info` order by `recipe_recipe_id`;
+select * from `mydb`.`recipe_subject` order by `subject_id`;
+select * from `mydb`.`recipe_belongs_to_subject` order by `recipe_recipe_id`;
+select * from `mydb`.`cook` order by `cook_id`;
+select * from `mydb`.`cook_executes_recipe` order by `cook_cook_id`;
+select * from `mydb`.`cook_knows_cuisine` order by `cook_cook_id`;
+
+

@@ -1,0 +1,35 @@
+SET FOREIGN_KEY_CHECKS = 0;
+
+DROP TABLE IF EXISTS `mydb`.`recipe_requires_equipment`;
+DROP TABLE IF EXISTS `mydb`.`equipment`;
+DROP TABLE IF EXISTS `mydb`.`ratings`;
+DROP TABLE IF EXISTS `mydb`.`cuisines_chosen_for_round`;
+DROP TABLE IF EXISTS `mydb`.`cooks_judge_round`;
+DROP TABLE IF EXISTS `mydb`.`cooks_participate_in_round`;
+DROP TABLE IF EXISTS `mydb`.`round`;
+DROP TABLE IF EXISTS `mydb`.`cook_knows_cuisine`;
+DROP TABLE IF EXISTS `mydb`.`cook_executes_recipe`;
+DROP TABLE IF EXISTS `mydb`.`cook`;
+DROP TABLE IF EXISTS `mydb`.`recipe_belongs_to_subject`;
+DROP TABLE IF EXISTS `mydb`.`recipe_subject`;
+DROP TABLE IF EXISTS `mydb`.`recipe_has_dietary_info`;
+DROP TABLE IF EXISTS `mydb`.`dietary_info`;
+DROP TABLE IF EXISTS `mydb`.`recipe_uses_ingredients`;
+DROP TABLE IF EXISTS `mydb`.`ingredients_belongs_to_food_group`;
+DROP TABLE IF EXISTS `mydb`.`food_group`;
+DROP TABLE IF EXISTS `mydb`.`recipe_takes_time`;
+DROP TABLE IF EXISTS `mydb`.`recipe_time`;
+DROP TABLE IF EXISTS `mydb`.`recipe_has_steps`;
+DROP TABLE IF EXISTS `mydb`.`steps`;
+DROP TABLE IF EXISTS `mydb`.`recipe_offers_tips`;
+DROP TABLE IF EXISTS `mydb`.`tips`;
+DROP TABLE IF EXISTS `mydb`.`recipe_has_tags`;
+DROP TABLE IF EXISTS `mydb`.`tags`;
+DROP TABLE IF EXISTS `mydb`.`types_of_meal`;
+DROP TABLE IF EXISTS `mydb`.`recipe_belongs_to_types_of_meal`;
+DROP TABLE IF EXISTS `mydb`.`cuisine`;
+DROP TABLE IF EXISTS `mydb`.`recipe`;
+DROP TABLE IF EXISTS `mydb`.`ingredients`;
+DROP TABLE IF EXISTS `mydb`.`administrator`;
+
+SET FOREIGN_KEY_CHECKS = 1;
