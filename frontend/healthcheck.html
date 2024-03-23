@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health Check</title>
+</head>
+<body>
+    <div id="result"></div>
+    <script>
+        fetch('/dacontest/healthcheck')
+            .then(response => response.text()) // Change here to get the response as text
+            .then(data => {
+                document.getElementById('result').innerText = 'Success'; // Update the DOM with the received HTML content
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('result').innerText = 'Error occurred';
+            });
+    </script>
+</body>
+</html>
