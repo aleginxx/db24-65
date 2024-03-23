@@ -1,5 +1,6 @@
 import pandas as pd
 import mysql.connector 
+import random
 
 db_connection = mysql.connector.connect (
     host = "localhost",
@@ -501,6 +502,32 @@ cursor = db_connection.cursor()
 cursor.execute(query)
 
 db_connection.commit()
+
+# Load data into tables 'cuisines_chosen_for_round' using a procedure
+def fill_cuisines_for_rounds():
+    cursor = db_connection.cursor()
+
+    cursor.execute("SELECT round_id FROM round")
+    round_ids = cursor.fetchall()
+
+    for round_id in round_ids:
+        round_id = round_id[0]
+        counter = 0
+        while counter < 10:
+            cursor.execute("SELECT cuisine_id FROM cuisine WHERE cuisine_id NOT IN (SELECT cuisine_cuisine_id FROM cuisines_chosen_for_round WHERE round_round_id = %s) ORDER BY RAND() LIMIT 10", (round_id,))
+            cuisines = cursor.fetchall()
+            for cuisine_id in cuisines:
+                cuisine_id = cuisine_id[0]
+                cursor.execute("INSERT INTO cuisines_chosen_for_round (cuisine_cuisine_id, round_round_id) VALUES (%s, %s)", (cuisine_id, round_id))
+                counter += 1
+                if counter >= 10:
+                    break
+
+    db_connection.commit()
+    cursor.close()
+
+fill_cuisines_for_rounds()
+
 
 
 cursor.close()

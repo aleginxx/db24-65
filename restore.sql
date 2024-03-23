@@ -3,7 +3,7 @@ SET FOREIGN_KEY_CHECKS = 0;
 DELETE FROM `mydb`.`recipe_requires_equipment`; -- Done
 DELETE FROM `mydb`.`equipment`; -- Done
 DELETE FROM `mydb`.`ratings`;
-DELETE FROM `mydb`.`cuisines_chosen_for_round`;
+DELETE FROM `mydb`.`cuisines_chosen_for_round`; -- Done
 DELETE FROM `mydb`.`cooks_judge_round`;
 DELETE FROM `mydb`.`cooks_participate_in_round`; 
 DELETE FROM `mydb`.`round`; -- Done

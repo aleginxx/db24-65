@@ -454,11 +454,11 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `mydb`.`cooks_participate_in_round` (
   `cook_cook_id` INT NOT NULL,
   `round_round_id` INT NOT NULL,
-  `recipe_recipe_id` INT NOT NULL,
+  `recipe_cuisine_id` INT NOT NULL,
   PRIMARY KEY (`cook_cook_id`, `round_round_id`),
   INDEX `fk_cook_has_round_round1_idx` (`round_round_id` ASC) ,
   INDEX `fk_cook_has_round_cook1_idx` (`cook_cook_id` ASC) ,
-  INDEX `fk_cooks_participate_in_round_recipe1_idx` (`recipe_recipe_id` ASC) ,
+  INDEX `fk_cooks_participate_in_round_cuisine1_idx` (`recipe_cuisine_id` ASC) ,
   CONSTRAINT `fk_cook_has_round_cook1`
     FOREIGN KEY (`cook_cook_id`)
     REFERENCES `mydb`.`cook` (`cook_id`)
@@ -469,9 +469,9 @@ CREATE TABLE IF NOT EXISTS `mydb`.`cooks_participate_in_round` (
     REFERENCES `mydb`.`round` (`round_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_cooks_participate_in_round_recipe1`
-    FOREIGN KEY (`recipe_recipe_id`)
-    REFERENCES `mydb`.`recipe` (`recipe_id`)
+  CONSTRAINT `fk_cooks_participate_in_round_cuisine1_idx`
+    FOREIGN KEY (`recipe_cuisine_id`)
+    REFERENCES `mydb`.`recipe` (`cuisine_of_recipe`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
