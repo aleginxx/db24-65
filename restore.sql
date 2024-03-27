@@ -5,7 +5,7 @@ DELETE FROM `mydb`.`equipment`; -- Done
 DELETE FROM `mydb`.`ratings`;
 DELETE FROM `mydb`.`cuisines_chosen_for_round`; -- Done
 DELETE FROM `mydb`.`cooks_judge_round`;
-DELETE FROM `mydb`.`cooks_participate_in_round`; 
+DELETE FROM `mydb`.`cooks_participate_in_round`; -- Done
 DELETE FROM `mydb`.`round`; -- Done
 DELETE FROM `mydb`.`cook_knows_cuisine`; -- Done
 DELETE FROM `mydb`.`cook_executes_recipe`; -- Done
