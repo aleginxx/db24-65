@@ -15,6 +15,12 @@ const base_url = '/dacontest';
 const healthcheck = require('./healthcheck.js');
 app.use(base_url, healthcheck);
 
+const backup = require('./backup.js');
+app.use(base_url, backup);
+
+const restore = require('./restore.js');
+app.use(base_url, restore)
+
 const login = require('./login.js');
 app.use(base_url, login);
 

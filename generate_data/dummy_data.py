@@ -590,6 +590,27 @@ def populate_cooks_judge_round():
 
 populate_cooks_judge_round()
 
+# Load data into table 'ratings' using a procedure
+cursor = db_connection.cursor()
+
+cursor.execute("SELECT round_id FROM round")
+round_ids = cursor.fetchall()
+
+for round_id in round_ids:
+    cursor.execute("SELECT cook_cook_id FROM cooks_participate_in_round WHERE round_round_id = %s ORDER BY RAND() LIMIT 10", (round_id))
+    contestant_ids = cursor.fetchall()
+    
+    cursor.execute("SELECT cook_cook_id FROM cooks_judge_round WHERE round_round_id = %s ORDER BY RAND() LIMIT 3", (round_id))
+    judge_ids = cursor.fetchall()
+    
+    judge_id = random.choice(judge_ids)[0]
+    
+    rating_value = random.randint(1, 5)
+    
+    for contestant_id in contestant_ids:
+        cursor.execute("INSERT INTO ratings (round_id, contestant_id, judge_id, rating_value) VALUES (%s, %s, %s, %s)", (round_id[0], contestant_id[0], judge_id, rating_value))
+
+db_connection.commit()
 
 cursor.close()
 db_connection.close()
