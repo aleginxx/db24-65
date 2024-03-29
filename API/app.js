@@ -24,6 +24,11 @@ app.use(base_url, restore)
 const login = require('./login.js');
 app.use(base_url, login);
 
+app.set('view engine', 'ejs');
+
+const user = require('./user.js');
+app.use(base_url, user);
+
 //const home = require('./home.js');
 //app.use(base_url, home);
 

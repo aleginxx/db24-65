@@ -9,9 +9,9 @@
     <div id="result"></div>
     <script>
         fetch('/dacontest/healthcheck')
-            .then(response => response.text()) // Change here to get the response as text
+            .then(response => response.text()) 
             .then(data => {
-                document.getElementById('result').innerText = 'Success'; // Update the DOM with the received HTML content
+                document.getElementById('result').innerText = 'Success'; 
             })
             .catch(error => {
                 console.error('Error:', error);
