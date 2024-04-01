@@ -1,28 +1,22 @@
-<div style="display: flex; justify-content: center;">
-  <div>
-    <img align="left" width="100" height="100" src="https://lh5.googleusercontent.com/proxy/MRBDx8ZGLT3hSY5t3q2KhUkOG_Gzt5I7GlafOJ8LYyeep_qBNeylB6YoIZasv3_iTLDBCqOXg9Co3vtRMeDpDQAlV7wftJTaEOPXEjBocWE">
-  </div>
-  <div style="text-align: center;">
-    <p>
-      NATIONAL TECHNICAL UNIVERSITY OF ATHENS 
-    </p>
-    <p>
-      SCHOOL OF ELECTRICAL AND COMPUTER ENGINEER
-    </p>
-    <p>
-      DBMS LABORATORY
-    </p>
-    <p>
-      AC. YEAR 2023-2024
-    </p>
-    <p>
-      <b>Data Bases</b>
-    </p>
-    <p>
-      <b>Semester Project</b>
-    </p>
-  </div>
-</div>
+<img align="left" width="100" height="100" src="https://lh5.googleusercontent.com/proxy/MRBDx8ZGLT3hSY5t3q2KhUkOG_Gzt5I7GlafOJ8LYyeep_qBNeylB6YoIZasv3_iTLDBCqOXg9Co3vtRMeDpDQAlV7wftJTaEOPXEjBocWE">
+<p align="center">
+  NATIONAL TECHNICAL UNIVERSITY OF ATHENS 
+</p>
+<p align="center">
+  SCHOOL OF ELECTRICAL AND COMPUTER ENGINEER
+</p>
+<p align="center">
+  DBMS LABORATORY
+</p>
+<p align="center">
+  AC. YEAR 2023-2024
+</p>
+<p align="center">
+  <b>Data Bases</b>
+</p>
+<p align="center">
+  <b>Semester Project</b>
+</p>
 
 
 
