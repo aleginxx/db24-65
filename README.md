@@ -1,4 +1,4 @@
-<img align="left" width="100" height="100" src="https://lh5.googleusercontent.com/proxy/MRBDx8ZGLT3hSY5t3q2KhUkOG_Gzt5I7GlafOJ8LYyeep_qBNeylB6YoIZasv3_iTLDBCqOXg9Co3vtRMeDpDQAlV7wftJTaEOPXEjBocWE">
+<img align="left" width="60" height="100" src="https://lh5.googleusercontent.com/proxy/MRBDx8ZGLT3hSY5t3q2KhUkOG_Gzt5I7GlafOJ8LYyeep_qBNeylB6YoIZasv3_iTLDBCqOXg9Co3vtRMeDpDQAlV7wftJTaEOPXEjBocWE">
 <p align="center">
   NATIONAL TECHNICAL UNIVERSITY OF ATHENS 
 </p>
@@ -6,16 +6,16 @@
   SCHOOL OF ELECTRICAL AND COMPUTER ENGINEER
 </p>
 <p align="center">
-        DBMS LABORATORY
+  DBMS LABORATORY
 </p>
 <p align="center">
-        AC. YEAR 2023-2024
+  AC. YEAR 2023-2024
 </p>
 <p align="center">
-  <b>      Data Bases</b>
+  <b>Data Bases</b>
 </p>
 <p align="center">
-  <b>      Semester Project</b>
+  <b>Semester Project</b>
 </p>
 
 
