@@ -124,7 +124,7 @@ router.post('/restore', async (req, res) => {
     try {
         await truncateTables();
         await fillTablesFromCSV();
-        res.status(200).send('Database restored successfully.');
+        res.redirect('/dacontest/admin_functions');
     } catch (error) {
         console.error('Error restoring database:', error);
         res.status(500).send('Internal server error.');

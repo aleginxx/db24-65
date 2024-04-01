@@ -47,7 +47,7 @@ router.post('/login', (req, res) => {
                 const token = jwt.sign(payload, process.env.MY_SECRET, { expiresIn: "1h" });
                 res.cookie("token", token);
 
-                return res.redirect(`/dacontest/user/${username}`);
+                return res.redirect(`/dacontest/user?token=${token}`);
             } else {
                 res.status(401).redirect('/dacontest/login');
             }
@@ -67,26 +67,20 @@ router.post('/login', (req, res) => {
             console.log(results);
 
             if (results.length > 0) {
-                res.status(200).send('okay');            
-                //res.redirect('/dacontest/admin-home');
+                const admin = results[0]; 
+                const payload = {
+                    admin_id: admin.admin_id
+                };
+                                
+                const token = jwt.sign(payload, process.env.MY_SECRET, { expiresIn: "1h" });
+                res.cookie("token", token);
+
+                return res.redirect(`/dacontest/admin?token=${token}`);
             } else {
                 res.status(401).redirect('/dacontest/login');
             }
         });
     }
 });
-
-router.get('/home', (req, res) => {
-    const filePath = path.join(__dirname, '..', 'frontend', 'home.html');
-
-    exec(command, (error, stdout, stderr) => {
-        if (error) {
-            console.error(`Error executing HTML file: ${error.message}`);
-            return res.status(500).send('Internal Server Error');
-        }
-        res.send(stdout);
-    });
-});
-
 
 module.exports = router;

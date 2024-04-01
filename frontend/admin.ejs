@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cooking Contest</title>
+</head>
+<body>
+    <div style="display: flex; justify-content: flex-end;">
+        <div style="margin-right: 20px;">
+            <form action="/dacontest/logout" method="GET">
+                <button type="submit">Logout</button>
+            </form>
+        </div>
+    
+        <div>
+            <form action="/dacontest/admin_functions" method="GET">
+                <button type="submit">Backup/Restore</button>
+            </form>
+        </div>
+
+        <div>
+            <form action="/dacontest/admin?token=<%= token %>" method="GET">
+                <button type="submit">Profile</button>
+            </form>
+        </div>
+    </div>    
+
+    <h2>Admin Profile</h2>
+
+    <!-- Display admin information -->
+    <p>Username: <%= admin.admin_username %></p>
+    <p>Password: <%= admin.admin_password %></p>
+
+</body>
+</html>

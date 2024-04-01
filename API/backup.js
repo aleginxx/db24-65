@@ -81,7 +81,7 @@ async function exportAllTablesToCSV() {
 router.get('/backup', (req, res) => {
     exportAllTablesToCSV();
 
-    console.log(`All tables exported  successfully.`);
+    res.redirect('/dacontest/admin_functions');
 });
 
 module.exports = router;

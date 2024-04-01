@@ -28,10 +28,19 @@ app.use(base_url, restore)
 const login = require('./login.js');
 app.use(base_url, login);
 
+const logout = require('./logout.js');
+app.use(base_url, logout);
+
 app.set('view engine', 'ejs');
 
 const user = require('./user.js');
 app.use(base_url, user);
+
+const admin = require('./admin.js');
+app.use(base_url, admin);
+
+const admin_functions = require('./admin_functions.js');
+app.use(base_url, admin_functions);
 
 //const home = require('./home.js');
 //app.use(base_url, home);
