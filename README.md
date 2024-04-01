@@ -6,16 +6,16 @@
   SCHOOL OF ELECTRICAL AND COMPUTER ENGINEER
 </p>
 <p align="center">
-  DBMS LABORATORY
+        DBMS LABORATORY
 </p>
 <p align="center">
-  AC. YEAR 2023-2024
+        AC. YEAR 2023-2024
 </p>
 <p align="center">
-  <b>Data Bases</b>
+  <b>      Data Bases</b>
 </p>
 <p align="center">
-  <b>Semester Project</b>
+  <b>      Semester Project</b>
 </p>
 
 
