@@ -9,10 +9,14 @@
     <h2>User Profile</h2>
 
     <!-- Display user information -->
-    <p>Username: <%= user.username %></p>
+    <p><%= user.cook_image %></p>
     <p>First Name: <%= user.first_name %></p>
     <p>Last Name: <%= user.last_name %></p>
-    <!-- Add more user information as needed -->
+    <p>Phone Number: <%= user.phone_number %></p>
+    <p>Birthday: <%= user.birth_date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) %></p>
+    <p>Age: <%= user.age %></p>
+    <p>Years of Experience: <%= user.years_of_experience %></p>
+    <p>Position: <%= user.position %></p>
 
 </body>
 </html>

@@ -3,10 +3,11 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const DB = require('./database.js');
 const router = express.Router();
+const { cookieJwtAuth } = require("./middelware/cookieJwtAuth.js");
 
 router.use(bodyParser.urlencoded({ extended: true }));
 
-router.get('/user/:username', (req, res) => {
+router.get('/user/:username', cookieJwtAuth, (req, res) => {
     const username = req.params.username; 
     const query = 'SELECT * FROM cook WHERE username = ?'; 
     DB.connection.query(query, [username], (err, results) => { 

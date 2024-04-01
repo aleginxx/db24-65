@@ -59,6 +59,10 @@ function healthcheck(req, res) {
     });
 }
 
+router.post('/healthcheck', (req, res) => {
+    healthcheck();
+})
+
 router.get('/healthcheck', (req, res) => {
     res.sendFile(path.join(__dirname, '../frontend/healthcheck.html'), { 
         headers: {

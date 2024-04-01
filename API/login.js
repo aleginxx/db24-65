@@ -5,6 +5,7 @@ const DB = require('./database.js');
 const { exec } = require('child_process');
 const app = express();
 const http = require('http');
+const jwt = require("jsonwebtoken");
 
 const router = express.Router();
 router.use(bodyParser.urlencoded({ extended: true }));
@@ -38,7 +39,15 @@ router.post('/login', (req, res) => {
             console.log(results);
 
             if (results.length > 0) {
-                res.redirect(`/dacontest/user/${username}`);
+                const user = results[0]; 
+                const payload = {
+                    user_id: user.cook_id
+                };
+                                
+                const token = jwt.sign(payload, process.env.MY_SECRET, { expiresIn: "1h" });
+                res.cookie("token", token);
+
+                return res.redirect(`/dacontest/user/${username}`);
             } else {
                 res.status(401).redirect('/dacontest/login');
             }

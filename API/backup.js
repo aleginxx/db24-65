@@ -20,6 +20,11 @@ async function exportTableToCSV(tableName, fileName) {
                 return Object.values(row).map(value => {
                     if (typeof value === 'string' && value.includes(',')) {
                         return `"${value}"`;
+                    } else if (value instanceof Date) {
+                        const year = value.getFullYear();
+                        const month = ('0' + (value.getMonth() + 1)).slice(-2); 
+                        const day = ('0' + value.getDate()).slice(-2);
+                        return `${year}-${month}-${day}`;
                     }
                     return value;
                 }).join(',');
