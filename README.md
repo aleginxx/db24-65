@@ -1,10 +1,20 @@
 <p align="center">
-  NATIONAL TECHNICAL UNIVERSITY OF ATHENS
+  NATIONAL TECHNICAL UNIVERSITY OF ATHENS 
+</p>
+<p align="center">
   SCHOOL OF ELECTRICAL AND COMPUTER ENGINEER
+</p>
+<p align="center">
   DBMS LABORATORY
+</p>
+<p align="center">
   AC. YEAR 2023-2024
-  **Data Bases**
-  **Seemester Project**
+</p>
+<p align="center">
+  <b>Data Bases</b>
+</p>
+<p align="center">
+  <b>Semester Project</b>
 </p>
 
 **Assignment**
