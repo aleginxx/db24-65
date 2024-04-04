@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cooking Contest</title>
+</head>
+<body>
+    <div style="text-align: right; padding-right: 20px;">
+        <form action="/dacontest/logout" method="GET">
+            <button type="submit">Logout</button>
+        </form>
+    </div>
+    <h2>Sign Up</h2>
+    <form id="signupForm" action="/dacontest/signup" method="POST">
+        <label for="first_name">First Name:</label>
+        <input type="text" id="first_name" name="first_name" required><br><br>
+        <label for="last_name">Last Name:</label>
+        <input type="text" id="last_name" name="last_name" required><br><br>
+        <label for="phone_number">Phone Number:</label>
+        <input type="text" id="phone_number" name="phone_number" required><br><br>
+        <label for="birth_date">Birth Date:</label>
+        <select id="year" name="year">
+            <!-- Options for birth year will be generated dynamically -->
+        </select>
+        <select id="month" name="month">
+            <!-- Options for birth month will be generated dynamically -->
+        </select>
+        <select id="date" name="date">
+            <!-- Options for birth day will be generated dynamically -->
+        </select><br><br>
+        <label for="years_of_experience">Years Of Experience:</label>
+        <input type="text" id="years_of_experience" name="years_of_experience" required><br><br>
+        <label for="position">Position:</label>
+        <select id="position" name="position">
+            <option value="first cook">First Cook</option>
+            <option value="second cook">Second Cook</option>
+            <option value="third cook">Third Cook</option>
+            <option value="sous-chef">Sous-Chef</option>
+            <option value="chef">Chef</option>
+        </select><br><br>
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required><br><br>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required><br><br>
+        <button type="submit">Sign Up</button>
+    </form>    
+
+    <script>
+        // Generate options for birth year, month, and day dynamically
+        const birthYearSelect = document.getElementById('year');
+        const birthMonthSelect = document.getElementById('month');
+        const birthDaySelect = document.getElementById('date');
+
+        // Populate birth year options
+        for (let year = 1900; year <= new Date().getFullYear(); year++) {
+            const option = document.createElement('option');
+            option.value = year;
+            option.textContent = year;
+            birthYearSelect.appendChild(option);
+        }
+
+        // Populate birth month options
+        for (let month = 1; month <= 12; month++) {
+            const option = document.createElement('option');
+            const monthString = month < 10 ? `0${month}` : `${month}`;
+            option.value = monthString;
+            option.textContent = monthString;
+            birthMonthSelect.appendChild(option);
+        }
+
+        // Populate birth day options (assuming 31 days in each month)
+        for (let day = 1; day <= 31; day++) {
+            const option = document.createElement('option');
+            const dayString = day < 10 ? `0${day}` : `${day}`;
+            option.value = dayString;
+            option.textContent = dayString;
+            birthDaySelect.appendChild(option);
+        }
+    </script>
+</body>
+</html>
