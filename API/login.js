@@ -40,6 +40,7 @@ router.post('/login', (req, res) => {
 
             if (results.length > 0) {
                 const user = results[0]; 
+                const username = user.username;
                 const payload = {
                     user_id: user.cook_id
                 };
@@ -47,7 +48,7 @@ router.post('/login', (req, res) => {
                 const token = jwt.sign(payload, process.env.MY_SECRET, { expiresIn: "1h" });
                 res.cookie("token", token);
 
-                return res.redirect(`/dacontest/user?token=${token}`);
+                return res.redirect(`/dacontest/user/${username}?token=${token}`);
             } else {
                 res.status(401).redirect('/dacontest/login');
             }
@@ -68,6 +69,7 @@ router.post('/login', (req, res) => {
 
             if (results.length > 0) {
                 const admin = results[0]; 
+                const admin_username = admin.admin_username;
                 const payload = {
                     admin_id: admin.admin_id
                 };
@@ -75,7 +77,7 @@ router.post('/login', (req, res) => {
                 const token = jwt.sign(payload, process.env.MY_SECRET, { expiresIn: "1h" });
                 res.cookie("token", token);
 
-                return res.redirect(`/dacontest/admin?token=${token}`);
+                return res.redirect(`/dacontest/admin/${admin_username}?token=${token}`);
             } else {
                 res.status(401).redirect('/dacontest/login');
             }

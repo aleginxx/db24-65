@@ -8,8 +8,8 @@ const jwt = require("jsonwebtoken");
 
 router.use(bodyParser.urlencoded({ extended: true }));
 
-router.get('/admin', cookieJwtAuth, (req, res) => {
-    const { admin_id, admin_username } = req.user;
+router.get('/admin/:admin_username', cookieJwtAuth, (req, res) => {
+    const { admin_id } = req.user;
 
     const query = 'SELECT * FROM administrator WHERE admin_id = ?'; 
     DB.connection.query(query, [admin_id], (err, results) => { 
@@ -21,9 +21,8 @@ router.get('/admin', cookieJwtAuth, (req, res) => {
             return res.status(404).send('Admin not found');
         }
         const admin = results[0]; 
-        const token = req.cookies.token;
 
-        res.render(path.join(__dirname, '..', 'frontend', 'admin'), { admin, token });
+        res.render(path.join(__dirname, '..', 'frontend', 'admin'), { admin });
 
     });
 });

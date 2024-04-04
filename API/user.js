@@ -8,8 +8,8 @@ const jwt = require("jsonwebtoken");
 
 router.use(bodyParser.urlencoded({ extended: true }));
 
-router.get('/user', cookieJwtAuth, (req, res) => {
-    const { user_id, username } = req.user;
+router.get('/user/:username', cookieJwtAuth, (req, res) => {
+    const { user_id } = req.user;
 
     const query = 'SELECT * FROM cook WHERE cook_id = ?'; 
     DB.connection.query(query, [user_id], (err, results) => { 
