@@ -28,6 +28,9 @@ app.use(base_url, restore)
 const login = require('./login.js');
 app.use(base_url, login);
 
+const signup = require('./signup.js');
+app.use(base_url, signup);
+
 const logout = require('./logout.js');
 app.use(base_url, logout);
 
