@@ -380,7 +380,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`cook` (
   `age` INT NOT NULL,
   `years_of_experience` INT NOT NULL,
   `position` VARCHAR(45) NOT NULL,
-  `cook_img` LONGTEXT NOT NULL,
+  `cook_img` LONGTEXT,
   `username` VARCHAR(45) NOT NULL,
   `password` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`cook_id`),
