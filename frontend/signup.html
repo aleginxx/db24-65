@@ -3,54 +3,135 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cooking Contest</title>
+    <title>Cooking Contest Sign Up</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 40px 40px 40px 40px;
+            width: 400px;
+            border-top: 8px solid #4caf50; /* Bigger border on the top side */
+        }
+        h2 {
+            margin-top: 1;
+            color: #333;
+            text-align: center;
+            font-size: 24px;
+        }
+        label {
+            font-weight: bold;
+            color: #555;
+            display: block;
+            margin-bottom: 6px;
+            font-size: 14px;
+        }
+        input[type="text"],
+        input[type="password"],
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+        select {
+            appearance: none;
+        }
+        button[type="submit"] {
+            background-color: #4caf50;
+            color: white;
+            padding: 14px 20px;
+            margin-top: 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+        }
+        button[type="submit"]:hover {
+            background-color: #45a049;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+        .footer a {
+            color: #4caf50;
+            text-decoration: none;
+        }
+        .footer a:hover {
+            text-decoration: underline;
+        }
+        .birthdate label {
+            width: 100%;
+            text-align: left;
+            margin-bottom: 6px;
+            font-size: 14px;
+        }
+        .birthdate select {
+            width: calc(33.33% - 10px);
+            margin-right: 10px;
+        }
+        .birthdate select:last-child {
+            margin-right: 0;
+        }
+    </style>
 </head>
 <body>
-    <div style="text-align: right; padding-right: 20px;">
-        <form action="/dacontest/logout" method="GET">
-            <button type="submit">Logout</button>
+    <div class="container">
+        <h2>Sign Up</h2>
+        <form id="signupForm" action="/dacontest/signup" method="POST">
+            <label for="first_name">First Name:</label>
+            <input type="text" id="first_name" name="first_name" required>
+            <label for="last_name">Last Name:</label>
+            <input type="text" id="last_name" name="last_name" required>
+            <label for="phone_number">Phone Number:</label>
+            <input type="text" id="phone_number" name="phone_number" required>
+            <div class="birthdate">
+                <label for="birth_date">Birth Date:</label>
+                <select id="birth_year" name="birth_year"></select>
+                <select id="birth_month" name="birth_month"></select>
+                <select id="birth_day" name="birth_day"></select>
+            </div>
+            <label for="years_of_experience">Years Of Experience:</label>
+            <input type="text" id="years_of_experience" name="years_of_experience" required>
+            <label for="position">Position:</label>
+            <select id="position" name="position">
+                <option value="first cook">First Cook</option>
+                <option value="second cook">Second Cook</option>
+                <option value="third cook">Third Cook</option>
+                <option value="sous-chef">Sous-Chef</option>
+                <option value="chef">Chef</option>
+            </select>
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+            <button type="submit">Sign Up</button>
         </form>
+        <div class="footer">
+            Already have an account? <a href="/dacontest/login">Log In</a>
+        </div>
     </div>
-    <h2>Sign Up</h2>
-    <form id="signupForm" action="/dacontest/signup" method="POST">
-        <label for="first_name">First Name:</label>
-        <input type="text" id="first_name" name="first_name" required><br><br>
-        <label for="last_name">Last Name:</label>
-        <input type="text" id="last_name" name="last_name" required><br><br>
-        <label for="phone_number">Phone Number:</label>
-        <input type="text" id="phone_number" name="phone_number" required><br><br>
-        <label for="birth_date">Birth Date:</label>
-        <select id="year" name="year">
-            <!-- Options for birth year will be generated dynamically -->
-        </select>
-        <select id="month" name="month">
-            <!-- Options for birth month will be generated dynamically -->
-        </select>
-        <select id="date" name="date">
-            <!-- Options for birth day will be generated dynamically -->
-        </select><br><br>
-        <label for="years_of_experience">Years Of Experience:</label>
-        <input type="text" id="years_of_experience" name="years_of_experience" required><br><br>
-        <label for="position">Position:</label>
-        <select id="position" name="position">
-            <option value="first cook">First Cook</option>
-            <option value="second cook">Second Cook</option>
-            <option value="third cook">Third Cook</option>
-            <option value="sous-chef">Sous-Chef</option>
-            <option value="chef">Chef</option>
-        </select><br><br>
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" required><br><br>
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required><br><br>
-        <button type="submit">Sign Up</button>
-    </form>    
-
     <script>
         // Generate options for birth year, month, and day dynamically
-        const birthYearSelect = document.getElementById('year');
-        const birthMonthSelect = document.getElementById('month');
-        const birthDaySelect = document.getElementById('date');
+        const birthYearSelect = document.getElementById('birth_year');
+        const birthMonthSelect = document.getElementById('birth_month');
+        const birthDaySelect = document.getElementById('birth_day');
 
         // Populate birth year options
         for (let year = 1900; year <= new Date().getFullYear(); year++) {
