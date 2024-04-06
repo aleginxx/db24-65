@@ -3,7 +3,7 @@ const router = express.Router();
 const path = require('path');
 const fs = require('fs');
 const util = require('util');
-const DB = require('./database.js');
+const DB = require('../database.js');
 
 const writeFileAsync = util.promisify(fs.writeFile);
 
@@ -77,11 +77,5 @@ async function exportAllTablesToCSV() {
         await exportTableToCSV(table.tableName, table.fileName);
     }
 }
-
-router.get('/backup', (req, res) => {
-    exportAllTablesToCSV();
-
-    res.redirect('/dacontest/admin_functions');
-});
 
 module.exports = router;

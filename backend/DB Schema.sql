@@ -389,6 +389,18 @@ CREATE TABLE IF NOT EXISTS `mydb`.`cook` (
   UNIQUE INDEX `username_UNIQUE` (`username` ASC) )
 ENGINE = InnoDB;
 
+DELIMITER //
+
+CREATE TRIGGER IF NOT EXISTS calculate_age_trigger BEFORE INSERT ON cook
+FOR EACH ROW
+BEGIN
+    SET NEW.age = TIMESTAMPDIFF(YEAR, NEW.birth_date, CURDATE());
+END;
+//
+
+DELIMITER ;
+
+
 
 -- -----------------------------------------------------
 -- Table `mydb`.`cook_executes_recipe`

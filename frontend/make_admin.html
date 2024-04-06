@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cooking Contest</title>
+</head>
+<body>
+    <div style="display: flex; justify-content: flex-end;">
+        <div style="margin-right: 20px;">
+            <form action="/dacontest/logout" method="GET">
+                <button type="submit">Logout</button>
+            </form>
+        </div>
+    
+        <div>
+            <form action="/dacontest/backup" method="POST">
+                <button type="submit">Backup</button>
+            </form>
+        </div>
+
+        <div>
+            <form action="/dacontest/restore" method="POST">
+                <button type="submit">Restore</button>
+            </form>
+        </div>
+
+        <div>
+            <form action="/dacontest/admin" method="GET">
+                <button type="submit">Profile</button>
+            </form>
+        </div>
+
+        <div>
+            <form action="/dacontest/make-admin/" method="POST">
+                <button type="submit">Make Admin</button>
+            </form>
+        </div>
+    </div> 
+
+    <div class="container">
+        <div class="header">
+            Which user do you cant to turn into administrator?
+        </div>
+        <h2>Make Admin</h2>
+        <form id="makeadminForm" action="/dacontest/make-admin" method="POST">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+        </form>
+    </div>
+</body>
+</html>

@@ -29,7 +29,7 @@ router.post('/signup', (req,res)=> {
 
     const query = 'INSERT INTO cook (first_name,last_name,phone_number,birth_date, years_of_experience, position, username, password) VALUES (?, ?, ?, ?, ?, ?, ?, ?) ';
     DB.connection.query(query, [first_name,last_name,phone_number,birth_date, years_of_experience, position, username, password], (err, results) => {
-        console.log(req.body);
+        // console.log(req.body);
         if (err) {
             console.error('Error querying the database:', err);
             if (err.code === 'ER_DBACCESS_DENIED_ERROR' || DB.connection.config.user !== 'root' || DB.connection.config.password !== '') {

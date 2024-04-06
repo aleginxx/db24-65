@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cooking Contest Sign Up</title>
+    <title>Cooking Contest</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -21,7 +21,7 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             padding: 40px 40px 40px 40px;
             width: 400px;
-            border-top: 8px solid #4caf50; /* Bigger border on the top side */
+            border-top: 8px solid #4caf50; 
         }
         h2 {
             margin-top: 1;
@@ -103,9 +103,9 @@
             <input type="text" id="phone_number" name="phone_number" required>
             <div class="birthdate">
                 <label for="birth_date">Birth Date:</label>
-                <select id="birth_year" name="birth_year"></select>
-                <select id="birth_month" name="birth_month"></select>
-                <select id="birth_day" name="birth_day"></select>
+                <select id="year" name="year"></select>
+                <select id="month" name="month"></select>
+                <select id="date" name="date"></select>
             </div>
             <label for="years_of_experience">Years Of Experience:</label>
             <input type="text" id="years_of_experience" name="years_of_experience" required>
@@ -129,11 +129,10 @@
     </div>
     <script>
         // Generate options for birth year, month, and day dynamically
-        const birthYearSelect = document.getElementById('birth_year');
-        const birthMonthSelect = document.getElementById('birth_month');
-        const birthDaySelect = document.getElementById('birth_day');
+        const birthYearSelect = document.getElementById('year');
+        const birthMonthSelect = document.getElementById('month');
+        const birthDaySelect = document.getElementById('date');
 
-        // Populate birth year options
         for (let year = 1900; year <= new Date().getFullYear(); year++) {
             const option = document.createElement('option');
             option.value = year;
@@ -141,7 +140,6 @@
             birthYearSelect.appendChild(option);
         }
 
-        // Populate birth month options
         for (let month = 1; month <= 12; month++) {
             const option = document.createElement('option');
             const monthString = month < 10 ? `0${month}` : `${month}`;
@@ -150,7 +148,6 @@
             birthMonthSelect.appendChild(option);
         }
 
-        // Populate birth day options (assuming 31 days in each month)
         for (let day = 1; day <= 31; day++) {
             const option = document.createElement('option');
             const dayString = day < 10 ? `0${day}` : `${day}`;

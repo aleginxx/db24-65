@@ -4,7 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const util = require('util');
 const csv = require('csv-parser');
-const DB = require('./database.js');
+const DB = require('../database.js');
 
 const readFileAsync = util.promisify(fs.readFile);
 

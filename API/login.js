@@ -22,7 +22,7 @@ router.post('/login', (req, res) => {
     const password = req.body.password + '\r';
     const capacity = req.body.capacity;
 
-    console.log(username, password, capacity);
+    // console.log(username, password, capacity);
 
     if (capacity === 'user') {
         const query = 'SELECT * FROM cook WHERE username = ? AND password = ?';
@@ -36,11 +36,10 @@ router.post('/login', (req, res) => {
                 }
             }
 
-            console.log(results);
+            // console.log(results);
 
             if (results.length > 0) {
                 const user = results[0]; 
-                const username = user.username;
                 const payload = {
                     user_id: user.cook_id
                 };
@@ -48,7 +47,7 @@ router.post('/login', (req, res) => {
                 const token = jwt.sign(payload, process.env.MY_SECRET, { expiresIn: "1h" });
                 res.cookie("token", token);
 
-                return res.redirect(`/dacontest/user/${username}?token=${token}`);
+                return res.redirect(`/dacontest/home?token=${token}`);
             } else {
                 res.status(401).redirect('/dacontest/login');
             }
@@ -65,19 +64,18 @@ router.post('/login', (req, res) => {
                 }
             }
 
-            console.log(results);
+            // console.log(results);
 
             if (results.length > 0) {
                 const admin = results[0]; 
-                const admin_username = admin.admin_username;
                 const payload = {
-                    admin_id: admin.admin_id
+                    user_id: admin.admin_id
                 };
                                 
                 const token = jwt.sign(payload, process.env.MY_SECRET, { expiresIn: "1h" });
                 res.cookie("token", token);
 
-                return res.redirect(`/dacontest/admin/${admin_username}?token=${token}`);
+                return res.redirect(`/dacontest/home?token=${token}`);
             } else {
                 res.status(401).redirect('/dacontest/login');
             }
