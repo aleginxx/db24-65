@@ -12,7 +12,7 @@
 
         .header {
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
             width: 100%;
             margin-bottom: 20px;
@@ -24,12 +24,11 @@
 
         .forms-container {
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
+            align-items: center;
+            flex-basis: 45%;
         }
 
-        .form-container {
-            flex-basis: 45%; /* Adjust the width of each form container as needed */
-        }
     </style>
 </head>
 <body>
@@ -74,11 +73,17 @@
             <div class="form-container">
                 <form id="addDataForm" action="/dacontest/edit-data" method="POST">
                     <div>
-                        <h2>Add Data</h2>
+                        <label for="functionality">Service:</label>
+                        <select id="functionality" name="service">
+                            <option value="" disabled selected>-- Please select a service --</option>
+                            <option value="add">Add Data</option>
+                            <option value="modify">Modify Data</option>
+                            <option value="delete">Delete Data</option>
+                        </select>
                     </div>
                     <div>
-                        <label for="addType">Table:</label>
-                        <select id="addType" name="table">
+                        <label for="table">Table:</label>
+                        <select id="table" name="table">
                             <option value="" disabled selected>-- Please select a table --</option>
                             <option value="cook">User</option>
                             <option value="cook_executes_recipe">Cook-Recipe</option>
@@ -113,70 +118,7 @@
                         </select>
                     </div>
                     <div id="attributeFields">
-                        <option value="" disabled selected>-- Please select an attribute --</option>
                         <!-- Attribute fields for addDataForm will be dynamically generated here -->
-                    </div>
-                    <div>
-                        <button type="submit">Submit</button>
-                    </div>
-                </form>
-            </div>
-
-            <div class="form-container">
-                <form id="modifyDataForm" action="/dacontest/edit-data" method="POST">
-                    <div class="form-heading">
-                        <h2>Modify Data</h2>
-                    </div>
-                    <div>
-                        <label for="modifyType">Table:</label>
-                        <select id="modifyType" name="table">
-                            <option value="" disabled selected>-- Please select a table --</option>
-                            <option value="cook">User</option>
-                            <option value="cook_executes_recipe">Cook-Recipe</option>
-                            <option value="cook_knows_cuisine">Cook-Cuisine</option>
-                            <option value="cooks_judge_round">Judges-Round</option>
-                            <option value="cooks_participate_in_round">Participants-Round</option>
-                            <option value="cuisine">Cuisine</option>
-                            <option value="cuisines_chosen_for_round">Cuisines-Round</option>
-                            <option value="dietary_info">Dietary Info</option>
-                            <option value="equipment">Equipment</option>
-                            <option value="food_group">Food Group</option>
-                            <option value="ingredients">Ingredients</option>
-                            <option value="ingredients_belongs_to_food_group">Ingredients-Food Group</option>
-                            <option value="ratings">Ratings</option>
-                            <option value="recipe">Recipe</option>
-                            <option value="recipe_belongs_to_subject">Recipe-Subject</option>
-                            <option value="recipe_belongs_to_types_of_meal">Recipe-Meal Type</option>
-                            <option value="recipe_has_dietary_info">Recipe-Dietary Info</option>
-                            <option value="recipe_has_steps">Recipe-Steps</option>
-                            <option value="recipe_has_tags">Recipe-Tags</option>
-                            <option value="recipe_offers_tips">Recipe-Tips</option>
-                            <option value="recipe_requires_equipment">Recipe-Equipment</option>
-                            <option value="recipe_subject">Subject</option>
-                            <option value="recipe_takes_time">Recipe-Time</option>
-                            <option value="recipe_time">Time of Recipe</option>
-                            <option value="recipe_uses_ingredients">Recipe-Ingredients</option>
-                            <option value="round">Round</option>
-                            <option value="steps">Steps</option>
-                            <option value="tags">Tage</option>
-                            <option value="tips">Tips</option>
-                            <option value="types_of_meal">Meal Type</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label for="attributeSelect">Attribute:</label>
-                        <select id="attributeSelect" name="attributeSelect">
-                            <option value="" disabled selected>-- Please select an attribute --</option>
-                            <!-- Options for attributes will be dynamically populated -->
-                        </select>
-                    </div>
-                    <div>
-                        <label for="currentValue">Current Value:</label>
-                        <input type="text" id="currentValue" name="currentValue">
-                    </div>
-                    <div>
-                        <label for="newValue">New Value:</label>
-                        <input type="text" id="newValue" name="newValue">
                     </div>
                     <div>
                         <button type="submit">Submit</button>
@@ -189,43 +131,43 @@
     
 
     <script>
-        document.getElementById('addType').addEventListener('change', function() {
+        var attributes = {
+            'cook': ['first_name', 'last_name', 'phone_number', 'birth_date', 'years_of_experience', 'position', 'cook_img', 'username', 'password'], 
+            'cook_executes_recipe': ['cook_cook_id', 'recipe_recipe_id'], 
+            'cook_knows_cuisine': ['cuisine_cuisine_id', 'cook_cook_id', 'years_of_expertise'],
+            'cooks_judge_round': ['cook_cook_id', 'round_round_id'],
+            'cooks_participate_in_round': ['cook_cook_id', 'round_round_id', 'recipe_cuisine_id'],
+            'cuisine': ['cuisine_name'],
+            'cuisines_chosen_for_round': ['cuisine_cuisine_id', 'round_round_id'],
+            'dietary_info': ['dietary_info_id', 'fat_grams_per_portion', 'protein_grams_per_portion', 'carbs_grams_per_portion', 'calories_per_portion'],
+            'equipment': ['equipment_name', 'instructions', 'equipment_img'],
+            'food_group': ['food_group_name', 'food_group_desc', 'food_group_categorization', 'food_group_img'],
+            'ingredients': ['ingredients_name', 'ingredients_grams_of_fat', 'ingredients_grams_of_protein', 'ingredients_grams_of_carbs', 'ingredients_calories_per_gram', 'ingredients_img'],
+            'ingredients_belongs_to_food_group': ['ingredients_ingredients_id', 'food_group_food_group_id'],
+            'ratings': ['round_id', 'contestant_id', 'judge_id', 'rating_value'],
+            'recipe': ['recipe_name', 'recipe_type', 'cuisine_of_recipe', 'level', 'recipe_desc', 'no_of_portions', 'primary_ingredient_id', 'recipe_img'],
+            'recipe_belongs_to_subject': ['recipe_recipe_id', 'recipe_dubject_subject_id'],
+            'recipe_belongs_to_types_of_meal': ['recipe_recipe_id', 'types_of_meal_meal_type_id'],
+            'recipe_has_dietary_info': ['recipe_recipe_id', 'dietary_info_dietary_info_id'],
+            'recipe_has_steps': ['recipe_recipe_id', 'steps_step_id'],
+            'recipe_has_tags': ['recipe_recipe_id', 'tags_tag_id'],
+            'recipe_offers_tips': ['recipe_recipe_id', 'tips_tips_id'],
+            'recipe_requires_equipment': ['recipe_recipe_id', 'equipment_equipment_id'],
+            'recipe_subject': ['subject_name', 'subject_desc', 'subject_img'],
+            'recipe_takes_time': ['recipe_recipe_id', 'recipe_time_total_time'],
+            'recipe_time': ['total_time', 'preparation_time', 'execution_time'],
+            'recipe_uses_ingredients': ['recipe_recipe_id', 'ingredients_ingredient_id', 'quantity_in_grams'],
+            'round': ['round_year', 'round_number', 'round_img'],
+            'steps': ['step_desc'],
+            'tags': ['tag_desc'],
+            'tips': ['tip_desc'],
+            'types_of_meal': ['meal_type_name']
+        };
+
+        document.getElementById('table').addEventListener('change', function() {
             var table = this.value;
             var attributeFields = document.getElementById('attributeFields');
             attributeFields.innerHTML = ''; 
-
-            var attributes = {
-                'cook': ['cook_id', 'first_name', 'last_name', 'phone_number', 'birth_date', 'age', 'years_of_experience', 'position', 'cook_img', 'username', 'password'], 
-                'cook_executes_recipe': ['cook_cook_id', 'recipe_recipe_id'], 
-                'cook_knows_cuisine': ['cuisine_cuisine_id', 'cook_cook_id', 'years_of_expertise'],
-                'cooks_judge_round': ['cook_cook_id', 'round_round_id'],
-                'cooks_participate_in_round': ['cook_cook_id', 'round_round_id', 'recipe_cuisine_id'],
-                'cuisine': ['cuisine_id', 'cuisine_name'],
-                'cuisines_chosen_for_round': ['cuisine_cuisine_id', 'round_round_id'],
-                'dietary_info': ['dietary_info_id', 'fat_grams_per_portion', 'protein_grams_per_portion', 'carbs_grams_per_portion', 'calories_per_portion'],
-                'equipment': ['equipment_id', 'equipment_name', 'instructions', 'equipment_img'],
-                'food_group': ['food_group_id', 'food_group_name', 'food_group_desc', 'food_group_categorization', 'food_group_img'],
-                'ingredients': ['ingredients_id', 'ingredients_name', 'ingredients_grams_of_fat', 'ingredients_grams_of_protein', 'ingredients_grams_of_carbs', 'ingredients_calories_per_gram', 'ingredients_img'],
-                'ingredients_belongs_to_food_group': ['ingredients_ingredients_id', 'food_group_food_group_id'],
-                'ratings': ['rating_id', 'round_id', 'contestant_id', 'judge_id', 'rating_value'],
-                'recipe': ['recipe_id', 'recipe_name', 'recipe_type', 'cuisine_of_recipe', 'level', 'recipe_desc', 'no_of_portions', 'primary_ingredient_id', 'recipe_img'],
-                'recipe_belongs_to_subject': ['recipe_recipe_id', 'recipe_dubject_subject_id'],
-                'recipe_belongs_to_types_of_meal': ['recipe_recipe_id', 'types_of_meal_meal_type_id'],
-                'recipe_has_dietary_info': ['recipe_recipe_id', 'dietary_info_dietary_info_id'],
-                'recipe_has_steps': ['recipe_recipe_id', 'steps_step_id'],
-                'recipe_has_tags': ['recipe_recipe_id', 'tags_tag_id'],
-                'recipe_offers_tips': ['recipe_recipe_id', 'tips_tips_id'],
-                'recipe_requires_equipment': ['recipe_recipe_id', 'equipment_equipment_id'],
-                'recipe_subject': ['subject_id', 'subject_name', 'subject_desc', 'subject_img'],
-                'recipe_takes_time': ['recipe_recipe_id', 'recipe_time_total_time'],
-                'recipe_time': ['total_time', 'preparation_time', 'execution_time'],
-                'recipe_uses_ingredients': ['recipe_recipe_id', 'ingredients_ingredient_id', 'quantity_in_grams'],
-                'round': ['round_id', 'round_year', 'round_number', 'round_img'],
-                'steps': ['step_id', 'step_desc'],
-                'tags': ['tag_id', 'tag_desc'],
-                'tips': ['tip_id', 'tip_desc'],
-                'types_of_meal': ['meal_type_id', 'meal_type_name']
-            };
 
             attributes[table].forEach(function(attribute) {
                 var label = document.createElement('label');
@@ -240,55 +182,6 @@
             });
         });
 
-        document.getElementById('modifyType').addEventListener('change', function() {
-            var table = document.getElementById('modifyType').value;
-            var attributeSelect = document.getElementById('attributeSelect');
-
-            var attributes = {
-                'cook': ['cook_id', 'first_name', 'last_name', 'phone_number', 'birth_date', 'age', 'years_of_experience', 'position', 'cook_img', 'username', 'password'], 
-                'cook_executes_recipe': ['cook_cook_id', 'recipe_recipe_id'], 
-                'cook_knows_cuisine': ['cuisine_cuisine_id', 'cook_cook_id', 'years_of_expertise'],
-                'cooks_judge_round': ['cook_cook_id', 'round_round_id'],
-                'cooks_participate_in_round': ['cook_cook_id', 'round_round_id', 'recipe_cuisine_id'],
-                'cuisine': ['cuisine_id', 'cuisine_name'],
-                'cuisines_chosen_for_round': ['cuisine_cuisine_id', 'round_round_id'],
-                'dietary_info': ['dietary_info_id', 'fat_grams_per_portion', 'protein_grams_per_portion', 'carbs_grams_per_portion', 'calories_per_portion'],
-                'equipment': ['equipment_id', 'equipment_name', 'instructions', 'equipment_img'],
-                'food_group': ['food_group_id', 'food_group_name', 'food_group_desc', 'food_group_categorization', 'food_group_img'],
-                'ingredients': ['ingredients_id', 'ingredients_name', 'ingredients_grams_of_fat', 'ingredients_grams_of_protein', 'ingredients_grams_of_carbs', 'ingredients_calories_per_gram', 'ingredients_img'],
-                'ingredients_belongs_to_food_group': ['ingredients_ingredients_id', 'food_group_food_group_id'],
-                'ratings': ['rating_id', 'round_id', 'contestant_id', 'judge_id', 'rating_value'],
-                'recipe': ['recipe_id', 'recipe_name', 'recipe_type', 'cuisine_of_recipe', 'level', 'recipe_desc', 'no_of_portions', 'primary_ingredient_id', 'recipe_img'],
-                'recipe_belongs_to_subject': ['recipe_recipe_id', 'recipe_dubject_subject_id'],
-                'recipe_belongs_to_types_of_meal': ['recipe_recipe_id', 'types_of_meal_meal_type_id'],
-                'recipe_has_dietary_info': ['recipe_recipe_id', 'dietary_info_dietary_info_id'],
-                'recipe_has_steps': ['recipe_recipe_id', 'steps_step_id'],
-                'recipe_has_tags': ['recipe_recipe_id', 'tags_tag_id'],
-                'recipe_offers_tips': ['recipe_recipe_id', 'tips_tips_id'],
-                'recipe_requires_equipment': ['recipe_recipe_id', 'equipment_equipment_id'],
-                'recipe_subject': ['subject_id', 'subject_name', 'subject_desc', 'subject_img'],
-                'recipe_takes_time': ['recipe_recipe_id', 'recipe_time_total_time'],
-                'recipe_time': ['total_time', 'preparation_time', 'execution_time'],
-                'recipe_uses_ingredients': ['recipe_recipe_id', 'ingredients_ingredient_id', 'quantity_in_grams'],
-                'round': ['round_id', 'round_year', 'round_number', 'round_img'],
-                'steps': ['step_id', 'step_desc'],
-                'tags': ['tag_id', 'tag_desc'],
-                'tips': ['tip_id', 'tip_desc'],
-                'types_of_meal': ['meal_type_id', 'meal_type_name']
-            };
-
-            var tableAttributes = attributes[table];
-            attributeSelect.innerHTML = '';
-
-            tableAttributes.forEach(function(attribute) {
-                var option = document.createElement("option");
-                option.text = attribute;
-                option.value = attribute;
-                attributesSelect.add(option);
-            });
-
-            attributesSelect.disabled = false;
-        });
     </script>
 </body>
 </html>
