@@ -4,9 +4,37 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cooking Contest</title>
+    <style>
+        button {
+            font-family: Arial, sans-serif;
+            background-color: #4caf50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .container {
+            margin-top: 20px; 
+        }
+        h2 {
+            font-family: Arial, sans-serif;
+        }
+        .container a {
+            font-family: Arial, sans-serif;
+            color: #4caf50;
+        }
+    </style>
 </head>
 <body>
     <div style="display: flex; justify-content: flex-end;">
+        <div style="text-align: left; width: 100%; font-family: Arial, sans-serif;">
+            <h2>Cooking Contest</h2>
+        </div>
+
         <div style="margin-right: 20px;">
             <form action="/dacontest/logout" method="GET">
                 <button type="submit">Logout</button>
