@@ -150,6 +150,118 @@
                 });
             });
         });
-    </script>    
+    </script> 
+    
+    <script>
+     $(document).ready(function() {
+    // Function to handle table cell editing
+    function handleCellEdit(cell) {
+        // Save the original cell value
+        var oldValue = cell.text();
+        
+        // Create an input element to allow editing
+        var input = $('<input type="text">');
+        input.val(oldValue);
+        
+        // Replace the cell content with the input element
+        cell.html(input);
+        
+        // Focus on the input element
+        input.focus();
+        
+        // Handle input blur event to save changes
+        input.blur(function() {
+            var newValue = $(this).val();
+            if (newValue !== oldValue) {
+                // Update the cell content with the new value
+                cell.text(newValue);
+                
+                // Get the row index and column name
+                var rowIndex = cell.closest('tr').index();
+                var columnName = cell.closest('td').siblings().eq(cell.index()).text();
+                
+                // Prepare the data to send to the server
+                var rowData = {};
+                rowData[columnName] = newValue;
+                
+                // Send AJAX request to update the database
+                $.ajax({
+                    type: "POST",
+                    url: "/dacontest/update",
+                    data: { tableName: $('#table').val(), rowIndex: rowIndex, data: rowData },
+                    success: function(response) {
+                        console.log('Data updated successfully:', response);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error updating data:', error);
+                    }
+                });
+            }
+        });
+    }
+    
+    // Trigger table data fetch when the form is submitted
+    $('#addDataForm').submit(function(event) {
+        // Prevent default form submission
+        event.preventDefault();
+        
+        // Serialize form data
+        var formData = $(this).serialize();
+        
+        // Send AJAX request to fetch table data
+        $.ajax({
+            type: "POST",
+            url: "/dacontest/modify",
+            data: formData,
+            success: function(response) {
+                // Extract column names and data from the response
+                var columns = response.columns;
+                var data = response.data;
+
+                // Construct HTML for table headers
+                var htmlResult = "<table><thead><tr>";
+                columns.forEach(function(column) {
+                    htmlResult += "<th>" + column + "</th>";
+                });
+                htmlResult += "</tr></thead><tbody>";
+
+                // Construct HTML for table rows
+                data.forEach(function(row) {
+                    htmlResult += "<tr>";
+                    columns.forEach(function(column) {
+                        // Check if the column represents a date
+                        if (column.endsWith('_date')) {
+                            // Format the date to 'YYYY-MM-DD'
+                            var date = new Date(row[column]);
+                            var formattedDate = date.toISOString().split('T')[0];
+                            htmlResult += "<td>" + formattedDate + "</td>";
+                        } else {
+                            htmlResult += "<td contenteditable='true'>" + row[column] + "</td>";
+                        }
+                    });
+                    htmlResult += "</tr>";
+                });
+                htmlResult += "</tbody></table>";
+
+                // Display table data
+                $("#tableDataContainer").html(htmlResult);
+
+                // Add event listener for table cell editing
+                $("#tableDataContainer td[contenteditable='true']").on('click', function() {
+                    handleCellEdit($(this));
+                });
+            },
+            error: function(xhr, status, error) {
+                console.error('Error:', error);
+                // Display error message if any
+                $("#tableDataContainer").html("<p>Error retrieving table data.</p>");
+            }
+        });
+    });
+});
+
+
+
+    </script>
 </body>
 </html>
