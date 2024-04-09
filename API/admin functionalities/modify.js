@@ -26,19 +26,20 @@ router.post('/modify', (req, res) => {
             res.status(500).send('Error retrieving table data.');
         } else {
             const columns = Object.keys(result[0]);
-
-            // Send both column names and result data to the client
-            res.json({ columns: columns, data: result });
+            const primaryKey = columns[0]; // Assuming the first column is the primary key
+            
+            // Send both column names, including primary key, to the client
+            res.json({ columns: columns, primaryKey: primaryKey, data: result });
         }
     });
 });
 
 router.post('/update', (req, res) => {
     const tableName = req.body.tableName;
-    const rowIndex = req.body.rowIndex;
+    const rowID = req.body.rowID; // Extract the row ID from the request body
     const data = req.body.data;
+    const primaryKey = req.body.primaryKey; // Extract the primary key from the request body
 
-    console.log("LET ME IN!!!!!!");
     // Construct SQL query to update the specified row in the table
     let query = `UPDATE ${tableName} SET `;
     let values = [];
@@ -47,8 +48,8 @@ router.post('/update', (req, res) => {
         values.push(data[key]);
     }
     query = query.slice(0, -2); // Remove the trailing comma and space
-    query += ` WHERE id = ?`; // Assuming there's an 'id' column to uniquely identify rows
-    values.push(rowIndex + 1); // Assuming rowIndex is 0-based, so add 1
+    query += ` WHERE ${primaryKey} = ?`; // Use the primary key column dynamically
+    values.push(rowID); // Use the rowID parameter as the value for the WHERE clause
 
     // Execute the update query
     DB.connection.query(query, values, (err, result) => {
@@ -61,7 +62,6 @@ router.post('/update', (req, res) => {
         }
     });
 });
-
 
 module.exports = router;
 
