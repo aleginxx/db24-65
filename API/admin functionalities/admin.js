@@ -22,7 +22,7 @@ router.get('/admin/:admin_username', cookieJwtAuth, (req, res) => {
         }
         const admin = results[0]; 
 
-        res.render(path.join(__dirname, '..', 'frontend', 'admin'), { admin });
+        res.render(path.join(__dirname, '..', '..', 'frontend', 'admin'), { admin });
 
     });
 });
