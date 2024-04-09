@@ -185,6 +185,7 @@
                 rowData[columnName] = newValue;
                 
                 // Send AJAX request to update the database
+                // Send AJAX request to update the database
                 $.ajax({
                     type: "POST",
                     url: "/dacontest/update",
@@ -196,6 +197,7 @@
                         console.error('Error updating data:', error);
                     }
                 });
+
             }
         });
     }
