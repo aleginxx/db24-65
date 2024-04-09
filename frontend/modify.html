@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cooking Contest</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <div class="header">
+        <div style="text-align: left; width: 100%; font-family: Arial, sans-serif;">
+            <h2>Cooking Contest</h2>
+        </div>
+        <div class="header-buttons">
+            <div style="margin-right: 20px;">
+                <form action="/dacontest/logout" method="GET">
+                    <button type="submit">Logout</button>
+                </form>
+            </div>
+        
+            <div>
+                <form action="/dacontest/backup" method="POST">
+                    <button type="submit">Backup</button>
+                </form>
+            </div>
+
+            <div>
+                <form action="/dacontest/restore" method="POST">
+                    <button type="submit">Restore</button>
+                </form>
+            </div>
+
+            <div>
+                <form action="/dacontest/admin/:admin_username" method="GET">
+                    <button type="submit">Profile</button>
+                </form>
+            </div>
+
+            <div>
+                <form action="/dacontest/make-admin/" method="GET">
+                    <button type="submit">Make Admin</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="forms-container">
+            <div class="form-container">
+                <form id="addDataForm" action="/dacontest/modify" method="POST">
+                    <div>
+                        <label for="table">Table:</label>
+                        <select id="table" name="table">
+                            <option value="" disabled selected>-- Please select a table --</option>
+                            <option value="cook">User</option>
+                            <option value="cook_executes_recipe">Cook-Recipe</option>
+                            <option value="cook_knows_cuisine">Cook-Cuisine</option>
+                            <option value="cooks_judge_round">Judges-Round</option>
+                            <option value="cooks_participate_in_round">Participants-Round</option>
+                            <option value="cuisine">Cuisine</option>
+                            <option value="cuisines_chosen_for_round">Cuisines-Round</option>
+                            <option value="dietary_info">Dietary Info</option>
+                            <option value="equipment">Equipment</option>
+                            <option value="food_group">Food Group</option>
+                            <option value="ingredients">Ingredients</option>
+                            <option value="ingredients_belongs_to_food_group">Ingredients-Food Group</option>
+                            <option value="ratings">Ratings</option>
+                            <option value="recipe">Recipe</option>
+                            <option value="recipe_belongs_to_subject">Recipe-Subject</option>
+                            <option value="recipe_belongs_to_types_of_meal">Recipe-Meal Type</option>
+                            <option value="recipe_has_dietary_info">Recipe-Dietary Info</option>
+                            <option value="recipe_has_steps">Recipe-Steps</option>
+                            <option value="recipe_has_tags">Recipe-Tags</option>
+                            <option value="recipe_offers_tips">Recipe-Tips</option>
+                            <option value="recipe_requires_equipment">Recipe-Equipment</option>
+                            <option value="recipe_subject">Subject</option>
+                            <option value="recipe_takes_time">Recipe-Time</option>
+                            <option value="recipe_time">Time of Recipe</option>
+                            <option value="recipe_uses_ingredients">Recipe-Ingredients</option>
+                            <option value="round">Round</option>
+                            <option value="steps">Steps</option>
+                            <option value="tags">Tage</option>
+                            <option value="tips">Tips</option>
+                            <option value="types_of_meal">Meal Type</option>
+                        </select>
+                    </div>
+                    <div>
+                        <button type="submit">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div id="tableDataContainer">
+            <!-- Table data will be displayed here -->
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            $("#addDataForm").submit(function(event) {
+                // Prevent default form submission
+                event.preventDefault();
+
+                // Serialize form data
+                var formData = $(this).serialize();
+
+                // Send AJAX request
+                $.ajax({
+                    type: "POST",
+                    url: "/dacontest/modify",
+                    data: formData,
+                    success: function(response) {
+                        // Parse JSON response
+                        var jsonData = JSON.parse(response);
+
+                        // Construct HTML for table
+                        var htmlResult = "<table>";
+                        for (var i = 0; i < jsonData.length; i++) {
+                            htmlResult += "<tr>";
+                            for (var key in jsonData[i]) {
+                                htmlResult += "<td>" + jsonData[i][key] + "</td>";
+                            }
+                            htmlResult += "</tr>";
+                        }
+                        htmlResult += "</table>";
+
+                        // Display table data
+                        $("#tableDataContainer").html(htmlResult);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error:', error);
+                        // Display error message if any
+                        $("#tableDataContainer").html("<p>Error retrieving table data.</p>");
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

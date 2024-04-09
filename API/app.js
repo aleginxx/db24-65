@@ -54,6 +54,9 @@ app.use(base_url, home);
 const make_admin = require('./admin functionalities/make_admin.js');
 app.use(base_url, make_admin);
 
+const modify = require('./admin functionalities/modify.js');
+app.use(base_url, modify);
+
 
 http.createServer(app).listen(port, () => {
     console.log(`HTTP server running on port ${port}`);
