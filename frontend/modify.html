@@ -100,40 +100,48 @@
             $("#addDataForm").submit(function(event) {
                 // Prevent default form submission
                 event.preventDefault();
-
+    
                 // Serialize form data
                 var formData = $(this).serialize();
-
+    
                 // Send AJAX request
                 $.ajax({
                     type: "POST",
                     url: "/dacontest/modify",
                     data: formData,
                     success: function(response) {
-                    // Extract column names and data from the response
-                    var columns = response.columns;
-                    var data = response.data;
-
-                    // Construct HTML for table headers
-                    var htmlResult = "<table><thead><tr>";
-                    columns.forEach(function(column) {
-                        htmlResult += "<th>" + column + "</th>";
-                    });
-                    htmlResult += "</tr></thead><tbody>";
-
-                    // Construct HTML for table rows
-                    data.forEach(function(row) {
-                        htmlResult += "<tr>";
+                        // Extract column names and data from the response
+                        var columns = response.columns;
+                        var data = response.data;
+    
+                        // Construct HTML for table headers
+                        var htmlResult = "<table><thead><tr>";
                         columns.forEach(function(column) {
-                            htmlResult += "<td>" + row[column] + "</td>";
+                            htmlResult += "<th>" + column + "</th>";
                         });
-                        htmlResult += "</tr>";
-                    });
-                    htmlResult += "</tbody></table>";
-
-                    // Display table data
-                    $("#tableDataContainer").html(htmlResult);
-                },
+                        htmlResult += "</tr></thead><tbody>";
+    
+                        // Construct HTML for table rows
+                        data.forEach(function(row) {
+                            htmlResult += "<tr>";
+                            columns.forEach(function(column) {
+                                // Check if the column represents a date
+                                if (column.endsWith('_date')) {
+                                    // Format the date to 'YYYY-MM-DD'
+                                    var date = new Date(row[column]);
+                                    var formattedDate = date.toISOString().split('T')[0];
+                                    htmlResult += "<td>" + formattedDate + "</td>";
+                                } else {
+                                    htmlResult += "<td>" + row[column] + "</td>";
+                                }
+                            });
+                            htmlResult += "</tr>";
+                        });
+                        htmlResult += "</tbody></table>";
+    
+                        // Display table data
+                        $("#tableDataContainer").html(htmlResult);
+                    },
                     error: function(xhr, status, error) {
                         console.error('Error:', error);
                         // Display error message if any
@@ -142,6 +150,6 @@
                 });
             });
         });
-    </script>
+    </script>    
 </body>
 </html>
