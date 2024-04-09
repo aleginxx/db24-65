@@ -9,14 +9,30 @@ const jwt = require("jsonwebtoken");
 router.use(bodyParser.urlencoded({ extended: true }));
 
 router.get('/make-admin', (req, res) => {
-    const filePath = path.join(__dirname, '..', '..', 'frontend', 'make_admin.html');
-    res.sendFile(filePath);
+    const token = req.cookies.token;
+    const decodedToken = jwt.decode(token);
+    const username_check = decodedToken.username;
+
+    const check_admin = `SELECT * FROM administrator WHERE admin_username = ?`;
+
+    DB.connection.query(check_admin, [username_check], (err, results) => { 
+      if (err) {
+          console.error('Error fetching admin data:', err);
+          return res.status(500).send('Internal Server Error');
+      }
+      if (results.length === 0) {
+          return res.status(404).send('You do not have permission to access this page');
+      }
+      else {
+        const filePath = path.join(__dirname, '..', '..', 'frontend', 'make_admin.html');
+        res.sendFile(filePath);
+      }
+    });
 });
 
 router.post('/make-admin', (req, res) => {
-    const token = req.cookies.token;
     const username = req.body.username; 
-  
+
     const select_row = `SELECT password FROM cook WHERE username = '${username}'`;
 
     DB.connection.query(select_row, (err, results) => {

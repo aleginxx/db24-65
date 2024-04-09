@@ -15,7 +15,9 @@
     <h2>User Profile</h2>
 
     <!-- Display user information -->
-    <p><%= user.cook_image %></p>
+    <% if (user.cook_image) { %>
+        <p><%= user.cook_image %></p>
+    <% } %>
     <p>First Name: <%= user.first_name %></p>
     <p>Last Name: <%= user.last_name %></p>
     <p>Phone Number: <%= user.phone_number %></p>

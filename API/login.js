@@ -22,7 +22,7 @@ router.post('/login', (req, res) => {
     const password = req.body.password + '\r';
     const capacity = req.body.capacity;
 
-    // console.log(username, password, capacity);
+    console.log(username, password, capacity);
 
     if (capacity === 'user') {
         const query = 'SELECT * FROM cook WHERE username = ? AND password = ?';
@@ -41,7 +41,7 @@ router.post('/login', (req, res) => {
             if (results.length > 0) {
                 const user = results[0]; 
                 const payload = {
-                    user_id: user.cook_id
+                    username: user.username
                 };
                                 
                 const token = jwt.sign(payload, process.env.MY_SECRET, { expiresIn: "1h" });
@@ -69,7 +69,7 @@ router.post('/login', (req, res) => {
             if (results.length > 0) {
                 const admin = results[0]; 
                 const payload = {
-                    user_id: admin.admin_id
+                    admin_username: admin.admin_username
                 };
                                 
                 const token = jwt.sign(payload, process.env.MY_SECRET, { expiresIn: "1h" });

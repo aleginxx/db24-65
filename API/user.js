@@ -8,11 +8,11 @@ const jwt = require("jsonwebtoken");
 
 router.use(bodyParser.urlencoded({ extended: true }));
 
-router.get('/user/:username', cookieJwtAuth, (req, res) => {
-    const { user_id } = req.user;
+router.get('/user/', cookieJwtAuth, (req, res) => {
+    const { username } = req.user;
 
-    const query = 'SELECT * FROM cook WHERE cook_id = ?'; 
-    DB.connection.query(query, [user_id], (err, results) => { 
+    const query = 'SELECT * FROM cook WHERE username = ?'; 
+    DB.connection.query(query, [username], (err, results) => { 
         if (err) {
             console.error('Error fetching user data:', err);
             return res.status(500).send('Internal Server Error');
@@ -21,6 +21,8 @@ router.get('/user/:username', cookieJwtAuth, (req, res) => {
             return res.status(404).send('User not found');
         }
         const user = results[0]; 
+        console.log("user");
+        console.log(user);
 
         res.render(path.join(__dirname, '..', 'frontend', 'user'), { user });
     });

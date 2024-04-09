@@ -39,6 +39,9 @@ app.set('view engine', 'ejs');
 const user = require('./user.js');
 app.use(base_url, user);
 
+const profile = require('./profile.js');
+app.use(base_url, profile);
+
 const admin = require('./admin functionalities/admin.js');
 app.use(base_url, admin);
 

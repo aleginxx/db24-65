@@ -8,11 +8,13 @@ const jwt = require("jsonwebtoken");
 
 router.use(bodyParser.urlencoded({ extended: true }));
 
-router.get('/admin/:admin_username', cookieJwtAuth, (req, res) => {
-    const { user_id } = req.user;
+router.get('/admin/', cookieJwtAuth, (req, res) => {
+    const token = req.cookies.token;
+    const decodedToken = jwt.decode(token);
+    const admin_username = decodedToken.admin_username;
 
-    const query = 'SELECT * FROM administrator WHERE admin_id = ?'; 
-    DB.connection.query(query, [user_id], (err, results) => { 
+    const query = 'SELECT * FROM administrator WHERE admin_username = ?'; 
+    DB.connection.query(query, [admin_username], (err, results) => { 
         if (err) {
             console.error('Error fetching admin data:', err);
             return res.status(500).send('Internal Server Error');
