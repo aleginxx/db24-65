@@ -25,28 +25,10 @@ router.post('/modify', (req, res) => {
             console.error('Error executing query:', err);
             res.status(500).send('Error retrieving table data.');
         } else {
-            // Render HTML with the table data embedded
-            let htmlResult = `<html><head><title>Table Data</title></head><body><table>`;
-            
-            // Add table headers
-            htmlResult += `<tr>`;
-            for (const column in result[0]) {
-                htmlResult += `<th>${column}</th>`;
-            }
-            htmlResult += `</tr>`;
+            const columns = Object.keys(result[0]);
 
-            // Add table entries
-            result.forEach(row => {
-                htmlResult += `<tr>`;
-                for (const column in row) {
-                    htmlResult += `<td>${row[column]}</td>`;
-                }
-                htmlResult += `</tr>`;
-            });
-
-            htmlResult += `</table></body></html>`;
-            
-            res.send(htmlResult);
+            // Send both column names and result data to the client
+            res.json({ columns: columns, data: result });
         }
     });
 });

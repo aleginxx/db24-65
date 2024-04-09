@@ -110,23 +110,30 @@
                     url: "/dacontest/modify",
                     data: formData,
                     success: function(response) {
-                        // Parse JSON response
-                        var jsonData = JSON.parse(response);
+                    // Extract column names and data from the response
+                    var columns = response.columns;
+                    var data = response.data;
 
-                        // Construct HTML for table
-                        var htmlResult = "<table>";
-                        for (var i = 0; i < jsonData.length; i++) {
-                            htmlResult += "<tr>";
-                            for (var key in jsonData[i]) {
-                                htmlResult += "<td>" + jsonData[i][key] + "</td>";
-                            }
-                            htmlResult += "</tr>";
-                        }
-                        htmlResult += "</table>";
+                    // Construct HTML for table headers
+                    var htmlResult = "<table><thead><tr>";
+                    columns.forEach(function(column) {
+                        htmlResult += "<th>" + column + "</th>";
+                    });
+                    htmlResult += "</tr></thead><tbody>";
 
-                        // Display table data
-                        $("#tableDataContainer").html(htmlResult);
-                    },
+                    // Construct HTML for table rows
+                    data.forEach(function(row) {
+                        htmlResult += "<tr>";
+                        columns.forEach(function(column) {
+                            htmlResult += "<td>" + row[column] + "</td>";
+                        });
+                        htmlResult += "</tr>";
+                    });
+                    htmlResult += "</tbody></table>";
+
+                    // Display table data
+                    $("#tableDataContainer").html(htmlResult);
+                },
                     error: function(xhr, status, error) {
                         console.error('Error:', error);
                         // Display error message if any
