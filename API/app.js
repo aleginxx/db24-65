@@ -45,8 +45,8 @@ app.use(base_url, profile);
 const admin = require('./admin functionalities/admin.js');
 app.use(base_url, admin);
 
-const admin_functions = require('./admin functionalities/admin_functions.js');
-app.use(base_url, admin_functions);
+const delition = require('./admin functionalities/delete.js');
+app.use(base_url, delition);
 
 const home = require('./home.js');
 app.use(base_url, home);

@@ -123,7 +123,7 @@
     <div class="container">
         <div class="forms-container">
             <div class="form-container">
-                <form id="addDataForm" action="/dacontest/modify" method="POST">
+                <form id="addDataForm" action="/dacontest/delete" method="POST">
                     <div>
                         <label for="table">Table:</label>
                         <select id="table" name="table">
@@ -175,24 +175,23 @@
         $(document).ready(function() {
             $("#addDataForm").submit(function(event) {
                 event.preventDefault();
-    
+
                 var formData = $(this).serialize();
-    
+
                 $.ajax({
                     type: "POST",
-                    url: "/dacontest/modify",
+                    url: "/dacontest/delete",
                     data: formData,
                     success: function(response) {
-                        // Extract column names, primary key, and data from the response
                         var columns = response.columns;
-                        var primaryKey = response.primaryKey;
+                        var primaryKey = response.primaryKey; 
                         var data = response.data;
     
-                        // Construct HTML for table headers
                         var htmlResult = "<table><thead><tr>";
                         columns.forEach(function(column) {
                             htmlResult += "<th>" + column + "</th>";
                         });
+                        htmlResult += "<th>Delete</th>";
                         htmlResult += "</tr></thead><tbody>";
     
                         // Construct HTML for table rows
@@ -209,6 +208,8 @@
                                     htmlResult += "<td contenteditable='true'>" + row[column] + "</td>";
                                 }
                             });
+                            // Add "Delete" button for each row
+                            htmlResult += "<td><button class='deleteBtn'>Delete</button></td>";
                             htmlResult += "</tr>";
                         });
                         htmlResult += "</tbody></table>";
@@ -220,10 +221,14 @@
                         $("#tableDataContainer td[contenteditable='true']").on('blur', function() {
                             handleCellEdit($(this), primaryKey);
                         });
+    
+                        // Add event listener for delete button
+                        $(".deleteBtn").on('click', function() {
+                            handleDelete($(this), primaryKey); // Pass primary key column name to handleDelete function
+                        });
                     },
                     error: function(xhr, status, error) {
                         console.error('Error:', error);
-                        // Display error message if any
                         $("#tableDataContainer").html("<p>Error retrieving table data.</p>");
                     }
                 });
@@ -264,7 +269,7 @@
                         // Send AJAX request to update the database
                         $.ajax({
                             type: "POST",
-                            url: "/dacontest/update",
+                            url: "/dacontest/update-delete",
                             data: { tableName: $('#table').val(), rowID: rowID, data: rowData, primaryKey: primaryKey },
                             success: function(response) {
                                 console.log('Data updated successfully:', response);
@@ -277,8 +282,31 @@
                     }
                 });
             }
+    
+            // Function to handle delete button click
+            $("#tableDataContainer").on('click', '.deleteBtn', function() {
+                // Get the table name, primary key, and row ID
+                var tableName = $('#table').val();
+                var primaryKey = response.primaryKey;
+                var rowID = $(this).closest('tr').find('td:first').text(); // assuming the ID is in the first column
+                
+                // Send AJAX request to delete the row
+                $.ajax({
+                    type: "POST",
+                    url: "/dacontest/update-delete",
+                    data: { tableName: tableName, rowID: rowID, primaryKey: primaryKey },
+                    success: function(response) {
+                        // Redirect to the delete endpoint
+                        window.location.href = "/dacontest/update-delete";
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error deleting row:', error);
+                        // Handle error
+                    }
+                });
+            });
         });
-    </script>
+    </script>    
     
 </body>
 </html>
