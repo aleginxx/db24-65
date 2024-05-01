@@ -25,7 +25,13 @@ router.post('/signup', (req,res)=> {
     const years_of_experience  = req.body.years_of_experience;
     const position             = req.body.position;
     const username             = req.body.username;
-    const password             = req.body.password + '\r';
+    const password             = req.body.password;
+    const confpassword         = req.body.confpassword;
+
+    // Check if password and confpassword match
+    if (password !== confpassword) {
+        return res.status(200).redirect('/dacontest/signup?error=passwords-mismatch');
+    }
 
     const query = 'INSERT INTO cook (first_name,last_name,phone_number,birth_date, years_of_experience, position, username, password) VALUES (?, ?, ?, ?, ?, ?, ?, ?) ';
     DB.connection.query(query, [first_name,last_name,phone_number,birth_date, years_of_experience, position, username, password], (err, results) => {

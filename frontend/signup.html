@@ -94,6 +94,7 @@
 <body>
     <div class="container">
         <h2>Sign Up</h2>
+        <div id="errorMessage" style="color: red; margin-bottom: 10px;"></div>
         <form id="signupForm" action="/dacontest/signup" method="POST">
             <label for="first_name">First Name:</label>
             <input type="text" id="first_name" name="first_name" required>
@@ -121,6 +122,8 @@
             <input type="text" id="username" name="username" required>
             <label for="password">Password:</label>
             <input type="password" id="password" name="password" required>
+            <label for="confpassword">Confirm Password:</label>
+            <input type="password" id="confpassword" name="confpassword" required>
             <button type="submit">Sign Up</button>
         </form>
         <div class="footer">
@@ -132,6 +135,19 @@
         const birthYearSelect = document.getElementById('year');
         const birthMonthSelect = document.getElementById('month');
         const birthDaySelect = document.getElementById('date');
+
+        function displayErrorMessage() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const error = urlParams.get('error');
+            if (error == 'passwords-mismatch') {
+                const errorMessage = document.getElementById('errorMessage');
+                errorMessage.textContent = 'Passwords do not match';
+                // Clear the error message from the URL
+                const urlWithoutError = window.location.pathname;
+                window.history.replaceState({}, document.title, urlWithoutError);
+            }
+        }
+        displayErrorMessage();
 
         for (let year = 1900; year <= new Date().getFullYear(); year++) {
             const option = document.createElement('option');
