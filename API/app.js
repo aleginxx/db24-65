@@ -7,6 +7,7 @@ const http = require('http');
 const phpExpress = require('php-express')();
 const { exec } = require('child_process');
 const cookieParser = require("cookie-parser");
+const { cookieJwtAuth } = require("./middelware/cookieJwtAuth.js");
 
 
 const port = 9876;
@@ -57,6 +58,18 @@ app.use(base_url, make_admin);
 const modify = require('./admin functionalities/modify.js');
 app.use(base_url, modify);
 
+// Queries
+const score = require('./queries/mean_score.js');
+app.use(base_url, score);
+
+const cooks_know_cuisines = require('./queries/cooks_know_cuisines.js');
+app.use(base_url, cooks_know_cuisines);
+
+const most_recipes = require('./queries/most_recipes.js');
+app.use(base_url, most_recipes);
+
+const cooks_never_judged = require('./queries/cooks_never_judged.js');
+app.use(base_url, cooks_never_judged);
 
 http.createServer(app).listen(port, () => {
     console.log(`HTTP server running on port ${port}`);

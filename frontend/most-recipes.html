@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Top Cooks Under 30</title>
+    <style>
+        table {
+            font-family: Arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h1>Top Cooks Under 30</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Age</th>
+                <th>Number of Recipes</th>
+            </tr>
+        </thead>
+        <tbody id="cooks-list">
+            <!-- Table rows will be populated here -->
+        </tbody>
+    </table>
+
+    <script>
+        function fetchData() {
+            fetch('/dacontest/most-recipes', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                const cooksList = document.getElementById('cooks-list');
+                cooksList.innerHTML = ''; 
+
+                data.forEach(cook => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${cook.first_name}</td>
+                        <td>${cook.last_name}</td>
+                        <td>${cook.age}</td>
+                        <td>${cook.num_recipes}</td>
+                    `;
+                    cooksList.appendChild(row);
+                });
+            })
+            .catch(error => console.error('Error fetching data:', error));
+        }
+
+        window.addEventListener('load', fetchData);
+    </script>
+</body>
+</html>

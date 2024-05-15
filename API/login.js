@@ -47,7 +47,7 @@ router.post('/login', (req, res) => {
                 const token = jwt.sign(payload, process.env.MY_SECRET, { expiresIn: "1h" });
                 res.cookie("token", token);
 
-                return res.redirect(`/dacontest/home?token=${token}`);
+                return res.redirect(`/dacontest/home`);
             } else {
                 res.status(401).redirect('/dacontest/login');
             }
@@ -75,7 +75,7 @@ router.post('/login', (req, res) => {
                 const token = jwt.sign(payload, process.env.MY_SECRET, { expiresIn: "1h" });
                 res.cookie("token", token);
 
-                return res.redirect(`/dacontest/home?token=${token}`);
+                return res.redirect(`/dacontest/home`);
             } else {
                 res.status(401).redirect('/dacontest/login');
             }

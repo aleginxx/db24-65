@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cooks Who Have Never Judged</title>
+    <style>
+        table {
+            font-family: Arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h1>Cooks Who Have Never Judged</h1>
+    <table id="cooksTable">
+        <thead>
+            <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+            </tr>
+        </thead>
+        <tbody id="cooksBody">
+            <!-- Table rows will be dynamically added here -->
+        </tbody>
+    </table>
+
+    <script>
+        function fetchData() {
+            fetch('/dacontest/cooks-never-judge', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                const cooksList = document.getElementById('cooksBody');
+                cooksList.innerHTML = ''; 
+
+                data.forEach(cook => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${cook.first_name}</td>
+                        <td>${cook.last_name}</td>
+                    `;
+                    cooksList.appendChild(row);
+                });
+            })
+            .catch(error => console.error('Error fetching data:', error));
+        }
+
+        window.addEventListener('load', fetchData);
+    </script>
+</body>
+</html>

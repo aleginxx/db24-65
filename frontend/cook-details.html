@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cook Mean Ratings</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: auto;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border: 1px solid #ddd;
+            white-space: nowrap;
+            table-layout: auto;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h1>Cooks know Recipes</h1>
+    <form id="searchForm1">
+        <label for="cuisineName">Search by Cuisine Name:</label>
+        <input type="text" id="cuisineName" name="cuisineName">
+        <button type="submit">Search</button>
+    </form>
+    <table>
+        <thead>
+            <tr>
+                <th>Last Name</th>
+                <th>First Name</th>
+                <th>Username</th>
+                <th>Cuisine Name</th>
+            </tr>
+        </thead>
+        <tbody id="cooks-know-cuisines">
+            <!-- Dynamic content will be inserted here -->
+        </tbody>
+    </table>
+
+    <h2>Cooks Participate in Rounds</h2>
+    <form id="searchForm2">
+        <label for="roundYear">Search by Round Year:</label>
+        <input type="text" id="roundYear" name="roundYear">
+        <button type="submit">Search</button>
+    </form>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Username</th>
+                <th>Round Year</th>
+                <th>Role</th>
+            </tr>
+        </thead>
+        <tbody id="cooks-participate-in-rounds">
+            <!-- Dynamic content will be inserted here -->
+        </tbody>
+    </table>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            console.log('DOM fully loaded and parsed');
+            try {
+                await fetchCooksKnowCuisines(); // Fetch all cooks initially
+            } catch (error) {
+                console.error('Error fetching cooks:', error);
+            }
+        });
+
+        document.getElementById('searchForm1').addEventListener('submit', async (event) => {
+            event.preventDefault(); // Prevent form submission
+
+            const cuisineName = document.getElementById('cuisineName').value.trim();
+
+            try {
+                if (cuisineName === '') {
+                    await fetchCooksKnowCuisines(); // Fetch all cooks if search field is empty
+                } else {
+                    await fetchCooksByCuisine(cuisineName); // Fetch cooks by cuisine name
+                }
+            } catch (error) {
+                console.error('Error fetching cooks:', error);
+            }
+        });
+
+        async function fetchCooksKnowCuisines() {
+            const response = await fetch('/dacontest/cooks_know_cuisines', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            populateTable1(data);
+        }
+
+        async function fetchCooksByCuisine(cuisineName) {
+            const response = await fetch('/dacontest/cooks_know_cuisines', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ cuisineName })
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            populateTable1(data);
+        }
+
+        function populateTable1(data) {
+            const tableBody = document.getElementById('cooks-know-cuisines');
+            tableBody.innerHTML = ''; // Clear previous content
+
+            data.sort((a, b) => a.last_name.localeCompare(b.last_name));
+
+            data.forEach(cook => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${cook.last_name}</td>
+                    <td>${cook.first_name}</td>
+                    <td>${cook.username}</td>
+                    <td>${cook.cuisine_name}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+        
+        document.addEventListener('DOMContentLoaded', async () => {
+            console.log('DOM fully loaded and parsed');
+            try {
+                await fetchCooksParticipateInRounds(); // Fetch all cooks initially
+            } catch (error) {
+                console.error('Error fetching cooks:', error);
+            }
+        });
+
+        document.getElementById('searchForm2').addEventListener('submit', async (event) => {
+            event.preventDefault(); // Prevent form submission
+
+            const roundYear = document.getElementById('roundYear').value.trim();
+
+            try {
+                if (roundYear === '') {
+                    await fetchCooksParticipateInRounds(); // Fetch all cooks if search field is empty
+                } else {
+                    await fetchCooksByRoundYear(roundYear); // Fetch cooks by round year
+                }
+            } catch (error) {
+                console.error('Error fetching cooks:', error);
+            }
+        });
+
+        async function fetchCooksParticipateInRounds() {
+            const response = await fetch('/dacontest/cooks_participate_in_rounds', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            populateTable2(data);
+        }
+
+        async function fetchCooksByRoundYear(roundYear) {
+            const response = await fetch('/dacontest/cooks_participate_in_rounds', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ roundYear })
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            populateTable2(data);
+        }
+
+        function populateTable2(data) {
+            const tableBody = document.getElementById('cooks-participate-in-rounds');
+            tableBody.innerHTML = ''; // Clear previous content
+
+            data.sort((a, b) => {
+                if (b.round_year !== a.round_year) {
+                    return b.round_year - a.round_year;
+                } else {
+                    return a.cook_name.localeCompare(b.cook_name);
+                }
+            });
+
+            data.forEach(cook => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${cook.cook_name}</td>
+                    <td>${cook.username}</td>
+                    <td>${cook.role}</td>
+                    <td>${cook.round_year}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+    </script>
+</body>
+</html>
