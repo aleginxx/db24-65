@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cooks Who Have Never Judged</title>
+    <style>
+        table {
+            font-family: Arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h1>Cooks Who Have Never Judged</h1>
+    <table id="cooksTable">
+        <thead>
+            <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+            </tr>
+        </thead>
+        <tbody id="cooksBody">
+            <!-- Table rows will be dynamically added here -->
+        </tbody>
+    </table>
+
+    <h2>Cooks with Same Amound of Participations for 2 Cosecutive Years</h2>
+    <table id="participationsTable">
+        <thead>
+            <tr>
+                <th>First Cook's Name</th>
+                <th>Second Cook's Name</th>
+                <th>No. of Rounds</th>
+                <th>Year Range</th>
+            </tr>
+        </thead>
+        <tbody id="participationsBody">
+            <!-- Table rows will be dynamically added here -->
+        </tbody>
+    </table>
+
+    <h3>Cooks with At Least 5 Less Participations than the Top Participant</h3>
+    <table id="lessParticipationsTable">
+        <thead>
+            <tr>
+                <th>First Name</th>
+                <th>Second Name</th>
+                <th>Username</th>
+                <th>Years of Participation</th>
+            </tr>
+        </thead>
+        <tbody id="lessParticipationsBody">
+            <!-- Table rows will be dynamically added here -->
+        </tbody>
+    </table>
+
+    <h4>Round with Participants with the Least Experience</h4>
+    <table id="leastExperienceTable">
+        <thead>
+            <tr>
+                <th>Year</th>
+                <th>Round Number</th>
+                <th>Years of Experience</th>
+            </tr>
+        </thead>
+        <tbody id="leastExperienceBody">
+            <!-- Table rows will be dynamically added here -->
+        </tbody>
+    </table>
+
+    <script>
+        function fetchData1() {
+            fetch('/dacontest/cooks-never-judge', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                const cooksList = document.getElementById('cooksBody');
+                cooksList.innerHTML = ''; 
+
+                data.forEach(cook => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${cook.first_name}</td>
+                        <td>${cook.last_name}</td>
+                    `;
+                    cooksList.appendChild(row);
+                });
+            })
+            .catch(error => console.error('Error fetching data:', error));
+        }
+
+        window.addEventListener('load', fetchData1);
+
+        function fetchData2() {
+            fetch('/dacontest/cooks-same-participations', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                const cooksList = document.getElementById('participationsBody');
+                cooksList.innerHTML = ''; 
+
+                data.forEach(cook => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${cook.cook1_name}</td>
+                        <td>${cook.cook2_name}</td>
+                        <td>${cook.participation_count}</td>
+                        <td>${cook.year_range}</td>
+                    `;
+                    cooksList.appendChild(row);
+                });
+            })
+            .catch(error => console.error('Error fetching data:', error));
+        }
+
+        window.addEventListener('load', fetchData2);
+
+        function fetchData3() {
+            fetch('/dacontest/cooks-less-participations', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                const cooksList = document.getElementById('lessParticipationsBody');
+                cooksList.innerHTML = ''; 
+
+                data.forEach(cook => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${cook.first_name}</td>
+                        <td>${cook.last_name}</td>
+                        <td>${cook.username}</td>
+                        <td>${cook.participation_count}</td>
+                    `;
+                    cooksList.appendChild(row);
+                });
+            })
+            .catch(error => console.error('Error fetching data:', error));
+        }
+
+        window.addEventListener('load', fetchData3);
+
+        function fetchData4() {
+            fetch('/dacontest/cooks-least-experience', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                const cooksList = document.getElementById('leastExperienceBody');
+                cooksList.innerHTML = ''; 
+
+                data.forEach(cook => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${cook.Year}</td>
+                        <td>${cook.Round_Number}</td>
+                        <td>${cook.Total_Years_of_Experience}</td>
+                    `;
+                    cooksList.appendChild(row);
+                });
+            })
+            .catch(error => console.error('Error fetching data:', error));
+        }
+
+        window.addEventListener('load', fetchData4);
+    </script>
+</body>
+</html>

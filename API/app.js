@@ -62,14 +62,26 @@ app.use(base_url, modify);
 const score = require('./queries/mean_score.js');
 app.use(base_url, score);
 
-const cooks_know_cuisines = require('./queries/cooks_know_cuisines.js');
-app.use(base_url, cooks_know_cuisines);
+const cooks_details = require('./queries/cooks_details.js');
+app.use(base_url, cooks_details);
 
 const most_recipes = require('./queries/most_recipes.js');
 app.use(base_url, most_recipes);
 
-const cooks_never_judged = require('./queries/cooks_never_judged.js');
-app.use(base_url, cooks_never_judged);
+const round_cooks = require('./queries/round_cooks.js');
+app.use(base_url, round_cooks);
+
+const round_recipes = require('./queries/round_recipes.js');
+app.use(base_url, round_recipes);
+
+const round_equipment = require('./queries/round_equipment.js');
+app.use(base_url, round_equipment);
+
+const round_cuisines = require('./queries/round_cuisines.js');
+app.use(base_url, round_cuisines);
+
+const round_ratings = require('./queries/round_ratings.js');
+app.use(base_url, round_ratings);
 
 http.createServer(app).listen(port, () => {
     console.log(`HTTP server running on port ${port}`);

@@ -27,22 +27,23 @@
     </style>
 </head>
 <body>
-    <h1>Cooks Who Have Never Judged</h1>
-    <table id="cooksTable">
+    <h1>Top 5 Judges with Highest Ratings</Em></h1>
+    <table id="ratingTable">
         <thead>
             <tr>
-                <th>First Name</th>
-                <th>Last Name</th>
+                <th>Judge's Name</th>
+                <th>Contestant's Name</th>
+                <th>Overall Score</th>
             </tr>
         </thead>
-        <tbody id="cooksBody">
+        <tbody id="ratingBody">
             <!-- Table rows will be dynamically added here -->
         </tbody>
     </table>
 
     <script>
-        function fetchData() {
-            fetch('/dacontest/cooks-never-judge', {
+        function fetchData1() {
+            fetch('/dacontest/top-5-ratings', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -50,14 +51,15 @@
             })
             .then(response => response.json())
             .then(data => {
-                const cooksList = document.getElementById('cooksBody');
+                const cooksList = document.getElementById('ratingBody');
                 cooksList.innerHTML = ''; 
 
                 data.forEach(cook => {
                     const row = document.createElement('tr');
                     row.innerHTML = `
-                        <td>${cook.first_name}</td>
-                        <td>${cook.last_name}</td>
+                        <td>${cook.judge_name}</td>
+                        <td>${cook.contestant_name}</td>
+                        <td>${cook.overall_score}</td>
                     `;
                     cooksList.appendChild(row);
                 });
@@ -65,7 +67,8 @@
             .catch(error => console.error('Error fetching data:', error));
         }
 
-        window.addEventListener('load', fetchData);
+        window.addEventListener('load', fetchData1);
+
     </script>
 </body>
 </html>

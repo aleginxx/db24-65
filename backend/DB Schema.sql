@@ -617,3 +617,315 @@ ENGINE = InnoDB;
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
+-- Procedures
+DELIMITER //
+
+CREATE PROCEDURE IF NOT EXISTS FindCookPairsWithConsecutiveParticipation()
+BEGIN
+    DECLARE done INT DEFAULT 0;
+    DECLARE current_year INT;
+    DECLARE previous_year INT;
+    DECLARE cook1_name VARCHAR(255);
+    DECLARE cook2_name VARCHAR(255);
+    DECLARE count_current_year INT;
+    DECLARE count_previous_year INT;
+    DECLARE count_consecutive INT;
+    
+    DECLARE cur CURSOR FOR
+        SELECT 
+            CONCAT(c1.first_name, ' ', c1.last_name) AS cook1_name,
+            CONCAT(c2.first_name, ' ', c2.last_name) AS cook2_name,
+            COUNT(DISTINCT cp1.round_round_id) AS count_current_year,
+            r.round_year AS current_year
+        FROM round r
+        JOIN cooks_participate_in_round cp1 ON r.round_id = cp1.round_round_id
+        JOIN cooks_participate_in_round cp2 ON cp1.round_round_id = cp2.round_round_id
+        JOIN cook c1 ON c1.cook_id = cp1.cook_cook_id
+        JOIN cook c2 ON c2.cook_id = cp2.cook_cook_id AND c1.cook_id < c2.cook_id
+        GROUP BY r.round_year, c1.cook_id, c2.cook_id;
+    
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
+    
+    CREATE TEMPORARY TABLE IF NOT EXISTS temp_results (
+        cook1_name VARCHAR(255),
+        cook2_name VARCHAR(255),
+        participation_count INT,
+        year_range VARCHAR(255)
+    );
+    
+    CREATE TEMPORARY TABLE IF NOT EXISTS temp_pairs (
+        cook1_name VARCHAR(255),
+        cook2_name VARCHAR(255),
+        count_current_year INT,
+        current_year INT
+    );
+    
+    OPEN cur;
+    
+    read_loop: LOOP
+        FETCH cur INTO cook1_name, cook2_name, count_current_year, current_year;
+        IF done THEN
+            LEAVE read_loop;
+        END IF;
+        
+        SET previous_year = current_year - 1;
+        SET count_consecutive = count_current_year;
+        
+        SELECT COUNT(DISTINCT cp1.round_round_id) INTO count_previous_year
+        FROM round r
+        JOIN cooks_participate_in_round cp1 ON r.round_id = cp1.round_round_id
+        JOIN cooks_participate_in_round cp2 ON cp1.round_round_id = cp2.round_round_id
+        JOIN cook c1 ON c1.cook_id = cp1.cook_cook_id
+        JOIN cook c2 ON c2.cook_id = cp2.cook_cook_id AND c1.cook_id < c2.cook_id
+        WHERE r.round_year = previous_year
+        AND CONCAT(c1.first_name, ' ', c1.last_name) = cook1_name 
+        AND CONCAT(c2.first_name, ' ', c2.last_name) = cook2_name;
+        
+        IF count_previous_year > 0 THEN
+            SET count_consecutive = count_consecutive + count_previous_year;
+            INSERT INTO temp_results (cook1_name, cook2_name, participation_count, year_range)
+            VALUES (cook1_name, cook2_name, count_consecutive, CONCAT(previous_year, '-', current_year));
+        ELSE
+            INSERT INTO temp_results (cook1_name, cook2_name, participation_count, year_range)
+            VALUES (cook1_name, cook2_name, count_consecutive, CAST(current_year AS CHAR));
+        END IF;
+    END LOOP;
+    
+    CLOSE cur;
+    
+    SELECT * FROM temp_results;
+    
+    DROP TEMPORARY TABLE IF EXISTS temp_results;
+    DROP TEMPORARY TABLE IF EXISTS temp_pairs;
+END //
+
+CREATE PROCEDURE IF NOT EXISTS FindTopRecipePairsWithCommonTags()
+BEGIN
+    DROP TEMPORARY TABLE IF EXISTS temp_top_recipe_pairs;
+    CREATE TEMPORARY TABLE temp_top_recipe_pairs (
+        recipe_name1 VARCHAR(100),
+        recipe_name2 VARCHAR(100),
+        common_tags_count INT
+    );
+    
+    INSERT INTO temp_top_recipe_pairs (recipe_name1, recipe_name2, common_tags_count)
+    SELECT r1.recipe_name AS recipe_name1, r2.recipe_name AS recipe_name2, COUNT(*) AS common_tags_count
+    FROM recipe_has_tags rht1
+    JOIN recipe_has_tags rht2 ON rht1.tags_tag_id = rht2.tags_tag_id AND rht1.recipe_recipe_id < rht2.recipe_recipe_id
+    JOIN recipe r1 ON rht1.recipe_recipe_id = r1.recipe_id
+    JOIN recipe r2 ON rht2.recipe_recipe_id = r2.recipe_id
+    GROUP BY r1.recipe_id, r2.recipe_id
+    ORDER BY common_tags_count DESC
+    LIMIT 5; 
+
+    SELECT c1.recipe_name1, c1.recipe_name2, COUNT(*) AS appearances
+    FROM temp_top_recipe_pairs c1
+    JOIN cooks_participate_in_round cp1 ON cp1.recipe_cuisine_id = (SELECT cuisine_of_recipe FROM recipe WHERE recipe_name = c1.recipe_name1)
+    JOIN cooks_participate_in_round cp2 ON cp2.recipe_cuisine_id = (SELECT cuisine_of_recipe FROM recipe WHERE recipe_name = c1.recipe_name2)
+    GROUP BY c1.recipe_name1, c1.recipe_name2
+    ORDER BY appearances DESC
+    LIMIT 3; 
+
+    DROP TEMPORARY TABLE IF EXISTS temp_top_recipe_pairs;
+END//
+
+CREATE PROCEDURE IF NOT EXISTS CalculateAverageCarbGramsPerYear()
+BEGIN
+    DECLARE current_year INT;
+    DECLARE total_carb_grams INT;
+    DECLARE total_rounds INT;
+    DECLARE avg_carb_grams FLOAT;
+    DECLARE done INT DEFAULT 0;
+
+    DECLARE year_cursor CURSOR FOR SELECT DISTINCT round_year FROM `mydb`.`round`;
+
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
+
+    OPEN year_cursor;
+
+    CREATE TEMPORARY TABLE IF NOT EXISTS YearlyCarbGrams (
+        `year` INT,
+        `avg_carb_grams` FLOAT
+    );
+
+    year_loop: LOOP
+        FETCH year_cursor INTO current_year;
+        IF done THEN
+            LEAVE year_loop;
+        END IF;
+
+        SET total_carb_grams = 0;
+        SET total_rounds = 0;
+
+        SELECT SUM(di.carbs_grams_per_portion)
+        INTO total_carb_grams
+        FROM `mydb`.`round` r
+        INNER JOIN `mydb`.`cooks_participate_in_round` cpr ON r.round_id = cpr.round_round_id
+        INNER JOIN `mydb`.`recipe` rec ON cpr.recipe_cuisine_id = rec.cuisine_of_recipe
+        INNER JOIN `mydb`.`recipe_has_dietary_info` rdi ON rec.recipe_id = rdi.recipe_recipe_id
+        INNER JOIN `mydb`.`dietary_info` di ON rdi.dietary_info_dietary_info_id = di.dietary_info_id
+        WHERE r.round_year = current_year;
+
+        SELECT COUNT(*)
+        INTO total_rounds
+        FROM `mydb`.`round`
+        WHERE round_year = current_year;
+
+        IF total_rounds > 0 THEN
+            SET avg_carb_grams = total_carb_grams / total_rounds;
+        ELSE
+            SET avg_carb_grams = 0;
+        END IF;
+
+        INSERT INTO YearlyCarbGrams (`year`, `avg_carb_grams`) VALUES (current_year, avg_carb_grams);
+    END LOOP;
+
+    CLOSE year_cursor;
+
+    SELECT * FROM YearlyCarbGrams;
+
+    DROP TEMPORARY TABLE IF EXISTS YearlyCarbGrams;
+END //
+
+CREATE PROCEDURE IF NOT EXISTS FindCuisineWithConsecutiveEntries()
+BEGIN
+    DECLARE done INT DEFAULT 0;
+    DECLARE current_year INT;
+    DECLARE previous_year INT;
+    DECLARE cuisine_id INT;
+    DECLARE count_current_year INT;
+    DECLARE count_previous_year INT;
+    DECLARE count_consecutive INT;
+
+    DECLARE cur CURSOR FOR
+        SELECT 
+            ccfr.cuisine_cuisine_id,
+            COUNT(*) AS count_current_year,
+            YEAR(r.round_year) AS current_year
+        FROM mydb.cuisines_chosen_for_round ccfr
+        JOIN mydb.round r ON ccfr.round_round_id = r.round_id
+        GROUP BY ccfr.cuisine_cuisine_id, YEAR(r.round_year);
+
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
+
+    CREATE TEMPORARY TABLE IF NOT EXISTS temp_results (
+        cuisine_id INT,
+        count_current_year INT,
+        current_year INT,
+        previous_year INT,
+        count_previous_year INT
+    );
+
+    OPEN cur;
+
+    read_loop: LOOP
+        FETCH cur INTO cuisine_id, count_current_year, current_year;
+        IF done THEN
+            LEAVE read_loop;
+        END IF;
+
+        SET previous_year = current_year - 1;
+        SET count_consecutive = count_current_year;
+
+        SELECT COUNT(*) INTO count_previous_year
+        FROM mydb.cuisines_chosen_for_round ccfr
+        JOIN mydb.round r ON ccfr.round_round_id = r.round_id
+        WHERE ccfr.cuisine_cuisine_id = cuisine_id AND YEAR(r.round_year) = previous_year;
+
+        IF count_previous_year > 0 THEN
+            SET count_consecutive = count_consecutive + count_previous_year;
+            INSERT INTO temp_results (cuisine_id, count_current_year, current_year, previous_year, count_previous_year)
+            VALUES (cuisine_id, count_current_year, current_year, previous_year, count_previous_year);
+        END IF;
+    END LOOP;
+
+    CLOSE cur;
+
+    SELECT cuisine_id, count_current_year, current_year, previous_year, count_previous_year
+    FROM temp_results
+    WHERE count_consecutive > 3;
+
+    DROP TEMPORARY TABLE IF EXISTS temp_results;
+END //
+
+CREATE PROCEDURE IF NOT EXISTS CalculateAverageRating()
+BEGIN
+    DECLARE cur_year INT;
+    DECLARE cur_round_number INT;
+    DECLARE cur_avg_rating FLOAT;
+    DECLARE done INT DEFAULT FALSE;
+
+    DECLARE cur_years CURSOR FOR 
+    SELECT DISTINCT ROUND(round.round_year) AS year
+    FROM round;
+
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
+
+    DROP TEMPORARY TABLE IF EXISTS TempAverageRating;
+    CREATE TEMPORARY TABLE TempAverageRating (
+        round_year INT,
+        round_number INT,
+        average_rating FLOAT
+    );
+
+    OPEN cur_years;
+
+    read_year_loop: LOOP
+        FETCH cur_years INTO cur_year;
+        IF done THEN
+            LEAVE read_year_loop;
+        END IF;
+
+        DROP TEMPORARY TABLE IF EXISTS TempAverageRatingYear;
+        CREATE TEMPORARY TABLE TempAverageRatingYear (
+            round_number INT,
+            total_rating FLOAT,
+            num_ratings INT
+        );
+
+        INSERT INTO TempAverageRatingYear (round_number, total_rating, num_ratings)
+        SELECT 
+            round.round_number,
+            SUM(ratings.rating_value) AS total_rating,
+            COUNT(*) AS num_ratings
+        FROM 
+            round
+        LEFT JOIN ratings ON round.round_id = ratings.round_id
+        WHERE 
+            ROUND(round.round_year) = cur_year
+        GROUP BY 
+            round.round_number;
+
+        SELECT 
+            round_number,
+            total_rating / num_ratings AS average_rating
+        INTO 
+            cur_round_number, cur_avg_rating
+        FROM 
+            TempAverageRatingYear
+        ORDER BY 
+            average_rating DESC
+        LIMIT 1;
+
+        INSERT INTO TempAverageRating (round_year, round_number, average_rating)
+        VALUES (cur_year, cur_round_number, cur_avg_rating);
+
+        DROP TEMPORARY TABLE IF EXISTS TempAverageRatingYear;
+    END LOOP;
+
+    CLOSE cur_years;
+
+    SELECT 
+        round_year,
+        round_number,
+        average_rating
+    FROM 
+        TempAverageRating
+    ORDER BY 
+        round_year, round_number;
+
+    DROP TEMPORARY TABLE IF EXISTS TempAverageRating;
+END//
+
+DELIMITER ;

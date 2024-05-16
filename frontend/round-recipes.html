@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cooks Who Have Never Judged</title>
+    <style>
+        table {
+            font-family: Arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h1>Top-3 Recipe Pairs with Most Appearances in Rounds</h1>
+    <table id="recipeTagsTable">
+        <thead>
+            <tr>
+                <th>Recipe Names</th>
+                <th>No. of Appearances</th>
+            </tr>
+        </thead>
+        <tbody id="recipeTagsBody">
+            <!-- Table rows will be dynamically added here -->
+        </tbody>
+    </table>
+
+    <h2>Average Carb Grams per Year (per Portion)</Em></h2>
+    <table id="carbsTable">
+        <thead>
+            <tr>
+                <th>Year</th>
+                <th>Average Carb Grams per Year (per Portion)</th>
+            </tr>
+        </thead>
+        <tbody id="carbsBody">
+            <!-- Table rows will be dynamically added here -->
+        </tbody>
+    </table>
+
+    <h3>Most Difficult Rounds per Year</Em></h3>
+    <table id="ratingsTable">
+        <thead>
+            <tr>
+                <th>Year</th>
+                <th>Round Number</th>
+                <th>Average Rating</th>
+            </tr>
+        </thead>
+        <tbody id="ratingsBody">
+            <!-- Table rows will be dynamically added here -->
+        </tbody>
+    </table>
+
+    <h4>Most Common Recipe Subject in the Competition</Em></h4>
+    <table id="subjectTable">
+        <thead>
+            <tr>
+                <th>Subject's Name</th>
+                <th>Appearance Count</th>
+            </tr>
+        </thead>
+        <tbody id="subjectBody">
+            <!-- Table rows will be dynamically added here -->
+        </tbody>
+    </table>
+
+    <script>
+        function fetchData1() {
+            fetch('/dacontest/recipe-pair-tags', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                const cooksList = document.getElementById('recipeTagsBody');
+                cooksList.innerHTML = ''; 
+
+                data.forEach(cook => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${cook.recipe_name1} - ${cook.recipe_name2}</td>
+                        <td>${cook.appearances}</td>
+                    `;
+                    cooksList.appendChild(row);
+                });
+            })
+            .catch(error => console.error('Error fetching data:', error));
+        }
+
+        window.addEventListener('load', fetchData1);
+
+        function fetchData2() {
+            fetch('/dacontest/recipe-avg-carbs', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                const cooksList = document.getElementById('carbsBody');
+                cooksList.innerHTML = ''; 
+
+                data.forEach(cook => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${cook.year}</td>
+                        <td>${cook.avg_carb_grams}</td>
+                    `;
+                    cooksList.appendChild(row);
+                });
+            })
+            .catch(error => console.error('Error fetching data:', error));
+        }
+
+        window.addEventListener('load', fetchData2);
+
+        function fetchData3() {
+            fetch('/dacontest/most-difficult-rounds', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                const cooksList = document.getElementById('ratingsBody');
+                cooksList.innerHTML = ''; 
+
+                data.forEach(cook => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${cook.round_year}</td>
+                        <td>${cook.round_number}</td>
+                        <td>${cook.average_rating}</td>
+                    `;
+                    cooksList.appendChild(row);
+                });
+            })
+            .catch(error => console.error('Error fetching data:', error));
+        }
+
+        window.addEventListener('load', fetchData3);
+
+        function fetchData4() {
+            fetch('/dacontest/most-common-subject', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                const cooksList = document.getElementById('subjectBody');
+                cooksList.innerHTML = ''; 
+
+                data.forEach(cook => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${cook.subject_name}</td>
+                        <td>${cook.appearance_count}</td>
+                    `;
+                    cooksList.appendChild(row);
+                });
+            })
+            .catch(error => console.error('Error fetching data:', error));
+        }
+
+        window.addEventListener('load', fetchData4);
+
+    </script>
+</body>
+</html>

@@ -6,18 +6,24 @@ const router = express.Router();
 const jwt = require("jsonwebtoken");
 
 router.use(bodyParser.json());
-const filePath = path.join(__dirname, '..', '..', 'frontend', 'cooks.html');
+const filePath = path.join(__dirname, '..', '..', 'frontend', 'round-ratings.html');
 
-router.get('/cooks', (req, res) => {
+router.get('/round-ratings', (req, res) => {
     res.sendFile(filePath);
 });
 
-router.post('/cooks-never-judge', (req, res) => {
+router.post('/top-5-ratings', (req, res) => {
     const query = `
-        SELECT DISTINCT c.cook_id, c.first_name, c.last_name
-        FROM cook c
-        LEFT JOIN cooks_judge_round cj ON c.cook_id = cj.cook_cook_id
-        WHERE cj.cook_cook_id IS NULL;
+    SELECT 
+        CONCAT(c.first_name, ' ', c.last_name) AS judge_name,
+        CONCAT(cc.first_name, ' ', cc.last_name) AS contestant_name,
+        AVG(r.rating_value) AS overall_score
+    FROM ratings r
+    INNER JOIN cook c ON r.judge_id = c.cook_id
+    INNER JOIN cook cc ON r.contestant_id = cc.cook_id
+    GROUP BY r.judge_id, r.contestant_id
+    ORDER BY overall_score DESC
+    LIMIT 5;
     `;
 
     // console.log("Executing query:", query);
@@ -30,10 +36,9 @@ router.post('/cooks-never-judge', (req, res) => {
             // console.log("Results: ", results);
 
             const result_list = results.map(row => ({
-                first_name: row.first_name,
-                last_name: row.last_name,
-                age: row.age,
-                num_recipes: row.num_recipes
+                judge_name: row.judge_name,
+                contestant_name: row.contestant_name,
+                overall_score: row.overall_score
             }));
 
             // console.log("Mean Ratings:", meanRatings);
