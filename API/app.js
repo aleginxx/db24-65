@@ -59,7 +59,7 @@ const modify = require('./admin functionalities/modify.js');
 app.use(base_url, modify);
 
 // Queries
-const score = require('./queries/mean_score.js');
+const score = require('./queries/score.js');
 app.use(base_url, score);
 
 const cooks_details = require('./queries/cooks_details.js');
