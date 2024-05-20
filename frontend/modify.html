@@ -155,7 +155,7 @@
                             <option value="recipe_uses_ingredients">Recipe-Ingredients</option>
                             <option value="round">Round</option>
                             <option value="steps">Steps</option>
-                            <option value="tags">Tage</option>
+                            <option value="tags">Tags</option>
                             <option value="tips">Tips</option>
                             <option value="types_of_meal">Meal Type</option>
                         </select>
@@ -204,7 +204,7 @@
                                     // Format the date to 'YYYY-MM-DD'
                                     var date = new Date(row[column]);
                                     var formattedDate = date.toISOString().split('T')[0];
-                                    htmlResult += "<td>" + formattedDate + "</td>";
+                                    htmlResult += "<td contenteditable='true'>" + formattedDate + "</td>";
                                 } else {
                                     htmlResult += "<td contenteditable='true'>" + row[column] + "</td>";
                                 }
@@ -231,49 +231,27 @@
     
             // Function to handle table cell editing
             function handleCellEdit(cell, primaryKey) {
-                // Save the original cell value
-                var oldValue = cell.text();
+                // Get the new value from the cell
+                var newValue = cell.text();
+                // Get the column name and row ID
+                var columnIndex = cell.index();
+                var columnName = cell.closest('table').find('th').eq(columnIndex).text();
+                var rowID = cell.closest('tr').find('td').eq(0).text(); // assuming the ID is in the first column
     
-                // Create an input element to allow editing
-                var input = $('<input type="text">');
-                input.val(oldValue);
+                // Prepare the data to send to the server
+                var rowData = {};
+                rowData[columnName] = newValue;
     
-                // Replace the cell content with the input element
-                cell.html(input);
-    
-                // Focus on the input element
-                input.focus();
-    
-                // Handle input blur event to save changes
-                input.blur(function() {
-                    var newValue = $(this).val();
-                    if (newValue !== oldValue) {
-                        // Update the cell content with the new value
-                        cell.text(newValue);
-    
-                        // Get the row index, column name, and row ID
-                        var rowIndex = cell.closest('tr').index();
-                        var columnIndex = cell.index();
-                        var columnName = cell.closest('table').find('th').eq(columnIndex).text();
-                        var rowID = cell.closest('tr').find('td:first').text(); // assuming the ID is in the first column
-    
-                        // Prepare the data to send to the server
-                        var rowData = {};
-                        rowData[columnName] = newValue;
-    
-                        // Send AJAX request to update the database
-                        $.ajax({
-                            type: "POST",
-                            url: "/dacontest/update",
-                            data: { tableName: $('#table').val(), rowID: rowID, data: rowData, primaryKey: primaryKey },
-                            success: function(response) {
-                                console.log('Data updated successfully:', response);
-                            },
-                            error: function(xhr, status, error) {
-                                console.error('Error updating data:', error);
-                            }
-                        });
-    
+                // Send AJAX request to update the database
+                $.ajax({
+                    type: "POST",
+                    url: "/dacontest/update",
+                    data: { tableName: $('#table').val(), rowID: rowID, data: rowData, primaryKey: primaryKey },
+                    success: function(response) {
+                        console.log('Data updated successfully:', response);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error updating data:', error);
                     }
                 });
             }
