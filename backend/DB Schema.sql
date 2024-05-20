@@ -455,6 +455,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`round` (
   `round_year` INT NOT NULL,
   `round_number` INT NOT NULL,
   `round_img` LONGTEXT NULL,
+  `round_winner` BIGINT NULL,
   PRIMARY KEY (`round_id`),
   UNIQUE INDEX `roubnd_id_UNIQUE` (`round_id` ASC) )
 ENGINE = InnoDB;
@@ -563,6 +564,32 @@ CREATE TABLE IF NOT EXISTS `mydb`.`ratings` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
+
+DELIMITER //
+
+CREATE TRIGGER IF NOT EXISTS update_round_winner
+AFTER INSERT ON ratings
+FOR EACH ROW
+BEGIN
+    DECLARE max_rating INT;
+    DECLARE winner_cook_id INT;
+
+    SELECT MAX(rating_value) INTO max_rating
+    FROM ratings
+    WHERE round_id = NEW.round_id;
+
+    SELECT contestant_id INTO winner_cook_id
+    FROM ratings
+    WHERE round_id = NEW.round_id AND rating_value = max_rating
+    LIMIT 1;
+
+    UPDATE round
+    SET round_winner = winner_cook_id
+    WHERE round_id = NEW.round_id;
+END;
+//
+
+DELIMITER ;
 
 
 -- -----------------------------------------------------

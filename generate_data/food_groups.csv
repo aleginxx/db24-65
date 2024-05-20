@@ -1,31 +1,31 @@
 food_group_id,food_group_name,food_group_desc,food_group_categorization,food_group_img
-1,Fruits,Naturally sweet and juicy foods that grow on trees or bushes.,Vegan,https://picsum.photos/200/200
-2,Vegetables,"Edible plants that include leaves, stems, roots, flowers, and seeds.",Vegan,https://picsum.photos/200/200
-3,Dairy products,"Products made from milk, such as cheese, yogurt, and butter.",Non-vegan,https://picsum.photos/200/200
-4,Grains,"Edible seeds of grasses, including wheat, rice, oats, and barley.",Vegan,https://picsum.photos/200/200
+1,Fruits,Naturally sweet and juicy foods that grow on trees or bushes.,Vegan,https://placekitten.com/200/200
+2,Vegetables,"Edible plants that include leaves, stems, roots, flowers, and seeds.",Vegan,https://placekitten.com/200/200
+3,Dairy products,"Products made from milk, such as cheese, yogurt, and butter.",Non-vegan,https://placekitten.com/200/200
+4,Grains,"Edible seeds of grasses, including wheat, rice, oats, and barley.",Vegan,https://dummyimage.com/200x200
 5,Meat,"Animal flesh used as food, typically from mammals like beef, pork, and lamb.",Non-vegan,https://dummyimage.com/200x200
 6,Poultry,"Domesticated birds raised for meat, including chicken, turkey, and duck.",Non-vegan,https://dummyimage.com/200x200
-7,Seafood,"Edible aquatic animals and plants, including fish, shellfish, and seaweed.",Non-vegan,https://dummyimage.com/200x200
-8,Nuts and seeds,"Edible kernels found within hard shells, such as almonds, peanuts, and sunflower seeds.",Vegan,https://picsum.photos/200/200
-9,Legumes,"Plants in the pea family that produce pods containing edible seeds, like beans, lentils, and chickpeas.",Vegan,https://picsum.photos/200/200
-10,Herbs and spices,"Plants used to add flavor to food, often in dried or powdered form.",Vegan,https://placekitten.com/200/200
-11,Eggs,"Reproductive bodies laid by female birds, typically used as food.",Non-vegan,https://placekitten.com/200/200
-12,Oils and fats,"Liquids or semisolids derived from plants or animals, used in cooking and baking.",Non-vegan,https://picsum.photos/200/200
+7,Seafood,"Edible aquatic animals and plants, including fish, shellfish, and seaweed.",Non-vegan,https://picsum.photos/200/200
+8,Nuts and seeds,"Edible kernels found within hard shells, such as almonds, peanuts, and sunflower seeds.",Vegan,https://dummyimage.com/200x200
+9,Legumes,"Plants in the pea family that produce pods containing edible seeds, like beans, lentils, and chickpeas.",Vegan,https://placekitten.com/200/200
+10,Herbs and spices,"Plants used to add flavor to food, often in dried or powdered form.",Vegan,https://picsum.photos/200/200
+11,Eggs,"Reproductive bodies laid by female birds, typically used as food.",Non-vegan,https://dummyimage.com/200x200
+12,Oils and fats,"Liquids or semisolids derived from plants or animals, used in cooking and baking.",Non-vegan,https://dummyimage.com/200x200
 13,Breads and cereals,"Staple foods made from grains, typically baked into loaves or processed into flakes.",Vegan,https://picsum.photos/200/200
-14,Beverages,"Drinks consumed for hydration, refreshment, or enjoyment, such as water, tea, coffee, and juice.",Vegan,https://picsum.photos/200/200
-15,Snacks,"Small portions of food eaten between meals, often savory or sweet.",Varies,https://placekitten.com/200/200
-16,Condiments,"Sauces, spices, or other flavorful substances used to enhance the taste of food.",Vegan,https://placekitten.com/200/200
+14,Beverages,"Drinks consumed for hydration, refreshment, or enjoyment, such as water, tea, coffee, and juice.",Vegan,https://placekitten.com/200/200
+15,Snacks,"Small portions of food eaten between meals, often savory or sweet.",Varies,https://dummyimage.com/200x200
+16,Condiments,"Sauces, spices, or other flavorful substances used to enhance the taste of food.",Vegan,https://dummyimage.com/200x200
 17,Desserts,"Sweet treats served after a meal, such as cakes, cookies, and ice cream.",Varies,https://placekitten.com/200/200
-18,Soups and broths,"Liquid dishes made by boiling ingredients like vegetables, meat, or grains.",Varies,https://dummyimage.com/200x200
-19,Pasta and noodles,"Starchy foods made from wheat flour, water, and sometimes eggs, formed into various shapes.",Vegan,https://dummyimage.com/200x200
+18,Soups and broths,"Liquid dishes made by boiling ingredients like vegetables, meat, or grains.",Varies,https://picsum.photos/200/200
+19,Pasta and noodles,"Starchy foods made from wheat flour, water, and sometimes eggs, formed into various shapes.",Vegan,https://picsum.photos/200/200
 20,Fermented foods,"Foods altered by microbial action, such as yogurt, kimchi, and sauerkraut.",Varies,https://picsum.photos/200/200
 21,Frozen foods,"Prepared meals, fruits, vegetables, or other foods that have been frozen for preservation.",Varies,https://dummyimage.com/200x200
 22,Canned foods,"Foods preserved and stored in metal cans, jars, or other containers.",Varies,https://picsum.photos/200/200
-23,Baked goods,"Foods made by baking, including bread, cakes, pastries, and cookies.",Varies,https://picsum.photos/200/200
-24,Breakfast foods,"Foods commonly eaten in the morning, such as cereal, pancakes, and eggs.",Varies,https://dummyimage.com/200x200
-25,Salads,"Mixed dishes made with a combination of vegetables, fruits, grains, and proteins.",Varies,https://placekitten.com/200/200
-26,Sauces,Liquid or semi-solid condiments used to add flavor or moisture to food.,Varies,https://picsum.photos/200/200
-27,Sweets,"Confections or sugary treats, including candies, chocolates, and pastries.",Varies,https://picsum.photos/200/200
-28,Pickled foods,"Foods preserved by anaerobic fermentation in brine or vinegar, like pickles and olives.",Varies,https://dummyimage.com/200x200
+23,Baked goods,"Foods made by baking, including bread, cakes, pastries, and cookies.",Varies,https://placekitten.com/200/200
+24,Breakfast foods,"Foods commonly eaten in the morning, such as cereal, pancakes, and eggs.",Varies,https://placekitten.com/200/200
+25,Salads,"Mixed dishes made with a combination of vegetables, fruits, grains, and proteins.",Varies,https://dummyimage.com/200x200
+26,Sauces,Liquid or semi-solid condiments used to add flavor or moisture to food.,Varies,https://placekitten.com/200/200
+27,Sweets,"Confections or sugary treats, including candies, chocolates, and pastries.",Varies,https://dummyimage.com/200x200
+28,Pickled foods,"Foods preserved by anaerobic fermentation in brine or vinegar, like pickles and olives.",Varies,https://picsum.photos/200/200
 29,Deli meats,"Cooked or cured meats sliced and sold at a delicatessen, including ham, salami, and roast beef.",Non-vegan,https://placekitten.com/200/200
 30,Ethnic foods,Traditional foods and dishes associated with specific cultures or regions around the world.,Varies,https://picsum.photos/200/200

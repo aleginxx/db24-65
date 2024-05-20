@@ -577,7 +577,15 @@ db_connection.commit()
 cursor = db_connection.cursor()
 
 def get_unique_cook_ids(round_id):
-    cursor.execute("SELECT cook_id FROM cook WHERE cook_id NOT IN (SELECT cook_cook_id FROM cooks_participate_in_round WHERE round_round_id = %s) LIMIT 3", (round_id,))
+    cursor.execute("""
+        SELECT c.cook_id
+        FROM cook c
+        LEFT JOIN cooks_participate_in_round p ON c.cook_id = p.cook_cook_id AND p.cook_cook_id = %s
+        LEFT JOIN cooks_judge_round j ON c.cook_id = j.cook_cook_id AND j.round_round_id = %s
+        WHERE p.cook_cook_id IS NULL AND j.cook_cook_id IS NULL
+        ORDER BY RAND()
+        LIMIT 3
+    """, (round_id, round_id))
     return [row[0] for row in cursor.fetchall()]
 
 def populate_cooks_judge_round():
@@ -597,18 +605,45 @@ cursor.execute("SELECT round_id FROM round")
 round_ids = cursor.fetchall()
 
 for round_id in round_ids:
-    cursor.execute("SELECT cook_cook_id FROM cooks_participate_in_round WHERE round_round_id = %s ORDER BY RAND() LIMIT 10", (round_id))
+    cursor.execute("SELECT cook_cook_id FROM cooks_participate_in_round WHERE round_round_id = %s ORDER BY RAND() LIMIT 10", (round_id[0],))
     contestant_ids = cursor.fetchall()
     
-    cursor.execute("SELECT cook_cook_id FROM cooks_judge_round WHERE round_round_id = %s ORDER BY RAND() LIMIT 3", (round_id))
+    cursor.execute("SELECT cook_cook_id FROM cooks_judge_round WHERE round_round_id = %s", (round_id[0],))
     judge_ids = cursor.fetchall()
     
-    judge_id = random.choice(judge_ids)[0]
+    num_judges = len(judge_ids)
     
-    rating_value = random.randint(1, 5)
+    judge_counter = 0
     
     for contestant_id in contestant_ids:
+        judge_id = judge_ids[judge_counter % num_judges][0]
+        
+        rating_value = random.randint(1, 5)
+        
         cursor.execute("INSERT INTO ratings (round_id, contestant_id, judge_id, rating_value) VALUES (%s, %s, %s, %s)", (round_id[0], contestant_id[0], judge_id, rating_value))
+        
+        judge_counter += 1
+
+db_connection.commit()
+
+# Update table 'round' for the winner of each round
+query = """
+UPDATE mydb.round AS r
+JOIN (
+    SELECT round_id, contestant_id
+    FROM mydb.ratings
+    WHERE (round_id, rating_value) IN (
+        SELECT round_id, MAX(rating_value)
+        FROM mydb.ratings
+        GROUP BY round_id
+    )
+) AS max_ratings ON r.round_id = max_ratings.round_id
+SET r.round_winner = max_ratings.contestant_id;
+"""
+
+cursor = db_connection.cursor()
+
+cursor.execute(query)
 
 db_connection.commit()
 
