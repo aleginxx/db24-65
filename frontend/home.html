@@ -27,6 +27,12 @@
             font-family: Arial, sans-serif;
             color: #4caf50;
         }
+        select {
+            font-family: Arial, sans-serif;
+            padding: 10px;
+            margin-right: 20px;
+            border-radius: 5px;
+        }
     </style>
 </head>
 <body>
@@ -34,8 +40,22 @@
         <div style="text-align: left; width: 100%; font-family: Arial, sans-serif;">
             <h2>Cooking Contest</h2>
         </div>
+        
+        <div>
+            <select id="pageSelect" onchange="redirectToPage()">
+                <option value="">Select Page</option>
+                <option value="/dacontest/cook-details">3.2</option>
+                <option value="/dacontest/most-recipes">3.3</option>
+                <option value="/dacontest/round-cooks">3.4, 3.5, 3.7, 3.14</option>
+                <option value="/dacontest/round-cuisines">3.10, 3.15</option>
+                <option value="/dacontest/round-equipment">3.8</option>
+                <option value="/dacontest/round-ratings">3.11</option>
+                <option value="/dacontest/round-recipes">3.6, 3.9, 3.12</option>
+                <option value="/dacontest/score">3.1</option>
+            </select>
+        </div>
 
-        <div style="margin-right: 20px;">
+        <div>
             <form action="/dacontest/logout" method="GET">
                 <button type="submit">Logout</button>
             </form>
@@ -94,7 +114,16 @@
     <div class="container">
         <h2>Home</h2>
         Want to make changes? <a href="/dacontest/edit-data">Edit Data</a>
-
     </div>
+
+    <script>
+        function redirectToPage() {
+            const select = document.getElementById('pageSelect');
+            const selectedValue = select.value;
+            if (selectedValue) {
+                window.location.href = selectedValue;
+            }
+        }
+    </script>
 </body>
 </html>
