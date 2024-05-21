@@ -84,53 +84,11 @@
         </div>
     
         <div>
-            <form action="/dacontest/backup" method="POST">
-                <button type="submit">Backup</button>
+            <form action="/dacontest/home" method="GET">
+                <button type="submit">Home</button>
             </form>
         </div>
 
-        <div>
-            <form action="/dacontest/restore" method="POST">
-                <button type="submit">Restore</button>
-            </form>
-        </div>
-
-        <div>
-            <form action="/dacontest/make-admin/" method="GET">
-                <button type="submit">Make Admin</button>
-            </form>
-        </div>
-
-        <div>
-            <form action="/dacontest/modify/" method="GET">
-                <button type="submit">Modify Data</button>
-            </form>
-        </div>
-
-        <div>
-            <form action="/dacontest/profile/" method="GET">
-                <button type="submit">Profile</button>
-            </form>
-        </div>
-
-        <div>
-            <form action="/dacontest/contests" method="GET">
-                <button type="submit">Contests</button>
-            </form>
-        </div>
-
-        <div>
-            <form action="/dacontest/recipes" method="GET">
-                <button type="submit">Recipes</button>
-            </form>
-        </div>
-        
-        <div>
-            <form action="/dacontest/ingredients" method="GET">
-                <button type="submit">Ingredients</button>
-            </form>
-        </div>
-        
     </div> 
 
     <div class="container">
@@ -185,104 +143,99 @@
     </div>
 
     <script>
+        var primaryKeyColumns = {
+            cook: 'cook_id',
+            cook_executes_recipe: ['cook_cook_id', 'recipe_recipe_id'],
+            cook_knows_cuisine: ['cook_cook_id', 'cuisine_cuisine_id'],
+            cooks_judge_round: ['judge_id', 'round_id'],
+            cooks_participate_in_round: ['participant_id', 'round_id'],
+            cuisine: 'cuisine_id',
+            cuisines_chosen_for_round: ['cuisine_id', 'round_id'],
+            dietary_info: 'dietary_info_id',
+            equipment: 'equipment_id',
+            food_group: 'food_group_id',
+            ingredients: 'ingredient_id',
+            ingredients_belongs_to_food_group: ['ingredient_id', 'food_group_id'],
+            ratings: 'rating_id',
+            recipe: 'recipe_id',
+            recipe_belongs_to_subject: ['recipe_id', 'subject_id'],
+            recipe_belongs_to_types_of_meal: ['recipe_id', 'meal_type_id'],
+            recipe_has_dietary_info: ['recipe_id', 'dietary_info_id'],
+            recipe_has_steps: ['recipe_id', 'step_id'],
+            recipe_has_tags: ['recipe_id', 'tag_id'],
+            recipe_offers_tips: ['recipe_id', 'tip_id'],
+            recipe_requires_equipment: ['recipe_id', 'equipment_id'],
+            recipe_subject: 'subject_id',
+            recipe_takes_time: ['recipe_id', 'time_id'],
+            recipe_time: 'time_id',
+            recipe_uses_ingredients: ['recipe_id', 'ingredient_id'],
+            round: 'round_id',
+            steps: 'step_id',
+            tags: 'tag_id',
+            tips: 'tip_id',
+            types_of_meal: 'meal_type_id'
+        };
+
         $(document).ready(function() {
             $("#addDataForm").submit(function(event) {
                 event.preventDefault();
-    
+        
                 var formData = $(this).serialize();
-    
+        
                 $.ajax({
                     type: "POST",
                     url: "/dacontest/modify",
                     data: formData,
                     success: function(response) {
-                        // Extract column names, primary key, and data from the response
                         var columns = response.columns;
-                        var primaryKey = response.primaryKey;
-                        var data = response.data;
-    
-                        // Construct HTML for table headers
+                        var tableName = $('#table').val();
+                        var primaryKey = primaryKeyColumns[tableName];
+        
                         var htmlResult = "<table><thead><tr>";
                         columns.forEach(function(column) {
                             htmlResult += "<th>" + column + "</th>";
                         });
                         htmlResult += "<th>Actions</th></tr></thead><tbody>";
-    
-                        // Construct HTML for table rows
-                        data.forEach(function(row) {
+        
+                        response.data.forEach(function(row) {
                             htmlResult += "<tr>";
                             columns.forEach(function(column) {
-                                // Check if the column represents a date
                                 if (column.endsWith('_date')) {
-                                    // Format the date to 'YYYY-MM-DD'
                                     var date = new Date(row[column]);
                                     var formattedDate = date.toISOString().split('T')[0];
-                                    htmlResult += "<td contenteditable='true'>" + formattedDate + "</td>";
+                                    htmlResult += "<td>" + formattedDate + "</td>";
                                 } else {
-                                    htmlResult += "<td contenteditable='true'>" + row[column] + "</td>";
+                                    htmlResult += "<td>" + row[column] + "</td>";
                                 }
                             });
                             htmlResult += "<td><button class='delete-btn' data-id='" + row[primaryKey] + "'>Delete</button></td></tr>";
                         });
                         htmlResult += "</tbody></table>";
-    
-                        // Display table data
+        
                         $("#tableDataContainer").html(htmlResult);
-    
-                        // Add event listener for table cell editing
-                        $("#tableDataContainer td[contenteditable='true']").on('blur', function() {
-                            handleCellEdit($(this), primaryKey);
-                        });
 
                         // Add event listener for delete buttons
                         $(".delete-btn").on('click', function() {
                             var rowID = $(this).data('id');
-                            handleRowDelete(rowID, primaryKey);
+                            handleRowDelete(rowID, primaryKey, tableName);
                         });
                     },
                     error: function(xhr, status, error) {
                         console.error('Error:', error);
-                        // Display error message if any
                         $("#tableDataContainer").html("<p>Error retrieving table data.</p>");
                     }
                 });
             });
-    
-            // Function to handle table cell editing
-            function handleCellEdit(cell, primaryKey) {
-                var newValue = cell.text();
-                var columnIndex = cell.index();
-                var columnName = cell.closest('table').find('th').eq(columnIndex).text();
-                var rowID = cell.closest('tr').find('.delete-btn').data('id');
-    
-                // Prepare the data to send to the server
-                var rowData = {};
-                rowData[columnName] = newValue;
-    
-                // Send AJAX request to update the database
-                $.ajax({
-                    type: "POST",
-                    url: "/dacontest/update",
-                    data: { tableName: $('#table').val(), rowID: rowID, data: rowData, primaryKey: primaryKey },
-                    success: function(response) {
-                        console.log('Data updated successfully:', response);
-                    },
-                    error: function(xhr, status, error) {
-                        console.error('Error updating data:', error);
-                    }
-                });
-            }
 
             // Function to handle row deletion
-            function handleRowDelete(rowID, primaryKey) {
+            function handleRowDelete(rowID, primaryKey, tableName) {
                 // Send AJAX request to delete the row
                 $.ajax({
                     type: "POST",
                     url: "/dacontest/delete",
-                    data: { tableName: $('#table').val(), rowID: rowID, primaryKey: primaryKey },
+                    data: { tableName: tableName, columnName: primaryKey, columnValue: rowID },
                     success: function(response) {
                         console.log('Data deleted successfully:', response);
-                        // Reload the data to reflect changes
                         $("#addDataForm").submit();
                     },
                     error: function(xhr, status, error) {
@@ -290,7 +243,7 @@
                     }
                 });
             }
-        });
+    });
     </script>
 </body>
 </html>

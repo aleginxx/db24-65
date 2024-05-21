@@ -99,7 +99,7 @@ async function fillTablesFromCSV() {
 
     for (const file of csvFiles) {
         const tableName = file.split('.')[0];
-        const filePath = path.join(__dirname, 'backup_data', file);
+        const filePath = path.join(__dirname, '..', 'backup_data', file);
 
         try {
             const csvData = await readFileAsync(filePath, 'utf8');
@@ -120,11 +120,32 @@ async function fillTablesFromCSV() {
     }
 }
 
+router.get('/restore', (req, res) => {
+    const token = req.cookies.token;
+    const decodedToken = jwt.decode(token);
+    const username_check = decodedToken.username;
+
+    const check_admin = `SELECT * FROM administrator WHERE admin_username = ?`;
+
+    DB.connection.query(check_admin, [username_check], (err, results) => { 
+      if (err) {
+          console.error('Error fetching admin data:', err);
+          return res.status(500).send('Internal Server Error');
+      }
+      if (results.length === 0) {
+          return res.status(404).send('You do not have permission to access this page');
+      }
+      else {
+        res.sendFile(filePath);
+      }
+    });
+});
+
 router.post('/restore', async (req, res) => {
     try {
         await truncateTables();
         await fillTablesFromCSV();
-        res.redirect('/dacontest/admin_functions');
+        res.send('Restoration completed successfully.');
     } catch (error) {
         console.error('Error restoring database:', error);
         res.status(500).send('Internal server error.');

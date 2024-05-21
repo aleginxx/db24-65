@@ -10,8 +10,6 @@ const jwt = require("jsonwebtoken");
 const router = express.Router();
 router.use(bodyParser.json()); 
 
-const port = 3000;
-
 router.get('/signup', (req, res) => {
     const filePath = path.join(__dirname, '..', 'frontend', 'signup.html');
     res.sendFile(filePath);

@@ -460,7 +460,8 @@ FIELDS TERMINATED BY ','
 ENCLOSED BY '"'
 LINES TERMINATED BY '\n'
 IGNORE 1 LINES
-(cook_id, first_name, last_name, phone_number, birth_date, age, years_of_experience, position, cook_img, username, password)
+(cook_id, first_name, last_name, phone_number, birth_date, age, years_of_experience, position, cook_img, username, @password)
+SET password = TRIM(TRAILING '\r' FROM @password);
 """
 
 cursor = db_connection.cursor()
@@ -494,7 +495,7 @@ FIELDS TERMINATED BY ','
 ENCLOSED BY '"'
 LINES TERMINATED BY '\n'
 IGNORE 1 LINES
-(cuisine_cuisine_id, cook_cook_id, years_of_expertise)
+(cook_cook_id, cuisine_cuisine_id, years_of_expertise)
 """
 
 cursor = db_connection.cursor()

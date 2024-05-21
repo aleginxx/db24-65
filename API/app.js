@@ -40,9 +40,6 @@ app.set('view engine', 'ejs');
 const user = require('./user.js');
 app.use(base_url, user);
 
-const profile = require('./profile.js');
-app.use(base_url, profile);
-
 const admin = require('./admin functionalities/admin.js');
 app.use(base_url, admin);
 
@@ -82,6 +79,13 @@ app.use(base_url, round_cuisines);
 
 const round_ratings = require('./queries/round_ratings.js');
 app.use(base_url, round_ratings);
+
+// View Data 
+const profile = require('./view_data/profile.js');
+app.use(base_url, profile);
+
+const view_recipes = require('./view_data/view_recipes.js');
+app.use(base_url, view_recipes);
 
 http.createServer(app).listen(port, () => {
     console.log(`HTTP server running on port ${port}`);

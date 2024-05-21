@@ -42,70 +42,43 @@
         </div>
         
         <div>
-            <select id="pageSelect" onchange="redirectToPage()">
-                <option value="">Select Page</option>
+            <select id="querySelect" onchange="redirectToPage('querySelect')">
+                <option value="">Select Query</option>
+                <option value="/dacontest/score">3.1</option>
                 <option value="/dacontest/cook-details">3.2</option>
                 <option value="/dacontest/most-recipes">3.3</option>
                 <option value="/dacontest/round-cooks">3.4, 3.5, 3.7, 3.14</option>
-                <option value="/dacontest/round-cuisines">3.10, 3.15</option>
-                <option value="/dacontest/round-equipment">3.8</option>
-                <option value="/dacontest/round-ratings">3.11</option>
                 <option value="/dacontest/round-recipes">3.6, 3.9, 3.12</option>
-                <option value="/dacontest/score">3.1</option>
+                <option value="/dacontest/round-equipment">3.8</option>
+                <option value="/dacontest/round-cuisines">3.10, 3.15</option>
+                <option value="/dacontest/round-ratings">3.11</option>
+            </select>
+        </div>
+
+        <div>
+            <select id="adminSelect" onchange="redirectToPage('adminSelect')">
+                <option value="">Select Admin Functionality</option>
+                <option value="/dacontest/backup">Backup</option>
+                <option value="/dacontest/restore">Restore</option>
+                <option value="/dacontest/make-admin">Make Admin</option>
+                <option value="/dacontest/modify">Modify Data</option>
+                <option value="/dacontest/delete">Delete Data</option>
+            </select>
+        </div>
+
+        <div>
+            <select id="dataSelect" onchange="redirectToPage('dataSelect')">
+                <option value="">View Data</option>
+                <option value="/dacontest/profile">Profile</option>
+                <option value="/dacontest/contests">Contests</option>
+                <option value="/dacontest/recipes">Recipes</option>
+                <option value="/dacontest/ingredients">Ingredients</option>
             </select>
         </div>
 
         <div>
             <form action="/dacontest/logout" method="GET">
                 <button type="submit">Logout</button>
-            </form>
-        </div>
-    
-        <div>
-            <form action="/dacontest/backup" method="POST">
-                <button type="submit">Backup</button>
-            </form>
-        </div>
-
-        <div>
-            <form action="/dacontest/restore" method="POST">
-                <button type="submit">Restore</button>
-            </form>
-        </div>
-
-        <div>
-            <form action="/dacontest/make-admin/" method="GET">
-                <button type="submit">Make Admin</button>
-            </form>
-        </div>
-
-        <div>
-            <form action="/dacontest/modify/" method="GET">
-                <button type="submit">Modify Data</button>
-            </form>
-        </div>
-
-        <div>
-            <form action="/dacontest/profile/" method="GET">
-                <button type="submit">Profile</button>
-            </form>
-        </div>
-
-        <div>
-            <form action="/dacontest/contests" method="GET">
-                <button type="submit">Contests</button>
-            </form>
-        </div>
-
-        <div>
-            <form action="/dacontest/recipes" method="GET">
-                <button type="submit">Recipes</button>
-            </form>
-        </div>
-        
-        <div>
-            <form action="/dacontest/ingredients" method="GET">
-                <button type="submit">Ingredients</button>
             </form>
         </div>
         
@@ -117,8 +90,8 @@
     </div>
 
     <script>
-        function redirectToPage() {
-            const select = document.getElementById('pageSelect');
+        function redirectToPage(query) {
+            const select = document.getElementById(query);
             const selectedValue = select.value;
             if (selectedValue) {
                 window.location.href = selectedValue;

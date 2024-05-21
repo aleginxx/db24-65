@@ -1,9 +1,9 @@
 const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
-const DB = require('./database.js');
+const DB = require('../database.js');
 const router = express.Router();
-const { cookieJwtAuth } = require("./middelware/cookieJwtAuth.js");
+const { cookieJwtAuth } = require("../middelware/cookieJwtAuth.js");
 const jwt = require("jsonwebtoken");
 
 router.use(bodyParser.urlencoded({ extended: true }));
@@ -39,10 +39,9 @@ router.get('/profile', cookieJwtAuth, (req, res) => {
                 res.render(path.join(__dirname, '..', 'frontend', 'user'), { user });
             });
         } else {
-            const admin_username = decodedToken.admin_username;
 
             const query = 'SELECT * FROM administrator WHERE admin_username = ?'; 
-            DB.connection.query(query, [admin_username], (err, results) => { 
+            DB.connection.query(query, [username], (err, results) => { 
                 if (err) {
                     console.error('Error fetching admin data:', err);
                     return res.status(500).send('Internal Server Error');

@@ -22,11 +22,11 @@ router.post('/login', (req, res) => {
     const password = req.body.password + '\r';
     const capacity = req.body.capacity;
 
-    console.log(username, password, capacity);
+    console.log(req.body);
 
     if (capacity === 'user') {
         const query = 'SELECT * FROM cook WHERE username = ? AND password = ?';
-        DB.connection.query(query, [username, password], (err, results) => {
+        DB.connection.query(query, [username, req.body.password], (err, results) => {
             if (err) {
                 console.error('Error querying the database:', err);
                 if (err.code === 'ER_DBACCESS_DENIED_ERROR' || DB.connection.config.user !== 'root' || DB.connection.config.password !== '') {
@@ -54,7 +54,7 @@ router.post('/login', (req, res) => {
         });
     } else {
         const query = 'SELECT * FROM administrator WHERE admin_username = ? AND admin_password = ?';
-        DB.connection.query(query, [username, password], (err, results) => {
+        DB.connection.query(query, [req.body.username, password], (err, results) => {
             if (err) {
                 console.error('Error querying the database:', err);
                 if (err.code === 'ER_DBACCESS_DENIED_ERROR' || DB.connection.config.user !== 'root' || DB.connection.config.password !== '') {
@@ -63,13 +63,12 @@ router.post('/login', (req, res) => {
                     return res.status(500).send('Internal Service Error');
                 }
             }
-
-            // console.log(results);
+            // console.log("Results: ", results);
 
             if (results.length > 0) {
                 const admin = results[0]; 
                 const payload = {
-                    admin_username: admin.admin_username
+                    username: admin.admin_username
                 };
                                 
                 const token = jwt.sign(payload, process.env.MY_SECRET, { expiresIn: "1h" });
