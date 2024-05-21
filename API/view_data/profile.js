@@ -36,7 +36,7 @@ router.get('/profile', cookieJwtAuth, (req, res) => {
                 console.log("user");
                 console.log(user);
 
-                res.render(path.join(__dirname, '..', 'frontend', 'user'), { user });
+                res.render(path.join(__dirname, '..', '..', 'frontend', 'user'), { user });
             });
         } else {
 
@@ -51,7 +51,7 @@ router.get('/profile', cookieJwtAuth, (req, res) => {
                 }
                 const admin = results[0]; 
 
-                res.render(path.join(__dirname, '..', 'frontend', 'admin'), { admin });
+                res.render(path.join(__dirname, '..', '..', 'frontend', 'admin'), { admin });
 
             });
         }

@@ -27,6 +27,24 @@
     </style>
 </head>
 <body>
+    <div style="display: flex; justify-content: flex-end;">
+        <div style="text-align: left; width: 100%; font-family: Arial, sans-serif;">
+            <h2>Cooking Contest</h2>
+        </div>
+
+        <div style="margin-right: 20px;">
+            <form action="/dacontest/logout" method="GET">
+                <button type="submit">Logout</button>
+            </form>
+        </div>
+    
+        <div>
+            <form action="/dacontest/home" method="GET">
+                <button type="submit">Home</button>
+            </form>
+        </div>
+    </div> 
+    
     <h1>Top Cooks Under 30</h1>
     <table>
         <thead>
