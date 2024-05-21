@@ -26,7 +26,7 @@ router.post('/recipes', cookieJwtAuth, (req, res) => {
             return res.status(500).send('Internal Server Error');
         }
         
-        // console.log("Results: ", results);
+        //console.log("Results: ", results);
         res.status(200).json(results); 
     });
 });
