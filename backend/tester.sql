@@ -31,5 +31,4 @@ select * from `mydb`.`cooks_participate_in_round` order by `cook_cook_id`, `roun
 select * from `mydb`.`cooks_judge_round` order by `round_round_id`;
 select * from `mydb`.`ratings` order by `rating_id`;
 
-select * from `mydb`.`cook` where `password` = "&wz7EFtB2*\r";
-SELECT password FROM `mydb`.`cook` WHERE `username` = "ehayden";
+SELECT * FROM `mydb`.`cook`;
