@@ -282,9 +282,9 @@ LOAD DATA INFILE 'administrator.csv'
 INTO TABLE administrator
 FIELDS TERMINATED BY ','
 ENCLOSED BY '"'
-LINES TERMINATED BY '\r\n'
+LINES TERMINATED BY '\n'
 IGNORE 1 LINES
-(admin_id, admin_username, admin_password)
+(admin_id, admin_username, @admin_password)
 SET admin_password = TRIM(TRAILING '\r' FROM @admin_password);
 """
 
