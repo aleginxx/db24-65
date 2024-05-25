@@ -4,41 +4,106 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cooking Contest</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #f9f9f9;
+        }
+        .header {
+            width: 100%;
+            display: flex;
+            justify-content: flex-end;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: absolute;
+            top: 0;
+        }
+        .header h2 {
+            margin: 0;
+            flex-grow: 1;
+        }
+        button {
+            font-family: Arial, sans-serif;
+            background-color: #4caf50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .container {
+            margin-top: 80px; /* To push it below the header */
+            padding: 20px;
+            border: 1px solid #dddddd;
+            border-collapse: collapse;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+            width: 50%;
+            text-align: center;
+        }
+        .container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .container p {
+            text-align: left;
+            padding: 8px;
+            border-bottom: 1px solid #dddddd;
+        }
+        .container p:last-child {
+            border-bottom: none;
+        }
+        .form-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
-    <div style="margin-right: 20px;">
+    <div class="header">
+        <h2>Cooking Contest</h2>
         <form action="/dacontest/logout" method="GET">
             <button type="submit">Logout</button>
         </form>
-    </div>
-
-    <div>
         <form action="/dacontest/home" method="GET">
             <button type="submit">Home</button>
         </form>
+    </div> 
+
+    <div class="container">
+        <h2>User Profile</h2>
+
+        <!-- Display user information -->
+        <% if (user.cook_image) { %>
+            <p><%= user.cook_image %></p>
+        <% } %>
+        <p>First Name: <%= user.first_name %></p>
+        <p>Last Name: <%= user.last_name %></p>
+        <p>Username: <%= user.username %></p>
+        <p>Phone Number: <%= user.phone_number %></p>
+        <p>Birthday: <%= user.birth_date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) %></p>
+        <p>Age: <%= user.age %></p>
+        <p>Years of Experience: <%= user.years_of_experience %></p>
+        <p>Position: <%= user.position %></p>
+
+        <div class="form-buttons">
+            <form action="/dacontest/user/edit" method="GET">
+                <button type="submit">Edit</button>
+            </form>
+        </div>
     </div>
-
-    
-    <h2>User Profile</h2>
-
-    <!-- Display user information -->
-    <% if (user.cook_image) { %>
-        <p><%= user.cook_image %></p>
-    <% } %>
-    <p>First Name: <%= user.first_name %></p>
-    <p>Last Name: <%= user.last_name %></p>
-    <p>Username: <%= user.username %></p>
-    <p>Phone Number: <%= user.phone_number %></p>
-    <p>Birthday: <%= user.birth_date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) %></p>
-    <p>Age: <%= user.age %></p>
-    <p>Years of Experience: <%= user.years_of_experience %></p>
-    <p>Position: <%= user.position %></p>
-
-    <div>
-        <form action="/dacontest/user/edit" method="GET">
-            <button type="submit">Edit</button>
-        </form>
-    </div>
-
 </body>
 </html>

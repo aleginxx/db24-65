@@ -282,10 +282,13 @@ LOAD DATA INFILE 'administrator.csv'
 INTO TABLE administrator
 FIELDS TERMINATED BY ','
 ENCLOSED BY '"'
-LINES TERMINATED BY '\n'
+LINES TERMINATED BY '\r\n'
 IGNORE 1 LINES
-(admin_id, admin_username, admin_password)
-SET admin_password = TRIM(TRAILING '\r' FROM @admin_password);
+(@admin_id, @admin_username, @admin_password)
+SET admin_id = @admin_id,
+    admin_username = @admin_username,
+    admin_password = TRIM(TRAILING '\r' FROM @admin_password);
+
 """
 
 cursor = db_connection.cursor()

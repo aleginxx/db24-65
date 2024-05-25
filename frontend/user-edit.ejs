@@ -5,44 +5,124 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cooking Contest</title>
     <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #f9f9f9;
+        }
+        .header {
+            width: 100%;
+            display: flex;
+            justify-content: flex-end;
+            padding: 10px; /* Reduced padding */
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            height: 50px; /* Reduced height */
+        }
+        .header h2 {
+            margin: 0;
+            flex-grow: 1;
+        }
+        button {
+            font-family: Arial, sans-serif;
+            background-color: #4caf50;
+            color: white;
+            padding: 8px 16px; /* Adjusted padding */
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .container {
+            margin-top: 70px; /* Adjusted to match the new header height */
+            padding: 20px;
+            border: 1px solid #dddddd;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+            width: 50%;
+            text-align: center;
+        }
+        .container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .container p {
+            text-align: left;
+            padding: 8px;
+            border-bottom: 1px solid #dddddd;
+        }
+        .container p:last-child {
+            border-bottom: none;
+        }
+        .form-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
         .password-toggle {
             cursor: pointer;
             margin-left: 10px;
         }
+        input[type="text"], input[type="date"], input[type="number"], input[type="password"], select {
+            width: calc(100% - 20px);
+            padding: 5px;
+            margin-top: 5px;
+        }
     </style>
 </head>
 <body>
-    <div style="margin-right: 20px;">
+    <div class="header">
+        <h2>Cooking Contest</h2>
         <form action="/dacontest/logout" method="GET">
             <button type="submit">Logout</button>
         </form>
-    </div>
-
-    <div>
         <form action="/dacontest/home" method="GET">
             <button type="submit">Home</button>
         </form>
     </div>
 
-    <h2>User Profile</h2>
-
-    <form action="/dacontest/user/edit" method="POST">
-        <% if (user.cook_image) { %>
-            <p>Profile Image: <input type="text" name="cook_image" value="<%= user.cook_image %>"></p>
-        <% } %>
-        <p>First Name: <input type="text" name="first_name" value="<%= user.first_name %>"></p>
-        <p>Last Name: <input type="text" name="last_name" value="<%= user.last_name %>"></p>
-        <p>Phone Number: <input type="text" name="phone_number" value="<%= user.phone_number %>"></p>
-        <p>Birthday: <input type="date" name="birth_date" value="<%= user.birth_date.toISOString().split('T')[0] %>"></p>
-        <p>Years of Experience: <input type="number" name="years_of_experience" value="<%= user.years_of_experience %>"></p>
-        <p>Position: <input type="text" name="position" value="<%= user.position %>"></p>
-        <p>Username: <input type="text" name="username" value="<%= user.username %>"></p>
-        <p>Password: 
-            <input type="password" name="password" id="password" value="<%= user.password %>">
-            <span class="password-toggle" onclick="togglePassword()">👁️</span>
-        </p>
-        <button type="submit">Submit</button>
-    </form>
+    <div class="container">
+        <h2>User Profile</h2>
+        <form action="/dacontest/user/edit" method="POST">
+            <% if (user.cook_image) { %>
+                <p>Profile Image: <input type="text" name="cook_image" value="<%= user.cook_image %>"></p>
+            <% } %>
+            <p>First Name: <input type="text" name="first_name" value="<%= user.first_name %>"></p>
+            <p>Last Name: <input type="text" name="last_name" value="<%= user.last_name %>"></p>
+            <p>Phone Number: <input type="text" name="phone_number" value="<%= user.phone_number %>"></p>
+            <p>Birthday: <input type="date" name="birth_date" value="<%= user.birth_date.toISOString().split('T')[0] %>"></p>
+            <p>Years of Experience: <input type="number" name="years_of_experience" value="<%= user.years_of_experience %>"></p>
+            <p>Position: 
+                <select name="position">
+                    <option value="First Cook" <%= user.position === 'First Cook' ? 'selected' : '' %>>First Cook</option>
+                    <option value="Second Cook" <%= user.position === 'Second Cook' ? 'selected' : '' %>>Second Cook</option>
+                    <option value="Third Cook" <%= user.position === 'Third Cook' ? 'selected' : '' %>>Third Cook</option>
+                    <option value="Sous-Chef" <%= user.position === 'Sous-Chef' ? 'selected' : '' %>>Sous-Chef</option>
+                    <option value="Chef" <%= user.position === 'Chef' ? 'selected' : '' %>>Chef</option>
+                </select>
+            </p>
+            <p>Username: <input type="text" name="username" value="<%= user.username %>"></p>
+            <p>Password: 
+                <input type="password" name="password" id="password" value="<%= user.password %>">
+                <span class="password-toggle" onclick="togglePassword()">👁️</span>
+            </p>
+            <div class="form-buttons">
+                <button type="submit">Submit</button>
+            </div>
+        </form>
+    </div>
 
     <script>
         function togglePassword() {
