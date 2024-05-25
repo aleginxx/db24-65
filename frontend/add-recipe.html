@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cooking Contest</title>
+    <style>
+        table {
+            font-family: Arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <div style="display: flex; justify-content: flex-end;">
+        <div style="text-align: left; width: 100%; font-family: Arial, sans-serif;">
+            <h2>Cooking Contest</h2>
+        </div>
+
+        <div style="margin-right: 20px;">
+            <form action="/dacontest/logout" method="GET">
+                <button type="submit">Logout</button>
+            </form>
+        </div>
+    
+        <div>
+            <form action="/dacontest/home" method="GET">
+                <button type="submit">Home</button>
+            </form>
+        </div>
+    </div>
+
+    <h1>Edit Your Recipe</h1>
+    <form action="/dacontest/recipe/add" method="POST">
+        <table>
+            <tr>
+                <th>Recipe Name</th>
+                <td><input type="text" name="recipe_name"></td>
+            </tr>
+            <tr>
+                <th>Recipe Type</th>
+                <td>
+                    <select name="recipe_type">
+                        <option value="cooking">Cooking</option>
+                        <option value="pastry making">Pastry Making</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <th>Cuisine</th>
+                <td><input type="text" name="cuisine"></td>
+            </tr>
+            <tr>
+                <th>Level of Difficulty (rate out of 5)</th>
+                <td><input type="text" name="level"></td>
+            </tr>
+            <tr>
+                <th>Recipe Description</th>
+                <td><input type="text" name="recipe_desc"></td>
+            </tr>
+            <tr>
+                <th>No. of Portions</th>
+                <td><input type="text" name="no_of_portions"></td>
+            </tr>
+            <tr>
+                <th>Primary Ingredient</th>
+                <td><input type="text" name="primary_ingredient"></td>
+            </tr>
+            <tr>
+                <th>Recipe Image</th>
+                <td><input type="text" name="recipe_img"></td>
+            </tr>
+        </table>
+
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>

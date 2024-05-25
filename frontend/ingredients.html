@@ -43,36 +43,27 @@
                 <button type="submit">Home</button>
             </form>
         </div>
-
-        <div>
-            <form action="/dacontest/cook/recipes" method="GET">
-                <button type="submit">Edit Recipes</button>
-            </form>
-        </div>
     </div> 
 
-    <h1>Recipes</h1>
-    Want to <a href="/dacontest/recipe/add">add a Recipe</a> ?
-    <table id="recipesTable">
+    <h1>Ingredients</h1>
+    <table id="ingredientsTable">
         <thead>
             <tr>
-                <th>Recipe Name</th>
-                <th>Recipe Type</th>
-                <th>Cuisine</th>
-                <th>Primary Ingredient</th>
-                <th>Brief Description</th>
-                <th>Level of Difficulty</th>
-                <th>No. of Portions</th>
+                <th>Ingredient Name</th>
+                <th>Grams of Fat per Portion</th>
+                <th>Grams of Protein per Portion</th>
+                <th>Grams of Carbs per Portion</th>
+                <th>Calories per Portion</th>
             </tr>
         </thead>
-        <tbody id="recipesBody">
+        <tbody id="ingredientsBody">
             <!-- Table rows will be dynamically added here -->
         </tbody>
     </table>
 
     <script>
         function fetchData() {
-            fetch('/dacontest/recipes', {
+            fetch('/dacontest/ingredients', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -81,21 +72,19 @@
             .then(response => response.json())
             .then(data => {
                 console.log(data); // Log the received data for debugging
-                const recipesList = document.getElementById('recipesBody');
-                recipesList.innerHTML = ''; 
+                const ingredientsList = document.getElementById('ingredientsBody');
+                ingredientsList.innerHTML = ''; 
 
-                data.forEach(recipe => {
+                data.forEach(ingredient => {
                     const row = document.createElement('tr');
                     row.innerHTML = `
-                        <td>${recipe.recipe_name}</td>
-                        <td>${recipe.recipe_type}</td>
-                        <td>${recipe.cuisine_name}</td>
-                        <td>${recipe.ingredient_name}</td>
-                        <td>${recipe.recipe_desc}</td>
-                        <td>${recipe.level}</td>
-                        <td>${recipe.no_of_portions}</td>
+                        <td>${ingredient.ingredient_name}</td>
+                        <td>${ingredient.ingredient_grams_of_fat}</td>
+                        <td>${ingredient.ingredient_grams_of_protein}</td>
+                        <td>${ingredient.ingredient_grams_of_carbs}</td>
+                        <td>${ingredient.ingredient_calories_per_gram}</td>
                     `;
-                    recipesList.appendChild(row);
+                    ingredientsList.appendChild(row);
                 });
             })
             .catch(error => console.error('Error fetching data:', error));

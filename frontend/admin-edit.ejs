@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cooking Contest</title>
+    <style>
+        .password-toggle {
+            cursor: pointer;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div style="margin-right: 20px;">
+        <form action="/dacontest/logout" method="GET">
+            <button type="submit">Logout</button>
+        </form>
+    </div>
+
+    <div>
+        <form action="/dacontest/home" method="GET">
+            <button type="submit">Home</button>
+        </form>
+    </div>
+
+    <h2>User Profile</h2>
+
+    <form action="/dacontest/admin/edit" method="POST">
+        <p>Username: <input type="text" name="username" value="<%= admin.admin_username %>"></p>
+        <p>Password: 
+            <input type="password" name="password" id="password" value="<%= admin.admin_password %>">
+            <span class="password-toggle" onclick="togglePassword()">👁️</span>
+        </p>
+        <button type="submit">Submit</button>
+    </form>
+
+    <script>
+        function togglePassword() {
+            const passwordField = document.getElementById('password');
+            const passwordToggle = document.querySelector('.password-toggle');
+            if (passwordField.type === 'password') {
+                passwordField.type = 'text';
+                passwordToggle.textContent = '🙈'; 
+            } else {
+                passwordField.type = 'password';
+                passwordToggle.textContent = '👁️'; 
+            }
+        }
+    </script>
+</body>
+</html>

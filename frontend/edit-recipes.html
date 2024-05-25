@@ -43,15 +43,9 @@
                 <button type="submit">Home</button>
             </form>
         </div>
-
-        <div>
-            <form action="/dacontest/cook/recipes" method="GET">
-                <button type="submit">Edit Recipes</button>
-            </form>
-        </div>
     </div> 
 
-    <h1>Recipes</h1>
+    <h1>Edit Your Recipes</h1>
     Want to <a href="/dacontest/recipe/add">add a Recipe</a> ?
     <table id="recipesTable">
         <thead>
@@ -63,6 +57,7 @@
                 <th>Brief Description</th>
                 <th>Level of Difficulty</th>
                 <th>No. of Portions</th>
+                <th>Edit</th>
             </tr>
         </thead>
         <tbody id="recipesBody">
@@ -71,8 +66,8 @@
     </table>
 
     <script>
-        function fetchData() {
-            fetch('/dacontest/recipes', {
+        // Fetch data from endpoint and populate table
+            fetch('/dacontest/cook/recipes', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -80,28 +75,56 @@
             })
             .then(response => response.json())
             .then(data => {
-                console.log(data); // Log the received data for debugging
-                const recipesList = document.getElementById('recipesBody');
-                recipesList.innerHTML = ''; 
-
+                const tableBody = document.getElementById('recipesBody');
                 data.forEach(recipe => {
                     const row = document.createElement('tr');
                     row.innerHTML = `
-                        <td>${recipe.recipe_name}</td>
-                        <td>${recipe.recipe_type}</td>
-                        <td>${recipe.cuisine_name}</td>
-                        <td>${recipe.ingredient_name}</td>
-                        <td>${recipe.recipe_desc}</td>
-                        <td>${recipe.level}</td>
-                        <td>${recipe.no_of_portions}</td>
+                        <td contenteditable="true">${recipe.recipe_name}</td>
+                        <td contenteditable="true">${recipe.recipe_type}</td>
+                        <td contenteditable="true">${recipe.cuisine_name}</td>
+                        <td contenteditable="true">${recipe.ingredient_name}</td>
+                        <td contenteditable="true">${recipe.recipe_desc}</td>
+                        <td contenteditable="true">${recipe.level}</td>
+                        <td contenteditable="true">${recipe.no_of_portions}</td>
+                        <td><button onclick="saveChanges(this)">Save</button></td>
                     `;
-                    recipesList.appendChild(row);
+                    tableBody.appendChild(row);
                 });
             })
             .catch(error => console.error('Error fetching data:', error));
-        }
 
-        window.addEventListener('load', fetchData);
+        // Function to save changes
+        function saveChanges(button) {
+            const row = button.parentNode.parentNode;
+            const cells = row.querySelectorAll('td[contenteditable="true"]');
+            const updatedRecipe = {
+                recipe_name: cells[0].innerText,
+                recipe_type: cells[1].innerText,
+                cuisine_name: cells[2].innerText,
+                ingredient_name: cells[3].innerText,
+                recipe_desc: cells[4].innerText,
+                level: cells[5].innerText,
+                no_of_portions: cells[6].innerText
+            };
+
+            // Send updated data to endpoint
+            fetch('/dacontest/recipes/edit', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(updatedRecipe)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data); // Handle response if needed
+                // alert('Recipe updated successfully!');
+            })
+            .catch(error => {
+                console.error('Error updating recipe:', error);
+                // alert('Error updating recipe. Please try again later.');
+            });
+        }
     </script>
 </body>
 </html>

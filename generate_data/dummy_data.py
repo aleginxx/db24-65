@@ -285,6 +285,7 @@ ENCLOSED BY '"'
 LINES TERMINATED BY '\n'
 IGNORE 1 LINES
 (admin_id, admin_username, admin_password)
+SET admin_password = TRIM(TRAILING '\r' FROM @admin_password);
 """
 
 cursor = db_connection.cursor()

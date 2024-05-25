@@ -8,6 +8,7 @@ const phpExpress = require('php-express')();
 const { exec } = require('child_process');
 const cookieParser = require("cookie-parser");
 const { cookieJwtAuth } = require("./middelware/cookieJwtAuth.js");
+const dotEnv = require('dotenv').config();
 
 
 const port = 9876;
@@ -86,6 +87,12 @@ app.use(base_url, profile);
 
 const view_recipes = require('./view_data/view_recipes.js');
 app.use(base_url, view_recipes);
+
+const view_contests = require('./view_data/view_contests.js');
+app.use(base_url, view_contests);
+
+const view_ingredients = require('./view_data/view_ingredients.js');
+app.use(base_url, view_ingredients);
 
 http.createServer(app).listen(port, () => {
     console.log(`HTTP server running on port ${port}`);

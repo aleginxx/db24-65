@@ -6,17 +6,25 @@ const router = express.Router();
 const { cookieJwtAuth } = require("../middelware/cookieJwtAuth.js");
 const jwt = require("jsonwebtoken");
 
-router.use(bodyParser.urlencoded({ extended: true }));
+router.use(bodyParser.json());
+const filePath = path.join(__dirname, '..', '..', 'frontend', 'ingredients.html');
 
-router.get('/recipes', cookieJwtAuth, (req, res) => {
-    const query = `SELECT * FROM ingredients`;
+router.get('/ingredients', (req, res) => {
+    res.sendFile(filePath);
+});
+
+router.post('/ingredients', cookieJwtAuth, (req, res) => {
+    const query = `
+        SELECT * FROM ingredients;
+    `;
     DB.connection.query(query, (err, results) => { 
         if (err) {
-            console.error('Error fetching ingredients data:', err);
+            console.error('Error fetching recipes data:', err);
             return res.status(500).send('Internal Server Error');
         }
         
-        res.render(path.join(__dirname, '..', '..', 'frontend', 'ingredients'), { ingredients: results });
+        // console.log("Results: ", results);
+        res.status(200).json(results); 
     });
 });
 

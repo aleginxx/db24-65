@@ -19,7 +19,7 @@ router.get('/login', (req, res) => {
 
 router.post('/login', (req, res) => {
     const username = req.body.username;
-    const password = req.body.password + '\r';
+    const password = req.body.password;
     const capacity = req.body.capacity;
 
     console.log(req.body);
@@ -67,6 +67,7 @@ router.post('/login', (req, res) => {
 
             if (results.length > 0) {
                 const admin = results[0]; 
+
                 const payload = {
                     username: admin.admin_username
                 };

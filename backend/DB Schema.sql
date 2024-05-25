@@ -398,6 +398,15 @@ BEGIN
 END;
 //
 
+CREATE TRIGGER IF NOT EXISTS calculate_age_trigger_before_update BEFORE UPDATE ON cook
+FOR EACH ROW
+BEGIN
+    IF NEW.birth_date <> OLD.birth_date THEN
+        SET NEW.age = TIMESTAMPDIFF(YEAR, NEW.birth_date, CURDATE());
+    END IF;
+END;
+//
+
 DELIMITER ;
 
 
