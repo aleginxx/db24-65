@@ -1,0 +1,7 @@
+pandas
+mariadb
+python-csv
+random2
+faker
+mysql
+mysql.connector 
