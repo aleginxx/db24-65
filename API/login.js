@@ -54,7 +54,7 @@ router.post('/login', (req, res) => {
         });
     } else {
         const query = 'SELECT * FROM administrator WHERE admin_username = ? AND admin_password = ?';
-        DB.connection.query(query, [req.body.username, password], (err, results) => {
+        DB.connection.query(query, [req.body.username, req.body.password], (err, results) => {
             if (err) {
                 console.error('Error querying the database:', err);
                 if (err.code === 'ER_DBACCESS_DENIED_ERROR' || DB.connection.config.user !== 'root' || DB.connection.config.password !== '') {

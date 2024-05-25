@@ -94,7 +94,7 @@ router.get('/backup', (req, res) => {
           return res.status(404).send('You do not have permission to access this page');
       }
       else {
-        res.sendFile(filePath);
+        res.status(200).send('You have permission to access this page');
       }
     });
 });

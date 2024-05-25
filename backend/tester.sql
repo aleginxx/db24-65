@@ -27,7 +27,7 @@ select * from `mydb`.`cook` order by `cook_id`;
 select * from `mydb`.`cook_executes_recipe` order by `cook_cook_id`;
 select * from `mydb`.`cook_knows_cuisine` order by `cook_cook_id`;
 select * from `mydb`.`cuisines_chosen_for_round` order by `round_round_id`;
-select * from `mydb`.`cooks_participate_in_round` order by `cook_cook_id`, `round_round_id`; 
+select * from `mydb`.`cooks_participate_in_round` order by `round_round_id`, `cook_cook_id`; 
 select * from `mydb`.`cooks_judge_round` order by `round_round_id`;
 select * from `mydb`.`ratings` order by `rating_id`;
 

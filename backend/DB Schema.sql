@@ -493,7 +493,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`cooks_participate_in_round` (
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_cooks_participate_in_round_cuisine1_idx`
     FOREIGN KEY (`recipe_cuisine_id`)
-    REFERENCES `mydb`.`recipe` (`cuisine_of_recipe`)
+    REFERENCES `mydb`.`recipe` (`recipe_id`)
     ON DELETE CASCADE
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;

@@ -284,7 +284,7 @@ FIELDS TERMINATED BY ','
 ENCLOSED BY '"'
 LINES TERMINATED BY '\n'
 IGNORE 1 LINES
-(admin_id, admin_username, admin_password)
+(admin_id, admin_username, @admin_password)
 SET admin_password = TRIM(TRAILING '\r' FROM @admin_password);
 """
 
@@ -505,67 +505,54 @@ cursor.execute(query)
 
 db_connection.commit()
 
-# Load data into table 'cuisines_chosen_for_round' using a procedure
-def fill_cuisines_for_rounds():
-    cursor = db_connection.cursor()
+# Load data from 'cooks_participate_in_round.csv' into table 'cuisines_chosen_for_round'
+cursor = db_connection.cursor()
 
-    cursor.execute("SELECT round_id FROM round")
-    round_ids = cursor.fetchall()
+df = pd.read_csv("C:/xampp/mysql/data/mydb/cooks_participate_in_round.csv")
 
-    for round_id in round_ids:
-        round_id = round_id[0]
-        counter = 0
-        consecutive_count = 0
-        last_cuisine_id = None
-        
-        while counter < 10:
-            cursor.execute("""
-                SELECT c.cuisine_id 
-                FROM cuisine c
-                INNER JOIN recipe r ON c.cuisine_id = r.cuisine_of_recipe
-                WHERE c.cuisine_id NOT IN (
-                    SELECT cuisine_cuisine_id 
-                    FROM cuisines_chosen_for_round 
-                    WHERE round_round_id >= %s - 2 AND round_round_id <= %s
-                ) 
-                ORDER BY RAND() 
-                LIMIT 1
-            """, (round_id, round_id))
-            cuisines = cursor.fetchall()
-            
-            if cuisines:
-                cuisine_id = cuisines[0][0]
-                
-                if cuisine_id == last_cuisine_id:
-                    consecutive_count += 1
-                else:
-                    consecutive_count = 0 
-                    last_cuisine_id = cuisine_id
+df['round_round_id'] = df['round_round_id'].astype(int)
+df['cuisine_id'] = df['cuisine_id'].astype(int)
 
-                cursor.execute("INSERT INTO cuisines_chosen_for_round (cuisine_cuisine_id, round_round_id) VALUES (%s, %s)", (cuisine_id, round_id))
-                counter += 1
+insert_query = """
+    INSERT INTO cuisines_chosen_for_round (cuisine_cuisine_id, round_round_id)
+    VALUES (%s, %s)
+"""
 
-                if counter >= 10:
-                    break
-                elif consecutive_count >= 3:
-                    break
-            else:
-                break
+for index, row in df.iterrows():
+    cursor.execute(insert_query, (int(row['cuisine_id']), int(row['round_round_id'])))
 
-    db_connection.commit()
-    cursor.close()
-
-fill_cuisines_for_rounds()
+db_connection.commit()
+cursor.close()
 
 # Load data from 'cooks_participate_in_round.csv' into table 'cooks_participate_in_round'
+cursor = db_connection.cursor()
+
+df = pd.read_csv("C:/xampp/mysql/data/mydb/cooks_participate_in_round.csv")
+
+df['cook_cook_id'] = df['cook_cook_id'].astype(int)
+df['round_round_id'] = df['round_round_id'].astype(int)
+df['recipe_recipe_id'] = df['recipe_recipe_id'].astype(int)
+
+insert_query = """
+    INSERT INTO cooks_participate_in_round (cook_cook_id, round_round_id, recipe_cuisine_id)
+    VALUES (%s, %s, %s)
+"""
+
+for index, row in df.iterrows():
+    cursor.execute(insert_query, (int(row['cook_cook_id']), int(row['round_round_id']), int(row['recipe_recipe_id'])))
+
+db_connection.commit()
+cursor.close()
+
+# Load data from 'cooks_judge_round.csv' into table 'cooks_judge_round'
 query = """
-LOAD DATA INFILE 'cooks_participate_in_round.csv'
-INTO TABLE cooks_participate_in_round
+LOAD DATA INFILE 'cooks_judge_round.csv'
+INTO TABLE cooks_judge_round
 FIELDS TERMINATED BY ','
 ENCLOSED BY '"'
 LINES TERMINATED BY '\n'
 IGNORE 1 LINES
-(cook_cook_id, round_round_id, recipe_cuisine_id)
+(round_round_id, cook_cook_id)
 """
 
 cursor = db_connection.cursor()
@@ -573,32 +560,6 @@ cursor = db_connection.cursor()
 cursor.execute(query)
 
 db_connection.commit()
-
-
-# Load data into table 'cooks_judge_round' using a procedure
-cursor = db_connection.cursor()
-
-def get_unique_cook_ids(round_id):
-    cursor.execute("""
-        SELECT c.cook_id
-        FROM cook c
-        LEFT JOIN cooks_participate_in_round p ON c.cook_id = p.cook_cook_id AND p.cook_cook_id = %s
-        LEFT JOIN cooks_judge_round j ON c.cook_id = j.cook_cook_id AND j.round_round_id = %s
-        WHERE p.cook_cook_id IS NULL AND j.cook_cook_id IS NULL
-        ORDER BY RAND()
-        LIMIT 3
-    """, (round_id, round_id))
-    return [row[0] for row in cursor.fetchall()]
-
-def populate_cooks_judge_round():
-    cursor.execute("SELECT round_id FROM round")
-    for (round_id,) in cursor.fetchall():
-        cook_ids = get_unique_cook_ids(round_id)
-        for cook_id in cook_ids:
-            cursor.execute("INSERT INTO cooks_judge_round (cook_cook_id, round_round_id) VALUES (%s, %s)", (cook_id, round_id))
-            db_connection.commit()
-
-populate_cooks_judge_round()
 
 # Load data into table 'ratings' using a procedure
 cursor = db_connection.cursor()

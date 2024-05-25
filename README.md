@@ -10,7 +10,7 @@
 Github repository of Cooking Contest Website.
 
 ## Members of db24-65 project group:
-- Georgia Alexopoulou | el18020
+- Georgia Alexopoulou | el20164
 - Stylianos Mpouliaris Malatestas | el19214
 
 # Installation
