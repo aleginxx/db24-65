@@ -3,40 +3,98 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cooking Contest</title>
+    <title>Cooking Contest - Admin Profile</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #f9f9f9;
+        }
+        .header {
+            width: 100%;
+            display: flex;
+            justify-content: flex-end;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: absolute;
+            top: 0;
+        }
+        .header h2 {
+            margin: 0;
+            flex-grow: 1;
+        }
+        button {
+            font-family: Arial, sans-serif;
+            background-color: #4caf50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .container {
+            margin-top: 80px; /* To push it below the header */
+            padding: 20px;
+            border: 1px solid #dddddd;
+            border-collapse: collapse;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+            width: 50%;
+            text-align: center;
+        }
+        .container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .container p {
+            text-align: left;
+            padding: 8px;
+            border-bottom: 1px solid #dddddd;
+        }
+        .container p:last-child {
+            border-bottom: none;
+        }
+        .form-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
-    <div style="display: flex; justify-content: flex-end;">
-        <div style="margin-right: 20px;">
-            <form action="/dacontest/logout" method="GET">
-                <button type="submit">Logout</button>
-            </form>
-        </div>
-    
-        <div>
-            <form action="/dacontest/admin_functions" method="GET">
-                <button type="submit">Backup/Restore</button>
-            </form>
-        </div>
-
-        <div>
-            <form action="/dacontest/admin/:admin_username" method="GET">
-                <button type="submit">Profile</button>
-            </form>
-        </div>
-    </div>    
-
-    <h2>Admin Profile</h2>
-
-    <!-- Display admin information -->
-    <p>Username: <%= admin.admin_username %></p>
-    <p>Password: <%= admin.admin_password %></p>
-
-    <div>
-        <form action="/dacontest/admin/edit" method="GET">
-            <button type="submit">Edit</button>
+    <div class="header">
+        <h2>Cooking Contest</h2>
+        <form action="/dacontest/logout" method="GET">
+            <button type="submit">Logout</button>
         </form>
-    </div>
+        <form action="/dacontest/home" method="GET">
+            <button type="submit">Home</button>
+        </form>
+    </div> 
 
+    <div class="container">
+        <h2>Admin Profile</h2>
+
+        <!-- Display admin information -->
+        <p>Username: <%= admin.admin_username %></p>
+        <p>Password: <%= admin.admin_password %></p>
+
+        <div class="form-buttons">
+            <form action="/dacontest/admin/edit" method="GET">
+                <button type="submit">Edit</button>
+            </form>
+        </div>
+    </div>
 </body>
 </html>
