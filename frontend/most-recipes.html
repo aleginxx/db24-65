@@ -5,10 +5,67 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Top Cooks Under 30</title>
     <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #f9f9f9;
+        }
+
+        .header {
+            width: 100%;
+            display: flex;
+            justify-content: flex-end;
+            padding: 10px;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            z-index: 1000;
+            height: 50px;
+        }
+
+        .header h2 {
+            margin: 0;
+            flex-grow: 1;
+            font-size: 1.5em;
+            text-align: left;
+            padding-left: 10px;
+        }
+
+        button {
+            font-family: Arial, sans-serif;
+            background-color: #4caf50;
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .container {
+            margin-top: 70px;
+            padding: 20px;
+            border: 1px solid #dddddd;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+            width: 95%;
+            max-width: 1200px;
+            text-align: center;
+        }
+
         table {
             font-family: Arial, sans-serif;
             border-collapse: collapse;
             width: 100%;
+            margin-top: 20px;
         }
 
         th, td {
@@ -27,38 +84,34 @@
     </style>
 </head>
 <body>
-    <div style="display: flex; justify-content: flex-end;">
-        <div style="text-align: left; width: 100%; font-family: Arial, sans-serif;">
-            <h2>Cooking Contest</h2>
-        </div>
-
-        <div style="margin-right: 20px;">
-            <form action="/dacontest/logout" method="GET">
+    <div class="header">
+        <h2>Cooking Contest</h2>
+        <div style="display: flex; align-items: center; margin-right: 10px;">
+            <form action="/dacontest/logout" method="GET" style="margin: 0;">
                 <button type="submit">Logout</button>
             </form>
-        </div>
-    
-        <div>
-            <form action="/dacontest/home" method="GET">
+            <form action="/dacontest/home" method="GET" style="margin: 0;">
                 <button type="submit">Home</button>
             </form>
         </div>
-    </div> 
-    
-    <h1>Top Cooks Under 30</h1>
-    <table>
-        <thead>
-            <tr>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Age</th>
-                <th>Number of Recipes</th>
-            </tr>
-        </thead>
-        <tbody id="cooks-list">
-            <!-- Table rows will be populated here -->
-        </tbody>
-    </table>
+    </div>
+
+    <div class="container">
+        <h1>Top Cooks Under 30</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Age</th>
+                    <th>Number of Recipes</th>
+                </tr>
+            </thead>
+            <tbody id="cooks-list">
+                <!-- Table rows will be populated here -->
+            </tbody>
+        </table>
+    </div>
 
     <script>
         function fetchData() {

@@ -5,15 +5,73 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cooks Who Have Never Judged</title>
     <style>
-        table {
+        body {
             font-family: Arial, sans-serif;
-            border-collapse: collapse;
-            width: 100%;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #f9f9f9;
         }
+
+        .header {
+            width: 100%;
+            display: flex;
+            justify-content: flex-end;
+            padding: 10px;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            z-index: 1000;
+            height: 50px;
+        }
+
+        .header h2 {
+            margin: 0;
+            flex-grow: 1;
+            font-size: 1.5em;
+            text-align: left;
+            padding-left: 10px;
+        }
+
+        button {
+            font-family: Arial, sans-serif;
+            background-color: #4caf50;
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .container {
+            margin-top: 70px;
+            padding: 20px;
+            border: 1px solid #dddddd;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+            width: 95%;
+            max-width: 1200px;
+            text-align: center;
+        }
+
         .table-wrapper {
             max-height: 400px;
             overflow-y: auto;
             border: 1px solid #ddd;
+            margin-top: 20px;
+        }
+
+        table {
+            font-family: Arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
         }
 
         th, td {
@@ -29,90 +87,96 @@
         tr:nth-child(even) {
             background-color: #f2f2f2;
         }
+
+        h2 {
+            margin-top: 40px;
+        }
+
+        #mostParticipations {
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 <body>
-    <div style="display: flex; justify-content: flex-end;">
-        <div style="text-align: left; width: 100%; font-family: Arial, sans-serif;">
-            <h2>Cooking Contest</h2>
-        </div>
-
-        <div style="margin-right: 20px;">
-            <form action="/dacontest/logout" method="GET">
+    <div class="header">
+        <h2>Cooking Contest</h2>
+        <div style="display: flex; align-items: center; margin-right: 10px;">
+            <form action="/dacontest/logout" method="GET" style="margin: 0;">
                 <button type="submit">Logout</button>
             </form>
-        </div>
-    
-        <div>
-            <form action="/dacontest/home" method="GET">
+            <form action="/dacontest/home" method="GET" style="margin: 0;">
                 <button type="submit">Home</button>
             </form>
         </div>
-    </div> 
-    
-    <h2>Cooks Who Have Never Judged</h2>
+    </div>
+
+    <div class="container">
+        <h2>Cooks Who Have Never Judged</h2>
         <div class="table-wrapper">
-        <table id="cooksTable">
-            <thead>
-                <tr>
-                    <th>Cooks' Names</th>
-                </tr>
-            </thead>
-            <tbody id="cooksBody">
-                <!-- Table rows will be dynamically added here -->
-            </tbody>
-        </table>
-    </div>
+            <table id="cooksTable">
+                <thead>
+                    <tr>
+                        <th>Cooks' Names</th>
+                    </tr>
+                </thead>
+                <tbody id="cooksBody">
+                    <!-- Table rows will be dynamically added here -->
+                </tbody>
+            </table>
+        </div>
 
-    <h2>Cooks with Same Amount of Participations for 2 Consecutive Years</h2>
-    <div class="table-wrapper">
-        <table id="participationsTable">
-            <thead>
-                <tr>
-                    <th>First Cook's Name</th>
-                    <th>Second Cook's Name</th>
-                    <th>No. of Rounds</th>
-                    <th>Year Range</th>
-                </tr>
-            </thead>
-            <tbody id="participationsBody">
-                <!-- Table rows will be dynamically added here -->
-            </tbody>
-        </table>
-    </div>
+        <h2>Cooks with Same Amount of Participations for 2 Consecutive Years</h2>
+        <div class="table-wrapper">
+            <table id="participationsTable">
+                <thead>
+                    <tr>
+                        <th>First Cook's Name</th>
+                        <th>Second Cook's Name</th>
+                        <th>No. of Rounds</th>
+                        <th>Year Range</th>
+                    </tr>
+                </thead>
+                <tbody id="participationsBody">
+                    <!-- Table rows will be dynamically added here -->
+                </tbody>
+            </table>
+        </div>
 
-    <h2>Cooks with At Least 5 Less Participations than the Top Participant</h2>
-    <div id="mostParticipations" style="margin-bottom: 20px;">
-        The cook with the most participations is <span id="mostParticipationsText"></span>.
-    </div>
-    <div class="table-wrapper">
-        <table id="lessParticipationsTable">
-            <thead>
-                <tr>
-                    <th>Cook Name</th>
-                    <th>Username</th>
-                    <th>Years of Participation</th>
-                </tr>
-            </thead>
-            <tbody id="lessParticipationsBody">
-                <!-- Table rows will be dynamically added here -->
-            </tbody>
-        </table>
-    </div>
+        <h2>Cooks with At Least 5 Less Participations than the Top Participant</h2>
+        <div id="mostParticipations">
+            The cook with the most participations is <span id="mostParticipationsText"></span>.
+        </div>
+        <div class="table-wrapper">
+            <table id="lessParticipationsTable">
+                <thead>
+                    <tr>
+                        <th>Cook Name</th>
+                        <th>Username</th>
+                        <th>Years of Participation</th>
+                    </tr>
+                </thead>
+                <tbody id="lessParticipationsBody">
+                    <!-- Table rows will be dynamically added here -->
+                </tbody>
+            </table>
+        </div>
 
-    <h2>Round with Participants with the Least Experience</h2>
-    <table id="leastExperienceTable">
-        <thead>
-            <tr>
-                <th>Year</th>
-                <th>Round Number</th>
-                <th>Years of Experience</th>
-            </tr>
-        </thead>
-        <tbody id="leastExperienceBody">
-            <!-- Table rows will be dynamically added here -->
-        </tbody>
-    </table>
+        <h2>Round with Participants with the Least Experience</h2>
+        <div class="table-wrapper">
+            <table id="leastExperienceTable">
+                <thead>
+                    <tr>
+                        <th>Year</th>
+                        <th>Round Number</th>
+                        <th>Years of Experience</th>
+                    </tr>
+                </thead>
+                <tbody id="leastExperienceBody">
+                    <!-- Table rows will be dynamically added here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
 
     <script>
         function fetchData1() {

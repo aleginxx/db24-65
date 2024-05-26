@@ -5,15 +5,73 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cooks Who Have Never Judged</title>
     <style>
-        table {
+        body {
             font-family: Arial, sans-serif;
-            border-collapse: collapse;
-            width: 100%;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #f9f9f9;
         }
+
+        .header {
+            width: 100%;
+            display: flex;
+            justify-content: flex-end;
+            padding: 10px;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            z-index: 1000;
+            height: 50px;
+        }
+
+        .header h2 {
+            margin: 0;
+            flex-grow: 1;
+            font-size: 1.5em;
+            text-align: left;
+            padding-left: 10px;
+        }
+
+        button {
+            font-family: Arial, sans-serif;
+            background-color: #4caf50;
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .container {
+            margin-top: 70px;
+            padding: 20px;
+            border: 1px solid #dddddd;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+            width: 95%;
+            max-width: 1200px;
+            text-align: center;
+        }
+
         .table-wrapper {
             max-height: 400px;
             overflow-y: auto;
             border: 1px solid #ddd;
+            margin-top: 20px;
+        }
+
+        table {
+            font-family: Arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
         }
 
         th, td {
@@ -29,56 +87,58 @@
         tr:nth-child(even) {
             background-color: #f2f2f2;
         }
+
+        h2 {
+            margin-top: 40px;
+        }
     </style>
 </head>
 <body>
-    <div style="display: flex; justify-content: flex-end;">
-        <div style="text-align: left; width: 100%; font-family: Arial, sans-serif;">
-            <h2>Cooking Contest</h2>
-        </div>
-
-        <div style="margin-right: 20px;">
-            <form action="/dacontest/logout" method="GET">
+    <div class="header">
+        <h2>Cooking Contest</h2>
+        <div style="display: flex; align-items: center; margin-right: 10px;">
+            <form action="/dacontest/logout" method="GET" style="margin: 0;">
                 <button type="submit">Logout</button>
             </form>
-        </div>
-    
-        <div>
-            <form action="/dacontest/home" method="GET">
+            <form action="/dacontest/home" method="GET" style="margin: 0;">
                 <button type="submit">Home</button>
             </form>
         </div>
-    </div> 
-    
-    <h2>Cuisines Most Frequented in Consecutive Rounds</Em></h2>
-    <div class="table-wrapper">
-        <table id="cuisinesTable">
-            <thead>
-                <tr>
-                    <th>Cuisine Names</th>
-                    <th>First Year</th>
-                    <th>Participations in First Year</th>
-                    <th>Second Year</th>
-                    <th>Participations in Second Year</th>
-                </tr>
-            </thead>
-            <tbody id="cuisinesBody">
-                <!-- Table rows will be dynamically added here -->
-            </tbody>
-        </table>
     </div>
 
-    <h2>Food Group Never Used in the Competition</Em></h2>
-    <table id="foodGroupTable">
-        <thead>
-            <tr>
-                <th>Food Group Name</th>
-            </tr>
-        </thead>
-        <tbody id="foodGroupBody">
-            <!-- Table rows will be dynamically added here -->
-        </tbody>
-    </table>
+    <div class="container">
+        <h2>Cuisines Most Frequented in Consecutive Rounds</h2>
+        <div class="table-wrapper">
+            <table id="cuisinesTable">
+                <thead>
+                    <tr>
+                        <th>Cuisine Names</th>
+                        <th>First Year</th>
+                        <th>Participations in First Year</th>
+                        <th>Second Year</th>
+                        <th>Participations in Second Year</th>
+                    </tr>
+                </thead>
+                <tbody id="cuisinesBody">
+                    <!-- Table rows will be dynamically added here -->
+                </tbody>
+            </table>
+        </div>
+
+        <h2>Food Group Never Used in the Competition</h2>
+        <div class="table-wrapper">
+            <table id="foodGroupTable">
+                <thead>
+                    <tr>
+                        <th>Food Group Name</th>
+                    </tr>
+                </thead>
+                <tbody id="foodGroupBody">
+                    <!-- Table rows will be dynamically added here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
 
     <script>
         function fetchData1() {
@@ -90,25 +150,23 @@
             })
             .then(response => response.json())
             .then(data => {
-                const cooksList = document.getElementById('cuisinesBody');
-                cooksList.innerHTML = ''; 
+                const cuisinesList = document.getElementById('cuisinesBody');
+                cuisinesList.innerHTML = ''; 
 
-                data.forEach(cook => {
+                data.forEach(cuisine => {
                     const row = document.createElement('tr');
                     row.innerHTML = `
-                        <td>${cook.cuisine_name_1} and ${cook.cuisine_name_2}</td>
-                        <td>${cook.year_1}</td>
-                        <td>${cook.count_1}</td>
-                        <td>${cook.year_2}</td>
-                        <td>${cook.count_2}</td>
+                        <td>${cuisine.cuisine_name_1} and ${cuisine.cuisine_name_2}</td>
+                        <td>${cuisine.year_1}</td>
+                        <td>${cuisine.count_1}</td>
+                        <td>${cuisine.year_2}</td>
+                        <td>${cuisine.count_2}</td>
                     `;
-                    cooksList.appendChild(row);
+                    cuisinesList.appendChild(row);
                 });
             })
             .catch(error => console.error('Error fetching data:', error));
         }
-
-        window.addEventListener('load', fetchData1);
 
         function fetchData2() {
             fetch('/dacontest/food-groups-not-used', {
@@ -119,22 +177,24 @@
             })
             .then(response => response.json())
             .then(data => {
-                const cooksList = document.getElementById('foodGroupBody');
-                cooksList.innerHTML = ''; 
+                const foodGroupList = document.getElementById('foodGroupBody');
+                foodGroupList.innerHTML = ''; 
 
-                data.forEach(cook => {
+                data.forEach(foodGroup => {
                     const row = document.createElement('tr');
                     row.innerHTML = `
-                        <td>${cook.food_group_name}</td>
+                        <td>${foodGroup.food_group_name}</td>
                     `;
-                    cooksList.appendChild(row);
+                    foodGroupList.appendChild(row);
                 });
             })
             .catch(error => console.error('Error fetching data:', error));
         }
 
-        window.addEventListener('load', fetchData2);
-
+        window.addEventListener('load', () => {
+            fetchData1();
+            fetchData2();
+        });
     </script>
 </body>
 </html>

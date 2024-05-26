@@ -100,7 +100,7 @@ async function fillTablesFromCSV() {
 
     for (const file of csvFiles) {
         const tableName = file.split('.')[0];
-        const filePath = path.join(__dirname, '..', 'backup_data', file);
+        const filePath = path.join(__dirname, '..', '..', 'backup_data', file);
 
         try {
             const csvData = await readFileAsync(filePath, 'utf8');
