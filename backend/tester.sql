@@ -31,4 +31,4 @@ select * from `mydb`.`cooks_participate_in_round` order by `round_round_id`, `co
 select * from `mydb`.`cooks_judge_round` order by `round_round_id`;
 select * from `mydb`.`ratings` order by `rating_id`;
 
-SELECT * FROM `mydb`.`cook`;
+SELECT * FROM `mydb`.`administrator`;

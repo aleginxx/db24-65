@@ -5,89 +5,148 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cooking Contest</title>
     <style>
-        table {
+        body {
             font-family: Arial, sans-serif;
-            border-collapse: collapse;
-            width: 100%;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #f9f9f9;
+            overflow-x: hidden; /* Prevent horizontal scrolling */
         }
-
+        .header {
+            width: 100%;
+            display: flex;
+            justify-content: flex-end;
+            padding: 10px;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            height: 50px; /* Reduced height */
+        }
+        .header h2 {
+            margin: 0;
+            flex-grow: 1;
+            padding-left: 10px; /* Ensure the header text is not cut off */
+        }
+        .header form {
+            margin-right: 10px; /* Adjusted margin to move buttons left */
+        }
+        .header form:last-child {
+            margin-right: 20px; /* Move the home button slightly to the left */
+        }
+        button {
+            font-family: Arial, sans-serif;
+            background-color: #4caf50;
+            color: white;
+            padding: 8px 16px; /* Adjusted padding */
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .container {
+            margin-top: 70px; /* Adjusted to match the new header height */
+            padding: 20px;
+            border: 1px solid #dddddd;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+            width: 100%;
+            max-width: 800px; /* Ensure the container fits within the viewport */
+            text-align: center;
+            box-sizing: border-box; /* Include padding in width calculation */
+        }
+        .container h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
         th, td {
             border: 1px solid #dddddd;
             text-align: left;
             padding: 8px;
         }
-
         th {
             background-color: #f2f2f2;
         }
-
         tr:nth-child(even) {
             background-color: #f2f2f2;
+        }
+        input[type="text"], select {
+            width: calc(100% - 16px); /* Adjust width to fit inside table cell */
+            padding: 5px;
+            margin-top: 5px;
+            box-sizing: border-box; /* Include padding in width calculation */
         }
     </style>
 </head>
 <body>
-    <div style="display: flex; justify-content: flex-end;">
-        <div style="text-align: left; width: 100%; font-family: Arial, sans-serif;">
-            <h2>Cooking Contest</h2>
-        </div>
-
-        <div style="margin-right: 20px;">
-            <form action="/dacontest/logout" method="GET">
-                <button type="submit">Logout</button>
-            </form>
-        </div>
-    
-        <div>
-            <form action="/dacontest/home" method="GET">
-                <button type="submit">Home</button>
-            </form>
-        </div>
+    <div class="header">
+        <h2>Cooking Contest</h2>
+        <form action="/dacontest/logout" method="GET">
+            <button type="submit">Logout</button>
+        </form>
+        <form action="/dacontest/home" method="GET">
+            <button type="submit">Home</button>
+        </form>
     </div>
 
-    <h1>Edit Your Recipe</h1>
-    <form action="/dacontest/recipe/add" method="POST">
-        <table>
-            <tr>
-                <th>Recipe Name</th>
-                <td><input type="text" name="recipe_name"></td>
-            </tr>
-            <tr>
-                <th>Recipe Type</th>
-                <td>
-                    <select name="recipe_type">
-                        <option value="cooking">Cooking</option>
-                        <option value="pastry making">Pastry Making</option>
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <th>Cuisine</th>
-                <td><input type="text" name="cuisine"></td>
-            </tr>
-            <tr>
-                <th>Level of Difficulty (rate out of 5)</th>
-                <td><input type="text" name="level"></td>
-            </tr>
-            <tr>
-                <th>Recipe Description</th>
-                <td><input type="text" name="recipe_desc"></td>
-            </tr>
-            <tr>
-                <th>No. of Portions</th>
-                <td><input type="text" name="no_of_portions"></td>
-            </tr>
-            <tr>
-                <th>Primary Ingredient</th>
-                <td><input type="text" name="primary_ingredient"></td>
-            </tr>
-            <tr>
-                <th>Recipe Image</th>
-                <td><input type="text" name="recipe_img"></td>
-            </tr>
-        </table>
+    <div class="container">
+        <h1>Add Your Recipe</h1>
+        <form action="/dacontest/recipe/add" method="POST">
+            <table>
+                <tr>
+                    <th>Recipe Name</th>
+                    <td><input type="text" name="recipe_name"></td>
+                </tr>
+                <tr>
+                    <th>Recipe Type</th>
+                    <td>
+                        <select name="recipe_type">
+                            <option value="cooking">Cooking</option>
+                            <option value="pastry making">Pastry Making</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Cuisine</th>
+                    <td><input type="text" name="cuisine"></td>
+                </tr>
+                <tr>
+                    <th>Level of Difficulty (rate out of 5)</th>
+                    <td><input type="text" name="level"></td>
+                </tr>
+                <tr>
+                    <th>Recipe Description</th>
+                    <td><input type="text" name="recipe_desc"></td>
+                </tr>
+                <tr>
+                    <th>No. of Portions</th>
+                    <td><input type="text" name="no_of_portions"></td>
+                </tr>
+                <tr>
+                    <th>Primary Ingredient</th>
+                    <td><input type="text" name="primary_ingredient"></td>
+                </tr>
+                <tr>
+                    <th>Recipe Image</th>
+                    <td><input type="text" name="recipe_img"></td>
+                </tr>
+            </table>
 
-        <button type="submit">Submit</button>
-    </form>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
 </body>
 </html>
