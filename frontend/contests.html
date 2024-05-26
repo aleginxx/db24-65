@@ -54,14 +54,15 @@
     <div>
         <label for="name">Search by Cook Name:</label>
         <input type="text" id="name" name="name">
-        <button onclick="searchByName()">Search</button>
+        <button onclick="searchByCookName()">Search</button>
     </div>
     <table id="contestsTable">
         <thead>
             <tr>
                 <th>Round Year</th>
                 <th>Round Number</th>
-                <th>Cook Name</th>
+                <th>Cooks' Names</th>
+                <th>Judges' Names</th>
             </tr>
         </thead>
         <tbody id="contestsBody">
@@ -88,7 +89,8 @@
                     row.innerHTML = `
                         <td>${contests.round_year}</td>
                         <td>${contests.round_number}</td>
-                        <td>${contests.cook_name}</td>
+                        <td>${contests.cook_names}</td>
+                        <td>${contests.judge_names}</td>
                     `;
                     contestsList.appendChild(row);
                 });
@@ -116,7 +118,8 @@
                     row.innerHTML = `
                         <td>${contests.round_year}</td>
                         <td>${contests.round_number}</td>
-                        <td>${contests.cook_name}</td>
+                        <td>${contests.cook_names}</td>
+                        <td>${contests.judge_names}</td>
                     `;
                     contestsList.appendChild(row);
                 });
@@ -124,9 +127,9 @@
             .catch(error => console.error('Error fetching data:', error));
         }
 
-        function searchByName() {
+        function searchByCookName() {
             const name = document.getElementById('name').value;
-            fetch('/dacontest/contests/byName', {
+            fetch('/dacontest/contests/byCookName', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -144,7 +147,8 @@
                     row.innerHTML = `
                         <td>${contests.round_year}</td>
                         <td>${contests.round_number}</td>
-                        <td>${contests.cook_name}</td>
+                        <td>${contests.cook_names}</td>
+                        <td>${contests.judge_names}</td>
                     `;
                     contestsList.appendChild(row);
                 });

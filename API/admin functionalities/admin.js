@@ -13,6 +13,8 @@ router.get('/admin/', cookieJwtAuth, (req, res) => {
     const decodedToken = jwt.decode(token);
     const admin_username = decodedToken.username;
 
+    console.log("Decoded username admin : ", admin_username);
+
     const query = 'SELECT * FROM administrator WHERE admin_username = ?'; 
     DB.connection.query(query, [admin_username], (err, results) => { 
         if (err) {

@@ -8,9 +8,6 @@ const http = require('http');
 const jwt = require("jsonwebtoken");
 
 const router = express.Router();
-router.use(bodyParser.urlencoded({ extended: true }));
-
-const port = 3000;
 
 router.get('/login', (req, res) => {
     const filePath = path.join(__dirname, '..', 'frontend', 'login.html');
@@ -63,7 +60,7 @@ router.post('/login', (req, res) => {
                     return res.status(500).send('Internal Service Error');
                 }
             }
-            // console.log("Results: ", results);
+            console.log("Admin Results: ", results);
 
             if (results.length > 0) {
                 const admin = results[0]; 
