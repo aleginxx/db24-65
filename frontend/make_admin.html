@@ -4,48 +4,116 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cooking Contest</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #f9f9f9;
+        }
+
+        .header {
+            width: 100%;
+            display: flex;
+            justify-content: flex-end;
+            padding: 10px;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            z-index: 1000;
+            height: 50px;
+        }
+
+        .header h2 {
+            margin: 0;
+            flex-grow: 1;
+            font-size: 1.5em;
+            text-align: left;
+            padding-left: 10px;
+        }
+
+        button {
+            font-family: Arial, sans-serif;
+            background-color: #4caf50;
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .container {
+            margin-top: 70px;
+            padding: 20px;
+            border: 1px solid #dddddd;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+            width: 95%;
+            max-width: 600px;
+            text-align: center;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        label, input {
+            margin: 10px 0;
+        }
+
+        input {
+            padding: 8px;
+            width: 80%;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .header-title {
+            text-align: left;
+            width: 100%;
+            font-family: Arial, sans-serif;
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
-    <div style="display: flex; justify-content: flex-end;">
-        <div style="margin-right: 20px;">
-            <form action="/dacontest/logout" method="GET">
-                <button type="submit">Logout</button>
-            </form>
-        </div>
-    
-        <div>
-            <form action="/dacontest/backup" method="POST">
-                <button type="submit">Backup</button>
-            </form>
-        </div>
-
-        <div>
-            <form action="/dacontest/restore" method="POST">
-                <button type="submit">Restore</button>
-            </form>
-        </div>
-
-        <div>
-            <form action="/dacontest/admin" method="GET">
-                <button type="submit">Profile</button>
-            </form>
-        </div>
-
-        <div>
-            <form action="/dacontest/make-admin/" method="POST">
-                <button type="submit">Make Admin</button>
-            </form>
-        </div>
-    </div> 
+    <div class="header">
+        <h2>Cooking Contest</h2>
+        <form action="/dacontest/logout" method="GET">
+            <button type="submit">Logout</button>
+        </form>
+        <form action="/dacontest/backup" method="POST">
+            <button type="submit">Backup</button>
+        </form>
+        <form action="/dacontest/restore" method="POST">
+            <button type="submit">Restore</button>
+        </form>
+        <form action="/dacontest/admin" method="GET">
+            <button type="submit">Profile</button>
+        </form>
+        <form action="/dacontest/make-admin/" method="POST">
+            <button type="submit">Make Admin</button>
+        </form>
+    </div>
 
     <div class="container">
-        <div class="header">
-            Which user do you cant to turn into administrator?
+        <div class="header-title">
+            <h2>Which user do you want to turn into administrator?</h2>
         </div>
-        <h2>Make Admin</h2>
         <form id="makeadminForm" action="/dacontest/make-admin" method="POST">
             <label for="username">Username:</label>
             <input type="text" id="username" name="username" required>
+            <button type="submit">Make Admin</button>
         </form>
     </div>
 </body>
