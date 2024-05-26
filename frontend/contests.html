@@ -126,7 +126,8 @@
                 <tr>
                     <th>Round Year</th>
                     <th>Round Number</th>
-                    <th>Cook Name</th>
+                    <th>Cooks' Name</th>
+                    <th>Judges' Name</th>
                 </tr>
             </thead>
             <tbody id="contestsBody">
@@ -154,7 +155,8 @@
                     row.innerHTML = `
                         <td>${contest.round_year}</td>
                         <td>${contest.round_number}</td>
-                        <td>${contest.cook_name}</td>
+                        <td>${contest.cook_names}</td>
+                        <td>${contest.judge_names}</td>
                     `;
                     contestsList.appendChild(row);
                 });
