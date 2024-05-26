@@ -49,20 +49,9 @@ LOAD DATA INFILE 'recipe.csv'
 INTO TABLE recipe
 FIELDS TERMINATED BY ','
 ENCLOSED BY '"'
-LINES TERMINATED BY '\n'
+LINES TERMINATED BY "\r\n"
 IGNORE 1 LINES
 (recipe_id, recipe_name, recipe_type, cuisine_of_recipe, level, recipe_desc, no_of_portions, primary_ingredient_id, recipe_img)
-"""
-
-cursor = db_connection.cursor()
-
-cursor.execute(query)
-
-db_connection.commit()
-
-query="""
-INSERT INTO `mydb`.`recipe` (recipe_id, recipe_name, recipe_type, cuisine_of_recipe, level, recipe_desc, no_of_portions, primary_ingredient_id, recipe_img)
-VALUES (136, 'Sardine Mediterranean Pasta', 'cooking', 9, 2, 'Mediterranean-inspired pasta dish featuring savory sardines, olives, tomatoes, and capers in a flavorful herb-infused sauce.', 5, 77, 'IMG_20180814_172611816_HDR.jpg (https://v5.airtableusercontent.com/v3/u/26/26/1710374400000/-lh5WIZeJEWw0UKrHyAQCg/g5DKUzcyyaOUGOC3EHIcK7rZ3agO9jIabL7JuRhI1Op6yKm-sp3VI3WFN6gXXqGBd0tosDpIv7YRph50M-8ZR9zZj9FJ33lUd0DbHZwSMZBXIYNnlz49alKPIlVWtfki/X5pkScPT3_JZzaFkyFXnPhOJ4huP4mGgQRReMfi0UyU)');
 """
 
 cursor = db_connection.cursor()
