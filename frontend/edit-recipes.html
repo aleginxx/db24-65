@@ -5,6 +5,66 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cooking Contest</title>
     <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #f9f9f9;
+        }
+
+        .header {
+            width: 100%;
+            display: flex;
+            justify-content: flex-end;
+            padding: 10px;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            height: 50px;
+        }
+
+        .header h2 {
+            margin: 0;
+            flex-grow: 1;
+            padding-left: 10px;
+        }
+
+        button {
+            font-family: Arial, sans-serif;
+            background-color: #4caf50;
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .container {
+            margin-top: 70px;
+            padding: 20px;
+            border: 1px solid #dddddd;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+            width: 90%;
+            text-align: center;
+        }
+
+        .container h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
         table {
             font-family: Arial, sans-serif;
             border-collapse: collapse;
@@ -27,71 +87,67 @@
     </style>
 </head>
 <body>
-    <div style="display: flex; justify-content: flex-end;">
-        <div style="text-align: left; width: 100%; font-family: Arial, sans-serif;">
-            <h2>Cooking Contest</h2>
-        </div>
-
-        <div style="margin-right: 20px;">
-            <form action="/dacontest/logout" method="GET">
+    <div class="header">
+        <h2>Cooking Contest</h2>
+        <div style="display: flex; align-items: center; margin-right: 10px;">
+            <form action="/dacontest/logout" method="GET" style="margin: 0;">
                 <button type="submit">Logout</button>
             </form>
-        </div>
-    
-        <div>
-            <form action="/dacontest/home" method="GET">
+            <form action="/dacontest/home" method="GET" style="margin: 0; margin-left: 10px;">
                 <button type="submit">Home</button>
             </form>
         </div>
-    </div> 
+    </div>
 
-    <h1>Edit Your Recipes</h1>
-    Want to <a href="/dacontest/recipe/add">add a Recipe</a> ?
-    <table id="recipesTable">
-        <thead>
-            <tr>
-                <th>Recipe Name</th>
-                <th>Recipe Type</th>
-                <th>Cuisine</th>
-                <th>Primary Ingredient</th>
-                <th>Brief Description</th>
-                <th>Level of Difficulty</th>
-                <th>No. of Portions</th>
-                <th>Edit</th>
-            </tr>
-        </thead>
-        <tbody id="recipesBody">
-            <!-- Table rows will be dynamically added here -->
-        </tbody>
-    </table>
+    <div class="container">
+        <h1>Edit Your Recipes</h1>
+        <p>Want to <a href="/dacontest/recipe/add">add a Recipe</a>?</p>
+        <table id="recipesTable">
+            <thead>
+                <tr>
+                    <th>Recipe Name</th>
+                    <th>Recipe Type</th>
+                    <th>Cuisine</th>
+                    <th>Primary Ingredient</th>
+                    <th>Brief Description</th>
+                    <th>Level of Difficulty</th>
+                    <th>No. of Portions</th>
+                    <th>Edit</th>
+                </tr>
+            </thead>
+            <tbody id="recipesBody">
+                <!-- Table rows will be dynamically added here -->
+            </tbody>
+        </table>
+    </div>
 
     <script>
         // Fetch data from endpoint and populate table
-            fetch('/dacontest/cook/recipes', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                const tableBody = document.getElementById('recipesBody');
-                data.forEach(recipe => {
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td contenteditable="true">${recipe.recipe_name}</td>
-                        <td contenteditable="true">${recipe.recipe_type}</td>
-                        <td contenteditable="true">${recipe.cuisine_name}</td>
-                        <td contenteditable="true">${recipe.ingredient_name}</td>
-                        <td contenteditable="true">${recipe.recipe_desc}</td>
-                        <td contenteditable="true">${recipe.level}</td>
-                        <td contenteditable="true">${recipe.no_of_portions}</td>
-                        <td><button onclick="saveChanges(this)">Save</button></td>
-                    `;
-                    tableBody.appendChild(row);
-                });
-            })
-            .catch(error => console.error('Error fetching data:', error));
+        fetch('/dacontest/cook/recipes', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            const tableBody = document.getElementById('recipesBody');
+            data.forEach(recipe => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td contenteditable="true">${recipe.recipe_name}</td>
+                    <td contenteditable="true">${recipe.recipe_type}</td>
+                    <td contenteditable="true">${recipe.cuisine_name}</td>
+                    <td contenteditable="true">${recipe.ingredient_name}</td>
+                    <td contenteditable="true">${recipe.recipe_desc}</td>
+                    <td contenteditable="true">${recipe.level}</td>
+                    <td contenteditable="true">${recipe.no_of_portions}</td>
+                    <td><button onclick="saveChanges(this)">Save</button></td>
+                `;
+                tableBody.appendChild(row);
+            });
+        })
+        .catch(error => console.error('Error fetching data:', error));
 
         // Function to save changes
         function saveChanges(button) {
