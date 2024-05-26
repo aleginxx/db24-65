@@ -9,6 +9,7 @@ const { exec } = require('child_process');
 const cookieParser = require("cookie-parser");
 const { cookieJwtAuth } = require("./middelware/cookieJwtAuth.js");
 const dotEnv = require('dotenv').config();
+const bodyParser = require('body-parser');
 
 
 const port = 9876;
@@ -16,6 +17,8 @@ const app = express();
 
 const base_url = '/dacontest';
 
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 app.use(cookieParser());
 
 const healthcheck = require('./healthcheck.js');
