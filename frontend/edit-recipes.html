@@ -105,6 +105,7 @@
         <table id="recipesTable">
             <thead>
                 <tr>
+                    <th> </th>
                     <th>Recipe Name</th>
                     <th>Recipe Type</th>
                     <th>Cuisine</th>
@@ -135,6 +136,7 @@
             data.forEach(recipe => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
+                    <td>${recipe.recipe_img ? `<img src="${recipe.recipe_img}" alt="Recipe Image" style="max-width: 100px; max-height: 100px;">` : ''}</td>
                     <td contenteditable="true">${recipe.recipe_name}</td>
                     <td contenteditable="true">${recipe.recipe_type}</td>
                     <td contenteditable="true">${recipe.cuisine_name}</td>

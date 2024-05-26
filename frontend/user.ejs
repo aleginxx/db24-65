@@ -87,8 +87,8 @@
         <h2>User Profile</h2>
 
         <!-- Display user information -->
-        <% if (user.cook_image) { %>
-            <p><%= user.cook_image %></p>
+        <% if (user.cook_img) { %>
+            <img src="<%= user.cook_img %>" alt="Cook Image" style="width: 150px; height: auto;">
         <% } %>
         <p>First Name: <%= user.first_name %></p>
         <p>Last Name: <%= user.last_name %></p>

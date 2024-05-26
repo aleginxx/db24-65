@@ -108,6 +108,7 @@
         <table id="recipesTable">
             <thead>
                 <tr>
+                    <th> </th>
                     <th>Recipe Name</th>
                     <th>Recipe Type</th>
                     <th>Cuisine</th>
@@ -136,10 +137,11 @@
                 console.log(data); 
                 const recipesList = document.getElementById('recipesBody');
                 recipesList.innerHTML = ''; 
-
+    
                 data.forEach(recipe => {
                     const row = document.createElement('tr');
                     row.innerHTML = `
+                        <td>${recipe.recipe_img ? `<img src="${recipe.recipe_img}" alt="Recipe Image" style="max-width: 100px; max-height: 100px;">` : ''}</td>
                         <td>${recipe.recipe_name}</td>
                         <td>${recipe.recipe_type}</td>
                         <td>${recipe.cuisine_name}</td>
@@ -153,8 +155,8 @@
             })
             .catch(error => console.error('Error fetching data:', error));
         }
-
+    
         window.addEventListener('load', fetchData);
-    </script>
+    </script>    
 </body>
 </html>
