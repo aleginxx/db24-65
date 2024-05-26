@@ -5,6 +5,7 @@ const path = require('path');
 const util = require('util');
 const csv = require('csv-parser');
 const DB = require('../database.js');
+const jwt = require("jsonwebtoken");
 
 const readFileAsync = util.promisify(fs.readFile);
 

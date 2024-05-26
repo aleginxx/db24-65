@@ -1,22 +1,11 @@
--- MySQL Workbench Forward Engineering
-
 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
 
--- -----------------------------------------------------
--- Schema mydb
--- -----------------------------------------------------
-
--- -----------------------------------------------------
--- Schema mydb
--- -----------------------------------------------------
 CREATE SCHEMA IF NOT EXISTS `mydb` DEFAULT CHARACTER SET utf8 ;
 USE `mydb` ;
 
--- -----------------------------------------------------
--- Table `mydb`.`ingredients`
--- -----------------------------------------------------
+
 CREATE TABLE IF NOT EXISTS `mydb`.`ingredients` (
   `ingredient_id` INT NOT NULL AUTO_INCREMENT,
   `ingredient_name` VARCHAR(45) NOT NULL,
@@ -31,9 +20,6 @@ CREATE TABLE IF NOT EXISTS `mydb`.`ingredients` (
 ENGINE = InnoDB;
 
 
--- -----------------------------------------------------
--- Table `mydb`.`cuisine`
--- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`cuisine` (
   `cuisine_id` INT NOT NULL AUTO_INCREMENT,
   `cuisine_name` VARCHAR(45) NOT NULL,
@@ -43,9 +29,6 @@ CREATE TABLE IF NOT EXISTS `mydb`.`cuisine` (
 ENGINE = InnoDB;
 
 
--- -----------------------------------------------------
--- Table `mydb`.`recipe`
--- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`recipe` (
   `recipe_id` INT NOT NULL AUTO_INCREMENT,
   `recipe_name` VARCHAR(45) NOT NULL,
@@ -73,9 +56,6 @@ CREATE TABLE IF NOT EXISTS `mydb`.`recipe` (
 ENGINE = InnoDB;
 
 
--- -----------------------------------------------------
--- Table `mydb`.`types_of_meal`
--- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`types_of_meal` (
   `meal_type_id` INT NOT NULL AUTO_INCREMENT,
   `meal_type_name` VARCHAR(45) NOT NULL,
@@ -84,9 +64,6 @@ CREATE TABLE IF NOT EXISTS `mydb`.`types_of_meal` (
 ENGINE = InnoDB;
 
 
--- -----------------------------------------------------
--- Table `mydb`.`recipe_belongs_to_types_of_meal`
--- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`recipe_belongs_to_types_of_meal` (
   `recipe_recipe_id` INT NOT NULL,
   `types_of_meal_meal_type_id` INT NOT NULL,
@@ -106,9 +83,6 @@ CREATE TABLE IF NOT EXISTS `mydb`.`recipe_belongs_to_types_of_meal` (
 ENGINE = InnoDB;
 
 
--- -----------------------------------------------------
--- Table `mydb`.`tags`
--- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`tags` (
   `tag_id` INT NOT NULL AUTO_INCREMENT,
   `tag_desc` VARCHAR(45) NOT NULL,
@@ -117,9 +91,6 @@ CREATE TABLE IF NOT EXISTS `mydb`.`tags` (
 ENGINE = InnoDB;
 
 
--- -----------------------------------------------------
--- Table `mydb`.`recipe_has_tags`
--- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`recipe_has_tags` (
   `recipe_recipe_id` INT NOT NULL,
   `tags_tag_id` INT NOT NULL,
@@ -139,9 +110,6 @@ CREATE TABLE IF NOT EXISTS `mydb`.`recipe_has_tags` (
 ENGINE = InnoDB;
 
 
--- -----------------------------------------------------
--- Table `mydb`.`tips`
--- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`tips` (
   `tips_id` INT NOT NULL AUTO_INCREMENT,
   `tip_desc` LONGTEXT NOT NULL,
@@ -150,9 +118,6 @@ CREATE TABLE IF NOT EXISTS `mydb`.`tips` (
 ENGINE = InnoDB;
 
 
--- -----------------------------------------------------
--- Table `mydb`.`recipe_offers_tips`
--- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`recipe_offers_tips` (
   `recipe_recipe_id` INT NOT NULL,
   `tips_tips_id` INT NOT NULL,
@@ -172,9 +137,6 @@ CREATE TABLE IF NOT EXISTS `mydb`.`recipe_offers_tips` (
 ENGINE = InnoDB;
 
 
--- -----------------------------------------------------
--- Table `mydb`.`steps`
--- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`steps` (
   `step_id` INT NOT NULL AUTO_INCREMENT,
   `step_desc` LONGTEXT NOT NULL,
@@ -183,9 +145,6 @@ CREATE TABLE IF NOT EXISTS `mydb`.`steps` (
 ENGINE = InnoDB;
 
 
--- -----------------------------------------------------
--- Table `mydb`.`recipe_has_steps`
--- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`recipe_has_steps` (
   `recipe_recipe_id` INT NOT NULL,
   `steps_step_id` INT NOT NULL,
@@ -205,9 +164,6 @@ CREATE TABLE IF NOT EXISTS `mydb`.`recipe_has_steps` (
 ENGINE = InnoDB;
 
 
--- -----------------------------------------------------
--- Table `mydb`.`recipe_time`
--- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`recipe_time` (
   `total_time` INT NOT NULL,
   `preparation_time` INT NOT NULL,
@@ -216,9 +172,6 @@ CREATE TABLE IF NOT EXISTS `mydb`.`recipe_time` (
 ENGINE = InnoDB;
 
 
--- -----------------------------------------------------
--- Table `mydb`.`recipe_takes_time`
--- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`recipe_takes_time` (
   `recipe_recipe_id` INT NOT NULL,
   `recipe_time_total_time` INT NOT NULL,
@@ -238,9 +191,6 @@ CREATE TABLE IF NOT EXISTS `mydb`.`recipe_takes_time` (
 ENGINE = InnoDB;
 
 
--- -----------------------------------------------------
--- Table `mydb`.`food_group`
--- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`food_group` (
   `food_group_id` INT NOT NULL,
   `food_group_name` VARCHAR(45) NOT NULL,
@@ -251,9 +201,6 @@ CREATE TABLE IF NOT EXISTS `mydb`.`food_group` (
 ENGINE = InnoDB;
 
 
--- -----------------------------------------------------
--- Table `mydb`.`ingredients_belongs_to_food_group`
--- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`ingredients_belongs_to_food_group` (
   `ingredients_ingredient_id` INT NOT NULL,
   `food_group_food_group_id` INT NOT NULL,
@@ -273,9 +220,6 @@ CREATE TABLE IF NOT EXISTS `mydb`.`ingredients_belongs_to_food_group` (
 ENGINE = InnoDB;
 
 
--- -----------------------------------------------------
--- Table `mydb`.`recipe_uses_ingredients`
--- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`recipe_uses_ingredients` (
   `recipe_recipe_id` INT NOT NULL,
   `ingredients_ingredient_id` INT NOT NULL,
@@ -296,9 +240,6 @@ CREATE TABLE IF NOT EXISTS `mydb`.`recipe_uses_ingredients` (
 ENGINE = InnoDB;
 
 
--- -----------------------------------------------------
--- Table `mydb`.`dietary_info`
--- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`dietary_info` (
   `dietary_info_id` INT NOT NULL AUTO_INCREMENT,
   `fat_grams_per_portion` INT NOT NULL,
@@ -310,9 +251,6 @@ CREATE TABLE IF NOT EXISTS `mydb`.`dietary_info` (
 ENGINE = InnoDB;
 
 
--- -----------------------------------------------------
--- Table `mydb`.`recipe_has_dietary_info`
--- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`recipe_has_dietary_info` (
   `recipe_recipe_id` INT NOT NULL,
   `dietary_info_dietary_info_id` INT NOT NULL,
@@ -332,9 +270,6 @@ CREATE TABLE IF NOT EXISTS `mydb`.`recipe_has_dietary_info` (
 ENGINE = InnoDB;
 
 
--- -----------------------------------------------------
--- Table `mydb`.`recipe_subject`
--- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`recipe_subject` (
   `subject_id` INT NOT NULL AUTO_INCREMENT,
   `subject_name` VARCHAR(45) NOT NULL,
@@ -346,9 +281,6 @@ CREATE TABLE IF NOT EXISTS `mydb`.`recipe_subject` (
 ENGINE = InnoDB;
 
 
--- -----------------------------------------------------
--- Table `mydb`.`recipe_belongs_to_subject`
--- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`recipe_belongs_to_subject` (
   `recipe_recipe_id` INT NOT NULL,
   `recipe_subject_subject_id` INT NOT NULL,
@@ -368,9 +300,6 @@ CREATE TABLE IF NOT EXISTS `mydb`.`recipe_belongs_to_subject` (
 ENGINE = InnoDB;
 
 
--- -----------------------------------------------------
--- Table `mydb`.`cook`
--- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`cook` (
   `cook_id` INT NOT NULL AUTO_INCREMENT,
   `first_name` VARCHAR(45) NOT NULL,
@@ -410,10 +339,6 @@ END;
 DELIMITER ;
 
 
-
--- -----------------------------------------------------
--- Table `mydb`.`cook_executes_recipe`
--- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`cook_executes_recipe` (
   `cook_cook_id` INT NOT NULL,
   `recipe_recipe_id` INT NOT NULL,
@@ -433,9 +358,6 @@ CREATE TABLE IF NOT EXISTS `mydb`.`cook_executes_recipe` (
 ENGINE = InnoDB;
 
 
--- -----------------------------------------------------
--- Table `mydb`.`cook_knows_cuisine`
--- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`cook_knows_cuisine` (
   `cuisine_cuisine_id` INT NOT NULL,
   `cook_cook_id` INT NOT NULL,
@@ -456,9 +378,6 @@ CREATE TABLE IF NOT EXISTS `mydb`.`cook_knows_cuisine` (
 ENGINE = InnoDB;
 
 
--- -----------------------------------------------------
--- Table `mydb`.`round`
--- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`round` (
   `round_id` INT NOT NULL AUTO_INCREMENT,
   `round_year` INT NOT NULL,
@@ -470,9 +389,6 @@ CREATE TABLE IF NOT EXISTS `mydb`.`round` (
 ENGINE = InnoDB;
 
 
--- -----------------------------------------------------
--- Table `mydb`.`cooks_participate_in_round`
--- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`cooks_participate_in_round` (
   `cook_cook_id` INT NOT NULL,
   `round_round_id` INT NOT NULL,
@@ -499,9 +415,6 @@ CREATE TABLE IF NOT EXISTS `mydb`.`cooks_participate_in_round` (
 ENGINE = InnoDB;
 
 
--- -----------------------------------------------------
--- Table `mydb`.`cooks_judge_round`
--- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`cooks_judge_round` (
   `cook_cook_id` INT NOT NULL,
   `round_round_id` INT NOT NULL,
@@ -521,9 +434,6 @@ CREATE TABLE IF NOT EXISTS `mydb`.`cooks_judge_round` (
 ENGINE = InnoDB;
 
 
--- -----------------------------------------------------
--- Table `mydb`.`cuisines_chosen_for_round`
--- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`cuisines_chosen_for_round` (
   `cuisine_cuisine_id` INT NOT NULL,
   `round_round_id` INT NOT NULL,
@@ -543,9 +453,6 @@ CREATE TABLE IF NOT EXISTS `mydb`.`cuisines_chosen_for_round` (
 ENGINE = InnoDB;
 
 
--- -----------------------------------------------------
--- Table `mydb`.`ratings`
--- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`ratings` (
   `rating_id` INT NOT NULL AUTO_INCREMENT,
   `round_id` INT NOT NULL,
@@ -601,9 +508,6 @@ END;
 DELIMITER ;
 
 
--- -----------------------------------------------------
--- Table `mydb`.`equipment`
--- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`equipment` (
   `equipment_id` INT NOT NULL AUTO_INCREMENT,
   `equipment_name` VARCHAR(45) NOT NULL,
@@ -615,9 +519,6 @@ CREATE TABLE IF NOT EXISTS `mydb`.`equipment` (
 ENGINE = InnoDB;
 
 
--- -----------------------------------------------------
--- Table `mydb`.`recipe_requires_equipment`
--- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`recipe_requires_equipment` (
   `recipe_recipe_id` INT NOT NULL,
   `equipment_equipment_id` INT NOT NULL,
@@ -637,9 +538,6 @@ CREATE TABLE IF NOT EXISTS `mydb`.`recipe_requires_equipment` (
 ENGINE = InnoDB;
 
 
--- -----------------------------------------------------
--- Table `mydb`.`administrator`
--- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`administrator` (
   `admin_id` INT NOT NULL AUTO_INCREMENT,
   `admin_username` VARCHAR(45) NOT NULL,
@@ -822,67 +720,6 @@ BEGIN
     SELECT * FROM YearlyCarbGrams;
 
     DROP TEMPORARY TABLE IF EXISTS YearlyCarbGrams;
-END //
-
-CREATE PROCEDURE IF NOT EXISTS FindCuisineWithConsecutiveEntries()
-BEGIN
-    DECLARE done INT DEFAULT 0;
-    DECLARE current_year INT;
-    DECLARE previous_year INT;
-    DECLARE cuisine_id INT;
-    DECLARE count_current_year INT;
-    DECLARE count_previous_year INT;
-    DECLARE count_consecutive INT;
-
-    DECLARE cur CURSOR FOR
-        SELECT 
-            ccfr.cuisine_cuisine_id,
-            COUNT(*) AS count_current_year,
-            YEAR(r.round_year) AS current_year
-        FROM mydb.cuisines_chosen_for_round ccfr
-        JOIN mydb.round r ON ccfr.round_round_id = r.round_id
-        GROUP BY ccfr.cuisine_cuisine_id, YEAR(r.round_year);
-
-    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
-
-    CREATE TEMPORARY TABLE IF NOT EXISTS temp_results (
-        cuisine_id INT,
-        count_current_year INT,
-        current_year INT,
-        previous_year INT,
-        count_previous_year INT
-    );
-
-    OPEN cur;
-
-    read_loop: LOOP
-        FETCH cur INTO cuisine_id, count_current_year, current_year;
-        IF done THEN
-            LEAVE read_loop;
-        END IF;
-
-        SET previous_year = current_year - 1;
-        SET count_consecutive = count_current_year;
-
-        SELECT COUNT(*) INTO count_previous_year
-        FROM mydb.cuisines_chosen_for_round ccfr
-        JOIN mydb.round r ON ccfr.round_round_id = r.round_id
-        WHERE ccfr.cuisine_cuisine_id = cuisine_id AND YEAR(r.round_year) = previous_year;
-
-        IF count_previous_year > 0 THEN
-            SET count_consecutive = count_consecutive + count_previous_year;
-            INSERT INTO temp_results (cuisine_id, count_current_year, current_year, previous_year, count_previous_year)
-            VALUES (cuisine_id, count_current_year, current_year, previous_year, count_previous_year);
-        END IF;
-    END LOOP;
-
-    CLOSE cur;
-
-    SELECT cuisine_id, count_current_year, current_year, previous_year, count_previous_year
-    FROM temp_results
-    WHERE count_consecutive > 3;
-
-    DROP TEMPORARY TABLE IF EXISTS temp_results;
 END //
 
 CREATE PROCEDURE IF NOT EXISTS CalculateAverageRating()

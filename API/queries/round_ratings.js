@@ -14,16 +14,17 @@ router.get('/round-ratings', (req, res) => {
 
 router.post('/top-5-ratings', (req, res) => {
     const query = `
-    SELECT 
-        CONCAT(c.first_name, ' ', c.last_name) AS judge_name,
-        CONCAT(cc.first_name, ' ', cc.last_name) AS contestant_name,
-        AVG(r.rating_value) AS overall_score
-    FROM ratings r
-    INNER JOIN cook c ON r.judge_id = c.cook_id
-    INNER JOIN cook cc ON r.contestant_id = cc.cook_id
-    GROUP BY r.judge_id, r.contestant_id
-    ORDER BY overall_score DESC
-    LIMIT 5;
+        SELECT
+            CONCAT(judge.first_name, ' ', judge.last_name) AS judge_name,
+            GROUP_CONCAT(DISTINCT CONCAT(contestant.first_name, ' ', contestant.last_name) ORDER BY contestant.last_name ASC) AS contestant_names,
+            AVG(r.rating_value) AS mean_rating_value
+        FROM mydb.ratings r
+        JOIN mydb.cook judge ON r.judge_id = judge.cook_id
+        JOIN mydb.cook contestant ON r.contestant_id = contestant.cook_id
+        GROUP BY r.judge_id
+        HAVING COUNT(DISTINCT r.contestant_id) > 1
+        ORDER BY mean_rating_value DESC
+        LIMIT 5;
     `;
 
     // console.log("Executing query:", query);
@@ -37,8 +38,8 @@ router.post('/top-5-ratings', (req, res) => {
 
             const result_list = results.map(row => ({
                 judge_name: row.judge_name,
-                contestant_name: row.contestant_name,
-                overall_score: row.overall_score
+                contestant_names: row.contestant_names,
+                mean_rating_value: row.mean_rating_value
             }));
 
             // console.log("Mean Ratings:", meanRatings);

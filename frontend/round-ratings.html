@@ -51,7 +51,7 @@
             <tr>
                 <th>Judge's Name</th>
                 <th>Contestant's Name</th>
-                <th>Overall Score</th>
+                <th>Mean Score</th>
             </tr>
         </thead>
         <tbody id="ratingBody">
@@ -60,7 +60,7 @@
     </table>
 
     <script>
-        function fetchData1() {
+        function fetchData() {
             fetch('/dacontest/top-5-ratings', {
                 method: 'POST',
                 headers: {
@@ -76,8 +76,8 @@
                     const row = document.createElement('tr');
                     row.innerHTML = `
                         <td>${cook.judge_name}</td>
-                        <td>${cook.contestant_name}</td>
-                        <td>${cook.overall_score}</td>
+                        <td>${cook.contestant_names}</td>
+                        <td>${cook.mean_rating_value}</td>
                     `;
                     cooksList.appendChild(row);
                 });
@@ -85,7 +85,7 @@
             .catch(error => console.error('Error fetching data:', error));
         }
 
-        window.addEventListener('load', fetchData1);
+        window.addEventListener('load', fetchData);
 
     </script>
 </body>

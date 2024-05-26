@@ -195,7 +195,7 @@
 
         function searchByName() {
             const name = document.getElementById('name').value;
-            fetch('/dacontest/contests/byName', {
+            fetch('/dacontest/contests/byCookName', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

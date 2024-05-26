@@ -14,7 +14,7 @@ router.get('/round-cooks', (req, res) => {
 
 router.post('/cooks-never-judge', (req, res) => {
     const query = `
-        SELECT DISTINCT c.cook_id, c.first_name, c.last_name
+        SELECT DISTINCT c.cook_id, CONCAT(c.last_name, ' ', c.first_name) AS cook_name
         FROM cook c
         LEFT JOIN cooks_judge_round cj ON c.cook_id = cj.cook_cook_id
         WHERE cj.cook_cook_id IS NULL;
@@ -30,10 +30,7 @@ router.post('/cooks-never-judge', (req, res) => {
             // console.log("Results: ", results);
 
             const result_list = results.map(row => ({
-                first_name: row.first_name,
-                last_name: row.last_name,
-                age: row.age,
-                num_recipes: row.num_recipes
+                cook_name: row.cook_name
             }));
 
             // console.log("Mean Ratings:", meanRatings);
@@ -80,28 +77,48 @@ router.post('/cooks-same-participations', (req, res) => {
     });
 });
 
-router.post('/cooks-less-participations', (req, res) => {
+router.post('/cook_most_participations', (req, res) => {
     const query = `
-    SELECT c1.first_name,
-        c1.last_name,
-        c1.phone_number,
-        c1.birth_date,
-        c1.age,
-        c1.years_of_experience,
-        c1.position,
-        c1.username,
-        c1.password,
-        COUNT(cpr1.round_round_id) AS participation_count
-    FROM cook c1
-    LEFT JOIN cooks_participate_in_round cpr1 ON c1.cook_id = cpr1.cook_cook_id
-    GROUP BY c1.cook_id
-    HAVING COUNT(cpr1.round_round_id) < (
-    SELECT COUNT(cpr2.round_round_id) - 5
-    FROM cooks_participate_in_round cpr2
-    GROUP BY cpr2.cook_cook_id
-    ORDER BY COUNT(cpr2.round_round_id) DESC
-    LIMIT 1
-    )
+        WITH participation_counts AS (
+            SELECT 
+                c1.first_name,
+                c1.last_name,
+                c1.phone_number,
+                c1.birth_date,
+                c1.age,
+                c1.years_of_experience,
+                c1.position,
+                c1.username,
+                c1.password,
+                COUNT(cpr1.round_round_id) AS participation_count
+            FROM cook c1
+            LEFT JOIN cooks_participate_in_round cpr1 ON c1.cook_id = cpr1.cook_cook_id
+            GROUP BY 
+                c1.cook_id,
+                c1.first_name,
+                c1.last_name,
+                c1.phone_number,
+                c1.birth_date,
+                c1.age,
+                c1.years_of_experience,
+                c1.position,
+                c1.username,
+                c1.password
+        )
+        SELECT 
+            pc.first_name,
+            pc.last_name,
+            pc.phone_number,
+            pc.birth_date,
+            pc.age,
+            pc.years_of_experience,
+            pc.position,
+            pc.username,
+            pc.password,
+            pc.participation_count
+        FROM participation_counts pc
+        ORDER BY pc.participation_count DESC
+        LIMIT 1;
     `;
 
     DB.connection.query(query, (err, results) => {
@@ -114,6 +131,50 @@ router.post('/cooks-less-participations', (req, res) => {
             const result_list = results.map(row => ({
                 first_name: row.first_name,
                 last_name: row.last_name,
+                username: row.username,
+                participation_count: row.participation_count
+            }));
+
+            // console.log("Mean Ratings:", meanRatings);
+
+            res.status(200).json(result_list);
+        }
+    });
+});
+
+router.post('/cooks-less-participations', (req, res) => {
+    const query = `
+        SELECT CONCAT(c1.first_name, ' ', c1.last_name) as cook_name,
+            c1.phone_number,
+            c1.birth_date,
+            c1.age,
+            c1.years_of_experience,
+            c1.position,
+            c1.username,
+            c1.password,
+            COUNT(cpr1.round_round_id) AS participation_count
+        FROM cook c1
+        LEFT JOIN cooks_participate_in_round cpr1 ON c1.cook_id = cpr1.cook_cook_id
+        GROUP BY c1.cook_id
+        HAVING COUNT(cpr1.round_round_id) < (
+        SELECT COUNT(cpr2.round_round_id) - 5
+        FROM cooks_participate_in_round cpr2
+        GROUP BY cpr2.cook_cook_id
+        ORDER BY COUNT(cpr2.round_round_id) DESC
+        LIMIT 1
+        )
+        ORDER BY participation_count DESC
+    `;
+
+    DB.connection.query(query, (err, results) => {
+        if (err) {
+            console.error('Error executing query:', err);
+            res.status(500).json({ err: 'Error executing query' });
+        } else {
+            // console.log("Results: ", results);
+
+            const result_list = results.map(row => ({
+                cook_name: row.cook_name,
                 username: row.username,
                 participation_count: row.participation_count
             }));

@@ -10,6 +10,11 @@
             border-collapse: collapse;
             width: 100%;
         }
+        .table-wrapper {
+            max-height: 400px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+        }
 
         th, td {
             border: 1px solid #dddddd;
@@ -45,50 +50,57 @@
         </div>
     </div> 
     
-    <h1>Cooks Who Have Never Judged</h1>
-    <table id="cooksTable">
-        <thead>
-            <tr>
-                <th>First Name</th>
-                <th>Last Name</th>
-            </tr>
-        </thead>
-        <tbody id="cooksBody">
-            <!-- Table rows will be dynamically added here -->
-        </tbody>
-    </table>
+    <h2>Cooks Who Have Never Judged</h2>
+        <div class="table-wrapper">
+        <table id="cooksTable">
+            <thead>
+                <tr>
+                    <th>Cooks' Names</th>
+                </tr>
+            </thead>
+            <tbody id="cooksBody">
+                <!-- Table rows will be dynamically added here -->
+            </tbody>
+        </table>
+    </div>
 
-    <h2>Cooks with Same Amound of Participations for 2 Cosecutive Years</h2>
-    <table id="participationsTable">
-        <thead>
-            <tr>
-                <th>First Cook's Name</th>
-                <th>Second Cook's Name</th>
-                <th>No. of Rounds</th>
-                <th>Year Range</th>
-            </tr>
-        </thead>
-        <tbody id="participationsBody">
-            <!-- Table rows will be dynamically added here -->
-        </tbody>
-    </table>
+    <h2>Cooks with Same Amount of Participations for 2 Consecutive Years</h2>
+    <div class="table-wrapper">
+        <table id="participationsTable">
+            <thead>
+                <tr>
+                    <th>First Cook's Name</th>
+                    <th>Second Cook's Name</th>
+                    <th>No. of Rounds</th>
+                    <th>Year Range</th>
+                </tr>
+            </thead>
+            <tbody id="participationsBody">
+                <!-- Table rows will be dynamically added here -->
+            </tbody>
+        </table>
+    </div>
 
-    <h3>Cooks with At Least 5 Less Participations than the Top Participant</h3>
-    <table id="lessParticipationsTable">
-        <thead>
-            <tr>
-                <th>First Name</th>
-                <th>Second Name</th>
-                <th>Username</th>
-                <th>Years of Participation</th>
-            </tr>
-        </thead>
-        <tbody id="lessParticipationsBody">
-            <!-- Table rows will be dynamically added here -->
-        </tbody>
-    </table>
+    <h2>Cooks with At Least 5 Less Participations than the Top Participant</h2>
+    <div id="mostParticipations" style="margin-bottom: 20px;">
+        The cook with the most participations is <span id="mostParticipationsText"></span>.
+    </div>
+    <div class="table-wrapper">
+        <table id="lessParticipationsTable">
+            <thead>
+                <tr>
+                    <th>Cook Name</th>
+                    <th>Username</th>
+                    <th>Years of Participation</th>
+                </tr>
+            </thead>
+            <tbody id="lessParticipationsBody">
+                <!-- Table rows will be dynamically added here -->
+            </tbody>
+        </table>
+    </div>
 
-    <h4>Round with Participants with the Least Experience</h4>
+    <h2>Round with Participants with the Least Experience</h2>
     <table id="leastExperienceTable">
         <thead>
             <tr>
@@ -118,16 +130,13 @@
                 data.forEach(cook => {
                     const row = document.createElement('tr');
                     row.innerHTML = `
-                        <td>${cook.first_name}</td>
-                        <td>${cook.last_name}</td>
+                        <td>${cook.cook_name}</td>
                     `;
                     cooksList.appendChild(row);
                 });
             })
             .catch(error => console.error('Error fetching data:', error));
         }
-
-        window.addEventListener('load', fetchData1);
 
         function fetchData2() {
             fetch('/dacontest/cooks-same-participations', {
@@ -155,7 +164,23 @@
             .catch(error => console.error('Error fetching data:', error));
         }
 
-        window.addEventListener('load', fetchData2);
+        function fetchMostParticipations() {
+            fetch('/dacontest/cook_most_participations', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.length > 0) {
+                    const cook = data[0];
+                    const mostParticipationsText = `${cook.first_name} ${cook.last_name} (${cook.username}), with ${cook.participation_count} participations`;
+                    document.getElementById('mostParticipationsText').innerText = mostParticipationsText;
+                }
+            })
+            .catch(error => console.error('Error fetching data:', error));
+        }
 
         function fetchData3() {
             fetch('/dacontest/cooks-less-participations', {
@@ -172,8 +197,7 @@
                 data.forEach(cook => {
                     const row = document.createElement('tr');
                     row.innerHTML = `
-                        <td>${cook.first_name}</td>
-                        <td>${cook.last_name}</td>
+                        <td>${cook.cook_name}</td>
                         <td>${cook.username}</td>
                         <td>${cook.participation_count}</td>
                     `;
@@ -182,8 +206,6 @@
             })
             .catch(error => console.error('Error fetching data:', error));
         }
-
-        window.addEventListener('load', fetchData3);
 
         function fetchData4() {
             fetch('/dacontest/cooks-least-experience', {
@@ -210,7 +232,13 @@
             .catch(error => console.error('Error fetching data:', error));
         }
 
-        window.addEventListener('load', fetchData4);
+        window.addEventListener('load', () => {
+            fetchData1();
+            fetchData2();
+            fetchMostParticipations();
+            fetchData3();
+            fetchData4();
+        });
     </script>
 </body>
 </html>

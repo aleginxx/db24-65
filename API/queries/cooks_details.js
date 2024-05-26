@@ -21,7 +21,10 @@ router.post('/cooks_know_cuisines', (req, res) => {
     if (cuisineName) {
         cuisineNameFixed = req.body.cuisineName + '\r';
         query = `
-            SELECT c.first_name, c.last_name, c.username, TRIM(TRAILING '\r' FROM cu.cuisine_name) AS cuisine_name
+            SELECT 
+                CONCAT(c.first_name, ' ', c.last_name) AS cook_name, 
+                c.username, 
+                TRIM(TRAILING '\r' FROM cu.cuisine_name) AS cuisine_name
             FROM mydb.cook c
             JOIN mydb.cook_knows_cuisine ckc ON c.cook_id = ckc.cook_cook_id
             JOIN mydb.cuisine cu ON ckc.cuisine_cuisine_id = cu.cuisine_id
@@ -30,10 +33,14 @@ router.post('/cooks_know_cuisines', (req, res) => {
         queryParams = [cuisineNameFixed];
     } else {
         query = `
-            SELECT c.first_name, c.last_name, c.username, TRIM(TRAILING '\r' FROM cu.cuisine_name) AS cuisine_name
+            SELECT 
+                CONCAT(c.first_name, ' ', c.last_name) AS cook_name,
+                c.username,
+                GROUP_CONCAT(DISTINCT TRIM(TRAILING '\r' FROM cu.cuisine_name) SEPARATOR ', ') AS cuisine_name
             FROM mydb.cook c
             JOIN mydb.cook_knows_cuisine ckc ON c.cook_id = ckc.cook_cook_id
-            JOIN mydb.cuisine cu ON ckc.cuisine_cuisine_id = cu.cuisine_id
+            JOIN mydb.cuisine cu ON ckc.cuisine_cuisine_id = cu.cuisine_id 
+            GROUP BY cook_name, c.username
         `;
         queryParams = [];
     }
@@ -44,8 +51,7 @@ router.post('/cooks_know_cuisines', (req, res) => {
             res.status(500).json({ err: 'Error executing query' });
         } else {
             const cooksList = results.map(row => ({
-                first_name: row.first_name,
-                last_name: row.last_name,
+                cook_name: row.cook_name,
                 username: row.username,
                 cuisine_name: row.cuisine_name
             }));
@@ -62,7 +68,7 @@ router.post('/cooks_participate_in_rounds', (req, res) => {
 
     if (roundYear) {
         query = `
-        SELECT CONCAT(c.last_name, ' ', c.first_name) AS cook_name, c.username, r.round_year,
+        SELECT CONCAT(c.last_name, ' ', c.first_name) AS cook_name, c.username, r.round_year, r.round_number,
             CASE
                 WHEN cjr.cook_cook_id IS NOT NULL THEN 'Judge'
                 ELSE 'Participant'
@@ -75,15 +81,20 @@ router.post('/cooks_participate_in_rounds', (req, res) => {
         queryParams = [roundYear];
     } else {
         query = `
-        SELECT CONCAT(c.last_name, ' ', c.first_name) AS cook_name, c.username, r.round_year,
-            CASE
-                WHEN cjr.cook_cook_id IS NOT NULL THEN 'Judge'
-                ELSE 'Participant'
-            END AS role
-        FROM cooks_participate_in_round cpr
-        JOIN cook c ON cpr.cook_cook_id = c.cook_id
-        LEFT JOIN cooks_judge_round cjr ON cpr.cook_cook_id = cjr.cook_cook_id AND cpr.round_round_id = cjr.round_round_id
-        JOIN round r ON cpr.round_round_id = r.round_id
+            SELECT 
+                CONCAT(c.last_name, ' ', c.first_name) AS cook_name, 
+                c.username, 
+                GROUP_CONCAT(DISTINCT CONCAT(r.round_year, ':', r.round_number) SEPARATOR ', ') AS round_info,
+                CASE
+                    WHEN cpr.cook_cook_id IS NOT NULL THEN 'Participant'
+                    WHEN cjr.cook_cook_id IS NOT NULL THEN 'Judge'
+                END AS role
+            FROM round r
+            JOIN cook c ON 1=1
+            LEFT JOIN cooks_participate_in_round cpr ON cpr.cook_cook_id = c.cook_id AND r.round_id = cpr.round_round_id
+            LEFT JOIN cooks_judge_round cjr ON cjr.cook_cook_id = c.cook_id AND r.round_id = cjr.round_round_id
+            WHERE (cpr.cook_cook_id IS NOT NULL OR cjr.cook_cook_id IS NOT NULL)
+            GROUP BY cook_name, role, c.username;
         `;
         queryParams = [];
     }
@@ -99,7 +110,7 @@ router.post('/cooks_participate_in_rounds', (req, res) => {
                 cook_name: row.cook_name,
                 username: row.username,
                 role: row.role,
-                round_year: row.round_year
+                round_info : row.round_info
             })); 
 
             res.status(200).json(cooks_list);

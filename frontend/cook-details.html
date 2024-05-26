@@ -41,7 +41,7 @@
         </div>
     </div> 
     
-    <h1>Cooks know Recipes</h1>
+    <h1>Cooks know Cuisines</h1>
     <form id="searchForm1">
         <label for="cuisineName">Search by Cuisine Name:</label>
         <input type="text" id="cuisineName" name="cuisineName">
@@ -50,8 +50,7 @@
     <table>
         <thead>
             <tr>
-                <th>Last Name</th>
-                <th>First Name</th>
+                <th>Cook Name</th>
                 <th>Username</th>
                 <th>Cuisine Name</th>
             </tr>
@@ -72,7 +71,7 @@
             <tr>
                 <th>Name</th>
                 <th>Username</th>
-                <th>Round Year</th>
+                <th>Round Year and Number</th>
                 <th>Role</th>
             </tr>
         </thead>
@@ -144,13 +143,12 @@
             const tableBody = document.getElementById('cooks-know-cuisines');
             tableBody.innerHTML = ''; // Clear previous content
 
-            data.sort((a, b) => a.last_name.localeCompare(b.last_name));
+            // data.sort((a, b) => a.cook_name.localeCompare(b.cook_name));
 
             data.forEach(cook => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
-                    <td>${cook.last_name}</td>
-                    <td>${cook.first_name}</td>
+                    <td>${cook.cook_name}</td>
                     <td>${cook.username}</td>
                     <td>${cook.cuisine_name}</td>
                 `;
@@ -233,8 +231,8 @@
                 row.innerHTML = `
                     <td>${cook.cook_name}</td>
                     <td>${cook.username}</td>
+                    <td>${cook.round_info}</td>
                     <td>${cook.role}</td>
-                    <td>${cook.round_year}</td>
                 `;
                 tableBody.appendChild(row);
             });
