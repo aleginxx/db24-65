@@ -5,10 +5,67 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cooking Contest</title>
     <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #f9f9f9;
+        }
+
+        .header {
+            width: 100%;
+            display: flex;
+            justify-content: flex-end;
+            padding: 10px; /* Reduced padding for thinner header */
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            z-index: 1000;
+            height: 50px; /* Reduced height for thinner header */
+        }
+
+        .header h2 {
+            margin: 0;
+            flex-grow: 1;
+            font-size: 1.5em;
+            text-align: left;
+            padding-left: 10px; /* Ensure the header text is not cut off */
+        }
+
+        button {
+            font-family: Arial, sans-serif;
+            background-color: #4caf50;
+            color: white;
+            padding: 8px 16px; /* Adjusted padding */
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .container {
+            margin-top: 70px; /* Adjusted to account for the thinner header */
+            padding: 20px;
+            border: 1px solid #dddddd;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+            width: 90%;
+            max-width: 800px;
+            text-align: center;
+        }
+
         table {
             font-family: Arial, sans-serif;
             border-collapse: collapse;
             width: 100%;
+            margin-top: 20px;
         }
 
         th, td {
@@ -23,6 +80,19 @@
 
         tr:nth-child(even) {
             background-color: #f2f2f2;
+        }
+
+        .form-group {
+            margin: 10px 0;
+        }
+        
+        .form-group label {
+            margin-right: 10px;
+        }
+        
+        .form-buttons {
+            display: inline-block;
+            margin-top: 10px;
         }
     </style>
 </head>
